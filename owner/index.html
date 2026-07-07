@@ -1,0 +1,1530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Bridge Dental Owner's Prompt Generator</title>
+<meta name="description" content="Build a sharp, confidential-safe AI prompt for running your dental practice — in four picks." />
+<link rel="icon" type="image/png" href="../assets/favicon.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Mulish:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  /* ============================================================
+     Bridge Dental — design tokens
+     ============================================================ */
+  :root {
+    --rose:        #EF3A66;
+    --rose-dark:   #D62B56;
+    --rose-tint:   #FDE8EE;
+    --indigo:      #3A1F6E;
+    --purple:      #6E3AA6;
+    --purple-2:    #8A3F9C;
+    --ink:         #2A2E3F;
+    --ink-soft:    #5C6070;
+    --muted:       #8B8F9B;
+    --white:       #FFFFFF;
+    --lavender:    #EAE8F6;
+    --cloud:       #F0F0F2;
+    --line:        #E6E6EE;
+    --grad-hero:   linear-gradient(104deg, #1a1340 0%, #3a1f4e 50%, #d62b56 100%);
+    --warn:        #B8772A;
+    --warn-bg:     #FBF0E1;
+
+    --font-head: 'Poppins', system-ui, -apple-system, sans-serif;
+    --font-body: 'Mulish', system-ui, -apple-system, sans-serif;
+
+    --radius-sm:   10px;
+    --radius:      15px;
+    --radius-lg:   22px;
+    --radius-pill: 999px;
+    --shadow:      0 1px 2px rgba(42,46,63,.04), 0 8px 24px rgba(42,46,63,.06);
+    --shadow-rose: 0 8px 24px rgba(239,58,102,.18);
+  }
+
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    font-family: var(--font-body);
+    color: var(--ink-soft);
+    background: var(--cloud);
+    line-height: 1.6;
+    font-size: 17px;
+  }
+
+  h1, h2, h3 {
+    font-family: var(--font-head);
+    color: var(--ink);
+    letter-spacing: -0.01em;
+    line-height: 1.12;
+    margin: 0 0 .4em;
+  }
+
+  /* ---------- Header / hero band ---------- */
+  .hero {
+    background: var(--grad-hero);
+    color: #fff;
+    padding: 1.6rem 1.25rem 2.4rem;
+  }
+  .hero-inner { max-width: 920px; margin: 0 auto; }
+  .hero-top {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 1rem; flex-wrap: wrap; margin-bottom: 1.6rem;
+  }
+  .hero-logo { height: 30px; width: auto; display: block; }
+  .phi-badge {
+    font-family: var(--font-head); font-weight: 600; font-size: .8rem;
+    color: var(--rose); background: var(--rose-tint);
+    padding: .42rem .85rem; border-radius: var(--radius-pill);
+    display: inline-flex; align-items: center; gap: .45rem; white-space: nowrap;
+  }
+  .phi-badge svg { width: 15px; height: 15px; fill: none; stroke: currentColor;
+    stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; }
+  .hero h1 { color: #fff; font-weight: 800; font-size: clamp(1.8rem, 5vw, 2.6rem); margin-bottom: .35rem; }
+  .hero p { color: rgba(255,255,255,.86); font-size: 1.05rem; max-width: 38rem; margin: 0; }
+
+  /* ---------- Layout ---------- */
+  main { max-width: 920px; margin: 0 auto; padding: 1.5rem 1.25rem 4rem; }
+
+  /* ---------- Eyebrow ---------- */
+  .eyebrow {
+    font-family: var(--font-head); font-weight: 600; color: var(--rose);
+    text-transform: uppercase; letter-spacing: .12em; font-size: .76rem;
+    display: block; margin-bottom: .55rem;
+  }
+
+  /* ---------- Cards ---------- */
+  .card {
+    background: var(--white); border: 1px solid var(--line);
+    border-radius: var(--radius-lg); padding: 1.35rem 1.4rem;
+    box-shadow: var(--shadow); margin-bottom: 1rem;
+  }
+  .card h2 { font-size: 1.15rem; font-weight: 600; margin: 0; }
+  .card .sub { color: var(--muted); font-size: .92rem; margin: .15rem 0 .9rem; }
+
+  /* ---------- Form fields ---------- */
+  .field-label {
+    font-family: var(--font-head); font-weight: 600; color: var(--ink);
+    display: block; margin-bottom: .45rem; font-size: 1rem;
+  }
+  .req { color: var(--rose); }
+  select.bd-select, input.bd-text {
+    font-family: var(--font-body); font-size: 1rem; width: 100%;
+    padding: .8rem .9rem; border: 1px solid var(--line);
+    border-radius: var(--radius-sm); color: var(--ink); background: var(--white);
+    transition: border-color .15s, box-shadow .15s; -webkit-appearance: none; appearance: none;
+  }
+  select.bd-select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%235C6070' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: right .9rem center; padding-right: 2.6rem;
+  }
+  input.bd-text::placeholder { color: var(--muted); }
+  select.bd-select:focus, input.bd-text:focus {
+    outline: none; border-color: var(--rose);
+    box-shadow: 0 0 0 3px rgba(239,58,102,.25);
+  }
+  .other-wrap { margin-top: .7rem; }
+  .other-wrap[hidden] { display: none; }
+  .helper { font-size: .85rem; color: var(--muted); margin: .4rem 0 0; }
+
+  /* Confidential-data inline warning */
+  .phi-warn {
+    margin-top: .55rem; font-size: .88rem; color: var(--warn);
+    background: var(--warn-bg); border-radius: var(--radius-sm);
+    padding: .55rem .75rem; display: flex; gap: .5rem; align-items: flex-start;
+  }
+  .phi-warn[hidden] { display: none; }
+  .phi-warn svg { width: 16px; height: 16px; flex: 0 0 auto; margin-top: 2px;
+    fill: none; stroke: currentColor; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; }
+
+  /* ---------- Tone chips & toggle ---------- */
+  .options-row { display: flex; flex-wrap: wrap; gap: 1.25rem; align-items: flex-start; }
+  .chip-group { display: flex; flex-wrap: wrap; gap: .5rem; }
+  .chip {
+    font-family: var(--font-head); font-weight: 600; font-size: .85rem;
+    color: var(--ink-soft); background: var(--white); border: 1px solid var(--line);
+    padding: .42rem .85rem; border-radius: var(--radius-pill); cursor: pointer;
+    transition: all .15s;
+  }
+  .chip:hover { border-color: var(--muted); }
+  .chip[aria-pressed="true"] {
+    color: var(--rose); background: var(--rose-tint); border-color: var(--rose);
+  }
+  .chip:focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(239,58,102,.25); }
+  .toggle-row { display: flex; align-items: center; gap: .6rem; cursor: pointer; }
+  .toggle-row input { width: 18px; height: 18px; accent-color: var(--rose); cursor: pointer; }
+  .toggle-row span { font-size: .95rem; color: var(--ink-soft); }
+
+  /* ---------- Preview ---------- */
+  .preview-card {
+    background: var(--white); border: 1px solid var(--line);
+    border-radius: var(--radius-lg); box-shadow: var(--shadow);
+    overflow: hidden; margin-top: 1.5rem;
+  }
+  .preview-head {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 1rem; padding: 1.1rem 1.4rem; border-bottom: 1px solid var(--line);
+    flex-wrap: wrap;
+  }
+  .preview-head h2 { font-size: 1.15rem; margin: 0; }
+  .preview-body { padding: 1.3rem 1.4rem; }
+  .prompt-out {
+    font-family: var(--font-body); font-size: 1rem; color: var(--ink);
+    white-space: pre-wrap; word-break: break-word; margin: 0;
+    background: var(--cloud); border-radius: var(--radius);
+    padding: 1.1rem 1.15rem; line-height: 1.65;
+  }
+  .prompt-out.placeholder { color: var(--muted); }
+
+  /* ---------- Buttons ---------- */
+  .actions { display: flex; gap: .7rem; flex-wrap: wrap; margin-top: 1.5rem; }
+  .btn {
+    font-family: var(--font-head); font-weight: 600; font-size: 1rem;
+    padding: .85rem 1.5rem; border-radius: var(--radius-sm);
+    border: 1px solid transparent; cursor: pointer; display: inline-flex;
+    align-items: center; justify-content: center; gap: .5rem;
+    transition: background .15s, box-shadow .15s, border-color .15s;
+  }
+  .btn svg { width: 18px; height: 18px; fill: none; stroke: currentColor;
+    stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; }
+  .btn--primary { background: var(--rose); color: #fff; box-shadow: var(--shadow-rose); }
+  .btn--primary:hover:not(:disabled) { background: var(--rose-dark); }
+  .btn--primary:disabled { background: #F4B6C6; cursor: not-allowed; box-shadow: none; }
+  .btn--secondary { background: var(--white); color: var(--ink); border-color: var(--line); }
+  .btn--secondary:hover:not(:disabled) { border-color: var(--muted); }
+  .btn--secondary:disabled { color: var(--muted); cursor: not-allowed; opacity: .6; }
+  .btn:focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(239,58,102,.35); }
+  .btn--copy { min-width: 8.5rem; }
+  .btn--copy.copied { background: #1E8E5A; box-shadow: none; }
+
+  .copy-note { font-size: .85rem; color: var(--muted); margin: .8rem 0 0; }
+
+  /* ---------- Send to AI tool ---------- */
+  .send-group { margin-top: 1.4rem; padding-top: 1.2rem; border-top: 1px solid var(--line); }
+  .send-label {
+    font-family: var(--font-head); font-weight: 600; color: var(--ink);
+    display: block; margin-bottom: .65rem; font-size: .95rem;
+  }
+  .provider-row { display: flex; flex-wrap: wrap; gap: .6rem; }
+  .provider-btn {
+    font-family: var(--font-head); font-weight: 600; font-size: .92rem;
+    color: var(--ink); background: var(--white); border: 1px solid var(--line);
+    border-radius: var(--radius-sm); padding: .6rem .95rem; cursor: pointer;
+    display: inline-flex; align-items: center; gap: .5rem;
+    transition: border-color .15s, box-shadow .15s, background .15s;
+  }
+  .provider-btn:hover:not(:disabled) { border-color: var(--muted); background: #fcfcfd; }
+  .provider-btn:focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(239,58,102,.25); }
+  .provider-btn:disabled { opacity: .5; cursor: not-allowed; }
+  .send-note { font-size: .85rem; color: var(--ink-soft); margin: .7rem 0 0; }
+  .send-note[hidden] { display: none; }
+
+  /* ---------- Task detail fields ---------- */
+  .details-panel { margin-top: .9rem; background: var(--lavender); border-radius: var(--radius); padding: .95rem 1.05rem 1.05rem; }
+  .details-panel[hidden] { display: none; }
+  .details-title {
+    font-family: var(--font-head); font-weight: 600; color: var(--ink);
+    font-size: .95rem; display: block;
+  }
+  .details-sub { font-size: .85rem; color: var(--ink-soft); margin: .1rem 0 .1rem; }
+  .detail-field { margin-top: .6rem; }
+  .detail-field label {
+    font-family: var(--font-head); font-weight: 600; font-size: .85rem;
+    color: var(--ink); display: block; margin-bottom: .3rem;
+  }
+
+  /* ---------- Follow-ups & saved prompts ---------- */
+  .followups { margin-top: 1.4rem; padding-top: 1.2rem; border-top: 1px solid var(--line); }
+  .followups[hidden] { display: none; }
+  .followups-sub { font-size: .85rem; color: var(--muted); margin: .15rem 0 .7rem; }
+  .followups .chip { text-align: left; }
+  .save-row { display: flex; gap: .6rem; margin-bottom: 1.1rem; }
+  .save-row[hidden] { display: none; }
+  .save-row input { flex: 1; }
+  .fav-row { display: flex; align-items: center; gap: .4rem; border-bottom: 1px solid var(--line); }
+  .fav-row:last-child { border-bottom: none; }
+  .fav-load {
+    flex: 1; text-align: left; font-family: var(--font-body); font-size: 1rem;
+    color: var(--ink); background: none; border: none; padding: .7rem .2rem; cursor: pointer;
+  }
+  .fav-load:hover { color: var(--rose); }
+  .fav-load:focus-visible, .fav-del:focus-visible {
+    outline: none; box-shadow: 0 0 0 3px rgba(239,58,102,.25); border-radius: var(--radius-sm);
+  }
+  .fav-del {
+    background: none; border: none; color: var(--muted); font-size: 1.25rem;
+    cursor: pointer; padding: .2rem .55rem; line-height: 1;
+  }
+  .fav-del:hover { color: var(--rose-dark); }
+  .hub-crumb { margin: 0 0 .9rem; font-size: .85rem; }
+  .hub-crumb a {
+    color: rgba(255,255,255,.75); text-decoration: none;
+    font-family: var(--font-head); font-weight: 600;
+  }
+  .hub-crumb a:hover { color: #fff; }
+
+  footer { text-align: center; color: var(--muted); font-size: .85rem; padding: 0 1.25rem 2.5rem; }
+
+  @media (max-width: 560px) {
+    body { font-size: 16px; }
+    .actions .btn { flex: 1 1 100%; }
+  }
+
+  /* Respect reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; }
+  }
+</style>
+</head>
+<body>
+  <header class="hero">
+    <div class="hero-inner">
+      <p class="hub-crumb"><a href="../">← All prompt builders</a></p>
+      <div class="hero-top">
+        <img class="hero-logo" src="../assets/bridge-logo-white.png" alt="Bridge Dental" />
+        <span class="phi-badge">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
+          Confidential-safe by design
+        </span>
+      </div>
+      <h1>Build a sharp, confidential-safe prompt for running your practice.</h1>
+      <p>Pick your expert, the situation, the job, and the shape of the answer. We write the prompt — you run it in your own AI tool. Keep confidential numbers out; use [brackets].</p>
+    </div>
+  </header>
+
+  <main class="bd-scope">
+    <!-- Quick start -->
+    <section class="card">
+      <span class="eyebrow">Quick start</span>
+      <h2>New here? Try an example</h2>
+      <p class="sub">One click fills in all four picks — then tweak anything you like.</p>
+      <div class="chip-group" id="example-row"></div>
+    </section>
+
+    <!-- 01 ROLE -->
+    <section class="card">
+      <span class="eyebrow">01 — Expert</span>
+      <h2>Which expert should the AI act as?</h2>
+      <p class="sub">Pick the kind of advisor you want on this.</p>
+      <label class="field-label" for="role">Expert <span class="req" aria-hidden="true">*</span></label>
+      <select id="role" class="bd-select" aria-required="true">
+        <option value="" selected>Choose an expert…</option>
+      </select>
+      <div class="other-wrap" id="role-other-wrap" hidden>
+        <input type="text" class="bd-text" id="role-other" placeholder="Type the expert / role…" aria-label="Other expert" />
+        <p class="helper">Keep confidential details out — redact account or card numbers, patient names, and pay, or use [brackets].</p>
+        <div class="phi-warn" id="role-warn" hidden role="status">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          <span>This looks like it might be confidential — redact it or use a [bracket].</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 02 CONTEXT -->
+    <section class="card">
+      <span class="eyebrow">02 — Situation</span>
+      <h2>What's the situation at your practice?</h2>
+      <p class="sub">Optional, but it sharpens the answer.</p>
+      <label class="field-label" for="context">Situation</label>
+      <select id="context" class="bd-select" disabled>
+        <option value="" selected>Pick an expert first…</option>
+      </select>
+      <div class="other-wrap" id="context-other-wrap" hidden>
+        <input type="text" class="bd-text" id="context-other" placeholder="Describe the situation…" aria-label="Other situation" />
+        <p class="helper">Keep confidential details out — redact account or card numbers, patient names, and pay, or use [brackets].</p>
+        <div class="phi-warn" id="context-warn" hidden role="status">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          <span>This looks like it might be confidential — redact it or use a [bracket].</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 03 TASK -->
+    <section class="card">
+      <span class="eyebrow">03 — Task</span>
+      <h2>What's the job to do?</h2>
+      <p class="sub">The specific analysis or plan you want.</p>
+      <label class="field-label" for="task">Task <span class="req" aria-hidden="true">*</span></label>
+      <select id="task" class="bd-select" disabled aria-required="true">
+        <option value="" selected>Pick an expert first…</option>
+      </select>
+      <div class="other-wrap" id="task-other-wrap" hidden>
+        <input type="text" class="bd-text" id="task-other" placeholder="Describe the task…" aria-label="Other task" />
+        <p class="helper">Keep confidential details out — redact account or card numbers, patient names, and pay, or use [brackets].</p>
+        <div class="phi-warn" id="task-warn" hidden role="status">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          <span>This looks like it might be confidential — redact it or use a [bracket].</span>
+        </div>
+      </div>
+      <div class="details-panel" id="details-panel" hidden>
+        <span class="details-title">Add details (optional)</span>
+        <p class="details-sub">These get woven into the prompt — skip any you don't know.</p>
+        <div id="details-wrap"></div>
+        <div class="phi-warn" id="details-warn" hidden role="status">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          <span>This looks like it might be confidential — redact it or use a [bracket].</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 04 FORMAT -->
+    <section class="card">
+      <span class="eyebrow">04 — Format</span>
+      <h2>How should the answer be shaped?</h2>
+      <p class="sub">The format the AI should use.</p>
+      <label class="field-label" for="format">Format <span class="req" aria-hidden="true">*</span></label>
+      <select id="format" class="bd-select" aria-required="true">
+        <option value="" selected>Choose a format…</option>
+      </select>
+      <div class="other-wrap" id="format-other-wrap" hidden>
+        <input type="text" class="bd-text" id="format-other" placeholder="Describe the format…" aria-label="Other format" />
+        <p class="helper">Keep confidential details out — redact account or card numbers, patient names, and pay, or use [brackets].</p>
+        <div class="phi-warn" id="format-warn" hidden role="status">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          <span>This looks like it might be confidential — redact it or use a [bracket].</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Optional enhancements -->
+    <section class="card">
+      <span class="eyebrow">Optional — Polish</span>
+      <h2>Add a little extra (optional)</h2>
+      <p class="sub">Nudge the tone, or have the AI ask you a couple of questions first.</p>
+      <div class="options-row">
+        <div>
+          <label class="field-label" id="tone-label">Tone</label>
+          <div class="chip-group" role="group" aria-labelledby="tone-label" id="tone-group">
+            <button type="button" class="chip" data-tone="direct" aria-pressed="false">Direct</button>
+            <button type="button" class="chip" data-tone="concise" aria-pressed="false">Concise</button>
+            <button type="button" class="chip" data-tone="detailed" aria-pressed="false">Detailed</button>
+            <button type="button" class="chip" data-tone="encouraging" aria-pressed="false">Encouraging</button>
+            <button type="button" class="chip" data-tone="professional" aria-pressed="false">Professional</button>
+          </div>
+        </div>
+        <div>
+          <label class="field-label" for="ask-toggle">Quick questions</label>
+          <label class="toggle-row" for="ask-toggle">
+            <input type="checkbox" id="ask-toggle" />
+            <span>Ask me 2–3 quick questions first</span>
+          </label>
+        </div>
+      </div>
+    </section>
+
+    <!-- PREVIEW -->
+    <section class="preview-card" aria-live="polite">
+      <div class="preview-head">
+        <div>
+          <span class="eyebrow">Your prompt</span>
+          <h2>Copy-ready prompt</h2>
+        </div>
+        <button type="button" class="btn btn--secondary" id="save-btn" disabled>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l2.7 5.5 6.05.88-4.38 4.27 1.03 6.03L12 16.84l-5.4 2.84 1.03-6.03L3.25 9.38 9.3 8.5z"/></svg>
+          <span id="save-label">Save</span>
+        </button>
+        <button type="button" class="btn btn--primary btn--copy" id="copy-btn" disabled>
+          <svg viewBox="0 0 24 24" aria-hidden="true" id="copy-icon"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          <span id="copy-label">Copy prompt</span>
+        </button>
+      </div>
+      <div class="preview-body">
+        <div class="save-row" id="save-row" hidden>
+          <input type="text" class="bd-text" id="save-name" placeholder="Name this prompt — e.g. Monday P&L review" aria-label="Name for this saved prompt" />
+          <button type="button" class="btn btn--secondary" id="save-confirm">Save</button>
+        </div>
+        <pre class="prompt-out placeholder" id="prompt-out">Pick an Expert, a Task, and a Format to see your prompt here. The confidential-data safety rule is added automatically.</pre>
+        <p class="copy-note">The safety rule below is added to every prompt automatically — it can't be removed. Treat the output as a first draft and sanity-check the numbers before acting.</p>
+
+        <div class="send-group">
+          <span class="send-label">Open it in your AI tool</span>
+          <div class="provider-row" id="provider-row" role="group" aria-label="Open prompt in an AI tool">
+            <button type="button" class="provider-btn" data-provider="chatgpt" disabled>ChatGPT</button>
+            <button type="button" class="provider-btn" data-provider="claude" disabled>Claude</button>
+            <button type="button" class="provider-btn" data-provider="gemini" disabled>Gemini</button>
+            <button type="button" class="provider-btn" data-provider="grok" disabled>Grok</button>
+          </div>
+          <p class="send-note" id="send-note" role="status" hidden></p>
+        </div>
+
+        <div class="actions">
+          <button type="button" class="btn btn--secondary" id="generate-btn" disabled>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4"/></svg>
+            Generate prompt
+          </button>
+          <button type="button" class="btn btn--secondary" id="share-btn" disabled>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+            <span id="share-label">Copy share link</span>
+          </button>
+          <button type="button" class="btn btn--secondary" id="reset-btn">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>
+            Reset
+          </button>
+        </div>
+
+        <div class="followups" id="followups" hidden>
+          <span class="send-label">Good follow-ups to ask next</span>
+          <p class="followups-sub">After the AI answers, paste one of these to push further. Click to copy.</p>
+          <div class="chip-group" id="followup-row"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SAVED PROMPTS -->
+    <section class="card" id="favs-card" hidden>
+      <span class="eyebrow">Saved prompts</span>
+      <h2>Load a saved prompt</h2>
+      <p class="sub">Saved in this browser only. Click one to load it.</p>
+      <div id="favs-list"></div>
+    </section>
+  </main>
+
+  <footer>
+    Bridge Dental — built by dentists, for dental owners. Your prompt is built in the browser and stays there until you choose to open it in an AI tool.
+  </footer>
+
+<script>
+(function () {
+  "use strict";
+
+  var OTHER = "__other__";
+
+  // ---------- Seed data ----------
+  // role: prompt = lowercase phrase for "Act as {prompt}"
+  var ROLES = [
+    { value: "cfo",       label: "Fractional CFO (money & costs)",          prompt: "a fractional CFO for a dental practice" },
+    { value: "expansion", label: "Expansion analyst (locations & startups)", prompt: "a dental-practice expansion and site-selection analyst" },
+    { value: "deals",     label: "Acquisition & deal advisor (buying & financing)", prompt: "a dental-practice acquisition and deal advisor" },
+    { value: "ops",       label: "Operations & HR consultant",              prompt: "a dental-practice operations and HR consultant" },
+    { value: "marketing", label: "Marketing & growth strategist",           prompt: "a dental-practice growth and marketing strategist" },
+    { value: "coach",     label: "Business coach / advisor",                prompt: "a business coach for a dental-practice owner" }
+  ];
+
+  // Shared situations, always appended (before Other…)
+  var SHARED_CONTEXT = [
+    "a typical month at the practice",
+    "planning for the year ahead",
+    "just want a second opinion"
+  ];
+
+  var CONTEXT = {
+    cfo: [
+      "overhead feels too high",
+      "profitable but cash is tight",
+      "collections are lagging production",
+      "supply and lab costs keep creeping up",
+      "getting ready for tax season"
+    ],
+    expansion: [
+      "thinking about a second location",
+      "the current office is at capacity",
+      "scouting commercial real estate",
+      "weighing a startup against buying",
+      "reviewing a lease or letter of intent"
+    ],
+    deals: [
+      "eyeing a specific practice to buy",
+      "building a list of acquisition targets",
+      "deep in due diligence",
+      "negotiating price and structure",
+      "lining up financing",
+      "planning the transition after closing"
+    ],
+    ops: [
+      "the schedule has too many gaps",
+      "no-shows are hurting the day",
+      "onboarding a new hire",
+      "a process only lives in one person's head",
+      "the team feels stretched thin"
+    ],
+    marketing: [
+      "new-patient flow has slowed",
+      "lots of lapsed patients on the list",
+      "not enough online reviews",
+      "a new competitor opened nearby",
+      "launching a new service"
+    ],
+    coach: [
+      "feeling stretched thin as the owner",
+      "unsure what to focus on next",
+      "working in the business, not on it",
+      "planning the next 12 months",
+      "thinking about an eventual exit"
+    ]
+  };
+
+  var TASK = {
+    cfo: [
+      "Audit credit-card and bank statements for savings",
+      "Review the P&L and flag categories that need attention",
+      "Compare a dental-supply invoice against other vendors",
+      "Find recurring subscriptions and charges to cancel",
+      "Cut accounts-receivable over 90 days",
+      "Analyze which PPO plans to keep or drop and model a fee increase",
+      "Audit lab bills for overcharges",
+      "Check production vs. collections for leakage",
+      "Benchmark overhead against typical practices",
+      "Model the ROI on new equipment",
+      "Compare buying, leasing, and financing equipment",
+      "Decide whether to repair or replace equipment",
+      "Spot price creep in my supply spend",
+      "Design and price an in-house membership plan"
+    ],
+    expansion: [
+      "Evaluate a potential second location",
+      "Screen available properties on Crexi or LoopNet",
+      "Analyze lease terms and flag risky clauses",
+      "Build defensible pro-forma assumptions for a startup",
+      "Estimate startup cost and break-even for a new location",
+      "Decide between starting fresh and acquiring"
+    ],
+    deals: [
+      "Estimate what a practice is worth",
+      "Model whether a deal's cash flow covers the debt",
+      "Scan a listing or prospectus for red flags",
+      "Scrutinize the seller's add-backs (quality of earnings)",
+      "Draft a respectful outreach letter to an owner-dentist",
+      "Build a first-call question list for a selling dentist",
+      "Draft a non-binding letter-of-intent framework",
+      "Build a due-diligence master checklist",
+      "Estimate the all-in cash needed beyond the purchase price",
+      "Compare two acquisition targets side by side",
+      "Plan the first 100 days after buying a practice"
+    ],
+    ops: [
+      "Turn a messy process into a written SOP",
+      "Redesign the schedule to cut gaps and no-shows",
+      "Build a new-hire onboarding plan",
+      "Design an associate or hygienist compensation model",
+      "Create a morning-huddle KPI scorecard",
+      "Set up an inventory par-level system",
+      "Script a difficult team conversation"
+    ],
+    marketing: [
+      "Build a 90-day new-patient growth plan",
+      "Reactivate lapsed patients",
+      "Set up a Google-review generation system",
+      "Design a patient referral program",
+      "Improve local SEO and the Google Business Profile"
+    ],
+    coach: [
+      "Vision organizer: help me figure out what I really want",
+      "Define my weekly owner KPI dashboard",
+      "Build an annual goals and budget framework",
+      "Run a quarterly SWOT and tell me where to focus",
+      "Assess what would raise my practice's value before a sale",
+      "Brainstorm ventures that fit my skills and assets",
+      "Pressure-test a business idea"
+    ]
+  };
+
+  // Formats are shared, analysis-oriented.
+  var FORMATS = [
+    "A prioritized list of savings with estimated dollar impact",
+    "A comparison table",
+    "A red / yellow / green review by category",
+    "A step-by-step action plan",
+    "A go / no-go recommendation with the risks",
+    "A short executive summary, then the details",
+    "A checklist",
+    "A standard operating procedure (numbered steps)",
+    "A one-page brief",
+    "A set of questions for me to answer first",
+    "Short labeled bullet points"
+  ];
+
+  // Tasks that need the owner to supply a document. Maps task text -> document label.
+  var TASK_INPUT = {
+    "Audit credit-card and bank statements for savings": "recent card & bank statements",
+    "Review the P&L and flag categories that need attention": "profit & loss statement (P&L)",
+    "Compare a dental-supply invoice against other vendors": "recent supply invoice",
+    "Find recurring subscriptions and charges to cancel": "recent card & bank statements",
+    "Cut accounts-receivable over 90 days": "accounts-receivable (A/R) aging report",
+    "Analyze which PPO plans to keep or drop and model a fee increase": "fee schedule and insurance write-off report",
+    "Audit lab bills for overcharges": "recent lab statement",
+    "Check production vs. collections for leakage": "production and collections report",
+    "Turn a messy process into a written SOP": "current process (the rough steps as they happen today)",
+    "Spot price creep in my supply spend": "ordering data for this period and last period",
+    "Analyze lease terms and flag risky clauses": "proposed lease or LOI terms",
+    "Estimate what a practice is worth": "practice's financials (collections, EBITDA/SDE, add-backs, trends)",
+    "Model whether a deal's cash flow covers the debt": "deal numbers (price, financing terms, and the practice's cash flow)",
+    "Scan a listing or prospectus for red flags": "listing or broker prospectus",
+    "Scrutinize the seller's add-backs (quality of earnings)": "financials and the seller's add-back list",
+    "Estimate the all-in cash needed beyond the purchase price": "practice details (size, condition, payer mix, current marketing)",
+    "Compare two acquisition targets side by side": "data for both practices",
+    "Brainstorm ventures that fit my skills and assets": "list of your assets and skills (practices, capital, network, interests)",
+    "Pressure-test a business idea": "idea (what it is, who it's for, how it makes money)"
+  };
+
+  // Tasks that work best in a web-connected AI tool.
+  var TASK_RESEARCH = {
+    "Compare a dental-supply invoice against other vendors": true,
+    "Evaluate a potential second location": true,
+    "Screen available properties on Crexi or LoopNet": true
+  };
+
+  // Tasks that carry an extra instruction sentence appended after the task.
+  var TASK_DETAIL = {
+    "Vision organizer: help me figure out what I really want":
+      "Interview me one question at a time to uncover what I actually want from the practice and my life — more time, money, freedom, or meaning — and what's getting in the way. Ask 6–8 thoughtful questions, waiting for my answer each time, then summarize what you heard and give me a short, prioritized action list to get there.",
+    "Evaluate a potential second location":
+      "Look at demographics, daytime and traffic patterns, the dentist-to-patient ratio, and nearby competitors — including how established they are (e.g. estimate the owners' career stage from their dental-school graduation year).",
+    "Screen available properties on Crexi or LoopNet":
+      "Search sources like Crexi and LoopNet for available or for-lease properties that would suit a dental office, and summarize the best options with size, price, and location notes. Screen each for dental fit — plumbing capacity, electrical, ADA access, parking — and flag every listing 'confirm directly; verify dental suitability in person'.",
+    "Compare a dental-supply invoice against other vendors":
+      "Normalize every line to a true unit cost (price divided by units per pack) so the comparison is apples to apples, name the best vendor per item, and total the potential annual savings.",
+    "Spot price creep in my supply spend":
+      "Identify items whose unit cost rose, quantify the annual dollar impact of each, and rank them — with a suggested action for each one: renegotiate, substitute, or switch.",
+    "Model the ROI on new equipment":
+      "Calculate net revenue per case, monthly profit contribution, break-even cases per month, and the payback period in months, and finish with a one-line verdict.",
+    "Compare buying, leasing, and financing equipment":
+      "Show monthly cost, total cost, cash impact, and flexibility side by side, with a recommendation — and note that I'll confirm the tax treatment with my CPA.",
+    "Decide whether to repair or replace equipment":
+      "Weigh age, reliability, downtime, and remaining useful life; show the cost-over-time comparison and the tipping point that would change the answer.",
+    "Analyze lease terms and flag risky clauses":
+      "Translate the terms into plain English, estimate the effective rent over the full term, and flag risky clauses — escalations, CAM charges, personal guarantees, exclusivity, demolition or relocation rights. My attorney reviews before anything is signed.",
+    "Build defensible pro-forma assumptions for a startup":
+      "Cover chairs, days open, new patients per month, ramp curve, fee schedule, payer mix, staffing, and overhead ratios — with reasonable starting ranges and a note on which numbers to localize.",
+    "Decide between starting fresh and acquiring":
+      "Give an honest pros-and-cons for each path in my situation, the break-even-time and risk differences, and a recommended path with the conditions that would change it.",
+    "Estimate what a practice is worth":
+      "Use multiple methods — percent of collections, an EBITDA multiple, and an SDE multiple — show the range each gives and what drives it, then give a blended view and the factors that would push value up or down. Treat this as a starting estimate to confirm with a qualified valuator.",
+    "Model whether a deal's cash flow covers the debt":
+      "Model projected cash flow, annual debt service, DSCR, and owner take-home in a base and a conservative case. End with a clear 'can I afford this' verdict and the single assumption the answer is most sensitive to.",
+    "Scan a listing or prospectus for red flags":
+      "Look for declining production, heavy owner-dependency, concentrated payers, deferred maintenance, lease risk, and vague add-backs. Rank the red flags and give the question each one raises before any letter of intent.",
+    "Scrutinize the seller's add-backs (quality of earnings)":
+      "Normalize the earnings, flag any add-back that looks aggressive or unsupported, and list the documents to request to verify each one.",
+    "Draft a respectful outreach letter to an owner-dentist":
+      "No pressure, no lowball — a warm, confidential opening from one dentist to another about whether they'd ever consider a transition. Under 150 words, with [name], [your name], and [contact] placeholders.",
+    "Build a first-call question list for a selling dentist":
+      "Give me 12 to 15 questions grouped by theme — motivation, financials, team, patients, real estate, timeline — with a note on what a good versus a concerning answer sounds like.",
+    "Draft a non-binding letter-of-intent framework":
+      "Cover price and structure, assets included, contingencies, transition terms, exclusivity, and timeline with [placeholders] throughout — clearly labeled as a starting template for my attorney and CPA to finalize.",
+    "Build a due-diligence master checklist":
+      "Cover financial, clinical, legal, operational, staff, real-estate, and IT areas — with the documents to request and the deal-breakers to watch for in each.",
+    "Estimate the all-in cash needed beyond the purchase price":
+      "Include working capital, transition costs, deferred maintenance, marketing, and a reserve — and call out the items buyers most often underestimate.",
+    "Compare two acquisition targets side by side":
+      "Compare price, production, payer mix, location, growth potential, and risk, then give a reasoned 'which and why' — noting any data gaps that could change the call.",
+    "Plan the first 100 days after buying a practice":
+      "Phase it days 1–7, 8–30, and 31–100 across systems, team, patients, billing, and branding — and highlight the items most likely to disrupt patients if missed.",
+    "Set up an inventory par-level system":
+      "Show how to set pars by usage, a simple reorder process, who owns it, and a lightweight tracker with minimum, maximum, and reorder point per item — simple enough that the team actually uses it.",
+    "Assess what would raise my practice's value before a sale":
+      "Score owner-independence, systems, growth, margins, and payer mix; give a prioritized action list ranked by impact on the multiple, focused on the 12-month moves that pay off most.",
+    "Brainstorm ventures that fit my skills and assets":
+      "Give 10 dental-adjacent ideas with the angle, why I'm suited to each, and a rough effort-versus-return read. Be candid about which are crowded.",
+    "Pressure-test a business idea":
+      "Assess the market size, the real customer, the competition, the moat, and the top risks. Give an honest pursue / shape / pass verdict, the biggest assumption to test first, and a cheap way to test it before I invest."
+  };
+
+  // Optional per-task detail fields. Filled values are woven into the prompt as
+  // sentences, turning a generic prompt into a tailored one.
+  var TASK_FIELDS = {
+    "Evaluate a potential second location": [
+      { key: "area",    label: "City / area you're considering", placeholder: "e.g. Frisco, TX",       sentence: "The area under consideration is {v}" },
+      { key: "current", label: "Where your current practice is", placeholder: "e.g. Plano, TX",        sentence: "My current practice is in {v}" },
+      { key: "budget",  label: "Rough budget (optional)",        placeholder: "e.g. $600k all-in",     sentence: "My rough budget is {v}" }
+    ],
+    "Screen available properties on Crexi or LoopNet": [
+      { key: "area",   label: "City / area to search",   placeholder: "e.g. Frisco, TX",            sentence: "Search in and around {v}" },
+      { key: "size",   label: "Space needed",            placeholder: "e.g. 2,500–3,500 sq ft",     sentence: "I need roughly {v} of space" },
+      { key: "budget", label: "Budget (lease or buy)",   placeholder: "e.g. up to $38/sq ft NNN",   sentence: "Budget: {v}" }
+    ],
+    "Model the ROI on new equipment": [
+      { key: "equipment", label: "Equipment you're considering", placeholder: "e.g. a CBCT unit",       sentence: "The equipment is {v}" },
+      { key: "cost",      label: "Approximate cost",             placeholder: "e.g. $85,000",           sentence: "The approximate cost is {v}" },
+      { key: "cases",     label: "Expected monthly use",         placeholder: "e.g. 20 scans a month",  sentence: "Expected monthly use: {v}" }
+    ],
+    "Design and price an in-house membership plan": [
+      { key: "patients", label: "Active patients (rough)",    placeholder: "e.g. 2,400", sentence: "We have roughly {v} active patients" },
+      { key: "fee",      label: "Your current cleaning fee",  placeholder: "e.g. $120",  sentence: "Our current cleaning fee is {v}" }
+    ],
+    "Redesign the schedule to cut gaps and no-shows": [
+      { key: "ops",   label: "Operatories / chairs",  placeholder: "e.g. 6 ops",       sentence: "We run {v}" },
+      { key: "hours", label: "Office days & hours",   placeholder: "e.g. Mon–Thu 8–5", sentence: "Our hours are {v}" }
+    ],
+    "Benchmark overhead against typical practices": [
+      { key: "collections", label: "Annual collections (rough)",     placeholder: "e.g. about $1.4M", sentence: "Annual collections are roughly {v}" },
+      { key: "overhead",    label: "Current overhead % (if known)",  placeholder: "e.g. about 68%",   sentence: "Current overhead is about {v}" }
+    ],
+    "Estimate what a practice is worth": [
+      { key: "price", label: "Asking price (if there is one)", placeholder: "e.g. $950,000", sentence: "The asking price is {v} — sanity-check it against your estimate" }
+    ],
+    "Compare buying, leasing, and financing equipment": [
+      { key: "equipment", label: "The equipment",    placeholder: "e.g. a CBCT unit", sentence: "The equipment is {v}" },
+      { key: "price",     label: "Approximate price", placeholder: "e.g. $85,000",    sentence: "The price is about {v}" }
+    ],
+    "Decide whether to repair or replace equipment": [
+      { key: "equipment", label: "The equipment",     placeholder: "e.g. our panoramic X-ray", sentence: "The equipment is {v}" },
+      { key: "repair",    label: "Repair quote",      placeholder: "e.g. $6,500",              sentence: "The repair quote is {v}" },
+      { key: "replace",   label: "Replacement cost",  placeholder: "e.g. $42,000",             sentence: "A replacement costs {v}" }
+    ],
+    "Decide between starting fresh and acquiring": [
+      { key: "capital",  label: "Capital available", placeholder: "e.g. $250k plus financing", sentence: "I have {v} available" },
+      { key: "timeline", label: "Your timeline",     placeholder: "e.g. open within 18 months", sentence: "My timeline is {v}" }
+    ],
+    "Estimate startup cost and break-even for a new location": [
+      { key: "area", label: "City / area",          placeholder: "e.g. Frisco, TX", sentence: "The location would be in {v}" },
+      { key: "ops",  label: "Operatories planned",  placeholder: "e.g. 5 ops",      sentence: "Planning for {v}" }
+    ],
+    "Build a 90-day new-patient growth plan": [
+      { key: "current", label: "New patients per month now", placeholder: "e.g. 25",         sentence: "We currently get about {v} new patients a month" },
+      { key: "goal",    label: "Your goal",                  placeholder: "e.g. 40 a month", sentence: "The goal is {v}" }
+    ]
+  };
+
+  // One-click starter examples — each fills all four picks.
+  var EXAMPLES = [
+    { label: "Audit my card statements",
+      state: { role: "cfo", context: "overhead feels too high",
+               task: "Audit credit-card and bank statements for savings",
+               format: "A prioritized list of savings with estimated dollar impact" } },
+    { label: "Vet a second location",
+      state: { role: "expansion", context: "thinking about a second location",
+               task: "Evaluate a potential second location",
+               format: "A go / no-go recommendation with the risks" } },
+    { label: "Vision organizer",
+      state: { role: "coach", context: "unsure what to focus on next",
+               task: "Vision organizer: help me figure out what I really want",
+               format: "A short executive summary, then the details" } }
+  ];
+
+  // Follow-up suggestions shown after copying — the first AI answer is rarely
+  // the end; these teach the push-further habit. Keyed by task; DEFAULT for the rest.
+  var DEFAULT_FOLLOWUPS = [
+    "What's the single highest-impact item here, and why?",
+    "What would you need from me to make this more precise?",
+    "Turn your top recommendation into concrete next steps for this week."
+  ];
+  var TASK_FOLLOWUPS = {
+    "Review the P&L and flag categories that need attention": [
+      "Which single category should I attack first?",
+      "What would each fix be worth annually?",
+      "Draft the email or script to act on your top recommendation."
+    ],
+    "Audit credit-card and bank statements for savings": [
+      "Rank the savings by annual dollar impact.",
+      "Draft cancellation emails for the top three.",
+      "What should I watch for on next month's statement?"
+    ],
+    "Cut accounts-receivable over 90 days": [
+      "Script the first call for the biggest balance.",
+      "Which claims should we resubmit versus write off?",
+      "Build a weekly A/R routine so this doesn't pile up again."
+    ],
+    "Analyze which PPO plans to keep or drop and model a fee increase": [
+      "Model dropping the single worst plan — what's the patient-loss break-even?",
+      "Draft the patient letter announcing the change.",
+      "What's the safest timeline and order of operations?"
+    ],
+    "Evaluate a potential second location": [
+      "What data would change this from no-go to go?",
+      "Estimate first-year cash flow for this location.",
+      "What are the three biggest risks, and how would I de-risk each?"
+    ],
+    "Vision organizer: help me figure out what I really want": [
+      "Turn the action list into a 90-day calendar.",
+      "What should I stop doing entirely?",
+      "What's the first thing I should delegate, and to whom?"
+    ],
+    "Model the ROI on new equipment": [
+      "How many cases a month is break-even?",
+      "Compare buying vs. leasing vs. waiting a year.",
+      "Which of my utilization assumptions is most likely wrong?"
+    ],
+    "Estimate what a practice is worth": [
+      "Which factors here would move the value most?",
+      "What documents should I request to tighten this estimate?",
+      "Model the value if collections grow 10% under my ownership."
+    ],
+    "Model whether a deal's cash flow covers the debt": [
+      "Rerun it with a 15% production dip in year one.",
+      "What loan terms would make this deal comfortable?",
+      "What's my realistic monthly take-home in year one?"
+    ],
+    "Scan a listing or prospectus for red flags": [
+      "Draft the questions to send the broker about each red flag.",
+      "Which single red flag would you walk away over?",
+      "What would a clean version of this deal look like?"
+    ],
+    "Draft a non-binding letter-of-intent framework": [
+      "List the negotiation levers beyond price.",
+      "What should my opening position be?",
+      "What do sellers most often push back on?"
+    ],
+    "Build a 90-day new-patient growth plan": [
+      "Which single channel should get the first dollar, and why?",
+      "Turn week one into a day-by-day checklist.",
+      "How will we measure this — which numbers, checked when?"
+    ]
+  };
+
+  // AI tools the prompt can be sent to. prefill: provider supports a URL query
+  // param that pre-fills the composer. We always copy to the clipboard first as a
+  // fallback, so even providers without prefill just need a paste.
+  var PROVIDERS = [
+    { id: "chatgpt", name: "ChatGPT", prefill: true,  base: "https://chatgpt.com/?q=" },
+    { id: "claude",  name: "Claude",  prefill: true,  base: "https://claude.ai/new?q=" },
+    { id: "gemini",  name: "Gemini",  prefill: false, base: "https://gemini.google.com/app" },
+    { id: "grok",    name: "Grok",    prefill: true,  base: "https://grok.com/?q=" }
+  ];
+  var PROVIDERS_BY_ID = {};
+  PROVIDERS.forEach(function (p) { PROVIDERS_BY_ID[p.id] = p; });
+
+  var TONE_CLAUSE = {
+    direct: "direct",
+    concise: "concise",
+    detailed: "detailed",
+    encouraging: "encouraging",
+    professional: "professional"
+  };
+
+  var RESEARCH_NOTE = "Use a web-connected AI tool for this (ChatGPT with search, Gemini, Grok, or Claude with web) so it can look up current data.";
+
+  var VERIFY_RULE = "Verify rule: AI-found figures and estimates are a starting point — confirm against primary sources, and with your CPA and attorney, before any offer, purchase, or filing.";
+
+  var SAFETY = "Safety rule: Keep confidential data out of this prompt. Don't include account or card numbers, bank details, patient names, individual employee pay, EINs, or other sensitive specifics — redact them or use [bracket] placeholders. Treat the output as a first draft and sanity-check the numbers before acting on them.";
+
+  var STORAGE_KEY = "bridge-owner-prompt-v1";
+
+  // ---------- DOM refs ----------
+  var $ = function (id) { return document.getElementById(id); };
+  var roleSel = $("role"), ctxSel = $("context"), taskSel = $("task"), fmtSel = $("format");
+  var roleOtherWrap = $("role-other-wrap"), ctxOtherWrap = $("context-other-wrap"),
+      taskOtherWrap = $("task-other-wrap"), fmtOtherWrap = $("format-other-wrap");
+  var roleOther = $("role-other"), ctxOther = $("context-other"),
+      taskOther = $("task-other"), fmtOther = $("format-other");
+  var promptOut = $("prompt-out");
+  var genBtn = $("generate-btn"), copyBtn = $("copy-btn"), resetBtn = $("reset-btn");
+  var copyLabel = $("copy-label");
+  var askToggle = $("ask-toggle");
+  var toneGroup = $("tone-group");
+  var providerRow = $("provider-row"), sendNote = $("send-note");
+  var detailsPanel = $("details-panel"), detailsWrap = $("details-wrap"), detailsWarn = $("details-warn");
+  var shareBtn = $("share-btn"), shareLabel = $("share-label");
+  var exampleRow = $("example-row");
+  var followupsPanel = $("followups"), followupRow = $("followup-row");
+  var saveBtn = $("save-btn"), saveLabel = $("save-label");
+  var saveRow = $("save-row"), saveName = $("save-name"), saveConfirm = $("save-confirm");
+  var favsCard = $("favs-card"), favsList = $("favs-list");
+
+  // ---------- Helpers ----------
+  function makeOption(value, label) {
+    var o = document.createElement("option");
+    o.value = value; o.textContent = label;
+    return o;
+  }
+
+  function fillSelect(sel, items, placeholder) {
+    sel.innerHTML = "";
+    sel.appendChild(makeOption("", placeholder));
+    items.forEach(function (it) {
+      sel.appendChild(makeOption(it.value, it.label));
+    });
+    sel.appendChild(makeOption(OTHER, "Other…"));
+  }
+
+  function populateRoles() {
+    fillSelect(roleSel, ROLES.map(function (r) { return { value: r.value, label: r.label }; }), "Choose an expert…");
+  }
+
+  function populateFormats() {
+    fillSelect(fmtSel, FORMATS.map(function (f) { return { value: f, label: f }; }), "Choose a format…");
+  }
+
+  function populateContext(roleVal) {
+    var list = (CONTEXT[roleVal] || []).concat(SHARED_CONTEXT);
+    var items = list.map(function (c) { return { value: c, label: c }; });
+    fillSelect(ctxSel, items, "Pick a situation…");
+    ctxSel.disabled = false;
+  }
+
+  function populateTasks(roleVal) {
+    var list = TASK[roleVal] || [];
+    var items = list.map(function (t) { return { value: t, label: t }; });
+    fillSelect(taskSel, items, "Pick a task…");
+    taskSel.disabled = false;
+  }
+
+  function resetDependent() {
+    ctxSel.innerHTML = ""; ctxSel.appendChild(makeOption("", "Pick an expert first…")); ctxSel.disabled = true;
+    taskSel.innerHTML = ""; taskSel.appendChild(makeOption("", "Pick an expert first…")); taskSel.disabled = true;
+    hide(ctxOtherWrap); hide(taskOtherWrap);
+    ctxOther.value = ""; taskOther.value = "";
+    clearWarn(ctxOther); clearWarn(taskOther);
+  }
+
+  function show(el) { el.hidden = false; }
+  function hide(el) { el.hidden = true; }
+
+  function toggleOther(sel, wrap, input) {
+    if (sel.value === OTHER) { show(wrap); }
+    else { hide(wrap); input.value = ""; clearWarn(input); }
+  }
+
+  // ---------- Confidential-data detection ----------
+  var reDate    = /\b\d{1,2}[\/\-]\d{1,2}[\/\-]\d{2,4}\b/;
+  var reEmail   = /[A-Za-z0-9._%+\-]+@[A-Za-z0-9.\-]+\.[A-Za-z]{2,}/;
+  var rePhone   = /(?:\+?\d[\s.\-]?)?\(?\d{3}\)?[\s.\-]?\d{3}[\s.\-]?\d{4}\b/;
+  var reLongNum = /\d{7,}/;                                  // account / card numbers
+  var reCard    = /\b(?:\d[ \-]?){13,19}\b/;                 // card number with spaces/dashes
+  var reSSN     = /\b\d{3}-\d{2}-\d{4}\b/;                   // SSN
+  var reEIN     = /\b\d{2}-\d{7}\b/;                         // EIN
+
+  function looksSensitive(text) {
+    if (!text) return false;
+    var s = text.replace(/\[[^\]]*\]/g, ""); // ignore content inside [brackets]
+    return reDate.test(s) || reEmail.test(s) || rePhone.test(s) ||
+           reLongNum.test(s) || reCard.test(s) || reSSN.test(s) || reEIN.test(s);
+  }
+
+  function warnElFor(input) {
+    return $(input.id.replace("-other", "-warn"));
+  }
+  function checkWarn(input) {
+    var w = warnElFor(input);
+    if (!w) return;
+    if (looksSensitive(input.value)) { show(w); } else { hide(w); }
+  }
+  function clearWarn(input) {
+    var w = warnElFor(input);
+    if (w) hide(w);
+  }
+
+  // ---------- Task detail fields ----------
+  function currentFieldDefs() {
+    var task = (taskSel.value && taskSel.value !== OTHER) ? taskSel.value : null;
+    return task ? (TASK_FIELDS[task] || null) : null;
+  }
+
+  function renderDetailFields() {
+    var defs = currentFieldDefs();
+    detailsWrap.innerHTML = "";
+    hide(detailsWarn);
+    if (!defs) { hide(detailsPanel); return; }
+    defs.forEach(function (f) {
+      var wrap = document.createElement("div");
+      wrap.className = "detail-field";
+      var lab = document.createElement("label");
+      lab.textContent = f.label;
+      lab.setAttribute("for", "detail-" + f.key);
+      var inp = document.createElement("input");
+      inp.type = "text"; inp.className = "bd-text";
+      inp.id = "detail-" + f.key;
+      inp.placeholder = f.placeholder || "";
+      inp.setAttribute("data-key", f.key);
+      wrap.appendChild(lab); wrap.appendChild(inp);
+      detailsWrap.appendChild(wrap);
+    });
+    show(detailsPanel);
+  }
+
+  function collectDetails() {
+    var o = {};
+    detailsWrap.querySelectorAll("input").forEach(function (i) {
+      if (i.value.trim()) o[i.getAttribute("data-key")] = i.value.trim();
+    });
+    return o;
+  }
+
+  function detailSentences() {
+    var defs = currentFieldDefs();
+    if (!defs) return [];
+    var vals = collectDetails();
+    var out = [];
+    defs.forEach(function (f) {
+      if (vals[f.key]) out.push(ensurePeriod(f.sentence.replace("{v}", vals[f.key])));
+    });
+    return out;
+  }
+
+  function checkDetailsWarn() {
+    var any = false;
+    detailsWrap.querySelectorAll("input").forEach(function (i) {
+      if (looksSensitive(i.value)) any = true;
+    });
+    if (any) { show(detailsWarn); } else { hide(detailsWarn); }
+  }
+
+  // ---------- Selection readout ----------
+  function selectedTones() {
+    var out = [];
+    toneGroup.querySelectorAll(".chip").forEach(function (c) {
+      if (c.getAttribute("aria-pressed") === "true") out.push(c.getAttribute("data-tone"));
+    });
+    return out;
+  }
+
+  function getRolePrompt() {
+    if (roleSel.value === OTHER) return roleOther.value.trim();
+    var r = ROLES.filter(function (x) { return x.value === roleSel.value; })[0];
+    return r ? r.prompt : "";
+  }
+  function getContextText() {
+    if (!ctxSel.value) return "";
+    if (ctxSel.value === OTHER) return ctxOther.value.trim();
+    return ctxSel.value;
+  }
+  function getTaskText() {
+    if (!taskSel.value) return "";
+    if (taskSel.value === OTHER) return taskOther.value.trim();
+    return taskSel.value;
+  }
+  function getFormatText() {
+    if (!fmtSel.value) return "";
+    if (fmtSel.value === OTHER) return fmtOther.value.trim();
+    return fmtSel.value;
+  }
+
+  // ---------- Grammar helpers ----------
+  function ensurePeriod(s) {
+    s = s.trim();
+    if (!s) return "";
+    if (/[.!?]$/.test(s)) return s;
+    return s + ".";
+  }
+  function capitalize(s) {
+    s = s.trim();
+    if (!s) return "";
+    return s.charAt(0).toUpperCase() + s.slice(1);
+  }
+
+  // ---------- Assemble ----------
+  function readyToGenerate() {
+    return getRolePrompt() && getTaskText() && getFormatText();
+  }
+
+  function buildPrompt() {
+    var role = getRolePrompt();
+    var ctx = getContextText();
+    var task = getTaskText();
+    var fmt = getFormatText();
+    var isMenuTask = taskSel.value && taskSel.value !== OTHER;
+
+    if (!role && !task && !fmt) return "";
+
+    var parts = [];
+
+    // Act as {role}.
+    parts.push(ensurePeriod("Act as " + (role || "[expert]")));
+
+    // Situation framing (optional).
+    if (ctx) parts.push(ensurePeriod("Here's the situation: " + ctx));
+
+    // The task.
+    parts.push(ensurePeriod(capitalize(task || "[task]")));
+
+    // Extra instruction for certain tasks (vision organizer, research specifics).
+    if (isMenuTask && TASK_DETAIL[task]) parts.push(ensurePeriod(TASK_DETAIL[task]));
+
+    // Optional details the user filled in.
+    var detailBits = detailSentences();
+    if (detailBits.length) parts.push(detailBits.join(" "));
+
+    // Tone clause.
+    var tones = selectedTones();
+    if (tones.length) {
+      var words = tones.map(function (t) { return TONE_CLAUSE[t]; });
+      var joined;
+      if (words.length === 1) joined = words[0];
+      else if (words.length === 2) joined = words[0] + " and " + words[1];
+      else joined = words.slice(0, -1).join(", ") + ", and " + words[words.length - 1];
+      parts.push("Keep it " + joined + ".");
+    }
+
+    // Format.
+    parts.push("Format: " + ensurePeriod(fmt || "[format]"));
+
+    // Research note for tasks that need a web-connected tool.
+    if (isMenuTask && TASK_RESEARCH[task]) parts.push(RESEARCH_NOTE);
+
+    // Ask-questions-first.
+    if (askToggle.checked) {
+      parts.push("Before you start, ask me 2–3 quick questions to get the details right.");
+    }
+
+    var sections = [parts.join(" ")];
+
+    // Document block — attach or paste, with a confidential reminder.
+    var docLabel = isMenuTask ? TASK_INPUT[task] : null;
+    if (docLabel) {
+      sections.push(
+        "Attach the " + docLabel + " in your AI tool, or paste it between the lines below. " +
+        "First remove anything confidential — account or card numbers, patient names, individual " +
+        "employee pay, bank details — or replace it with [brackets]:\n" +
+        "---\n[ attach or paste the " + docLabel + " here ]\n---"
+      );
+    }
+
+    sections.push(SAFETY);
+
+    // Money & deal roles get the vault's verify discipline on top.
+    if (roleSel.value === "cfo" || roleSel.value === "expansion" || roleSel.value === "deals") {
+      sections.push(VERIFY_RULE);
+    }
+
+    return sections.join("\n\n");
+  }
+
+  function updatePreview() {
+    var ready = readyToGenerate();
+    genBtn.disabled = !ready;
+    copyBtn.disabled = !ready;
+    shareBtn.disabled = !ready;
+    saveBtn.disabled = !ready;
+    if (!ready) { hide(saveRow); }
+    hide(followupsPanel); // selections changed — stale suggestions
+
+    providerRow.querySelectorAll(".provider-btn").forEach(function (b) { b.disabled = !ready; });
+    if (!ready) { sendNote.hidden = true; }
+
+    var prompt = buildPrompt();
+    if (!prompt) {
+      promptOut.textContent = "Pick an Expert, a Task, and a Format to see your prompt here. The confidential-data safety rule is added automatically.";
+      promptOut.classList.add("placeholder");
+    } else {
+      promptOut.textContent = prompt;
+      promptOut.classList.remove("placeholder");
+    }
+    save();
+  }
+
+  // ---------- Clipboard ----------
+  function copyText(text, onDone) {
+    function fallback() {
+      var ta = document.createElement("textarea");
+      ta.value = text; ta.style.position = "fixed"; ta.style.opacity = "0";
+      document.body.appendChild(ta); ta.focus(); ta.select();
+      try { document.execCommand("copy"); if (onDone) onDone(); } catch (e) {}
+      document.body.removeChild(ta);
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function () { if (onDone) onDone(); }, fallback);
+    } else {
+      fallback();
+    }
+  }
+
+  // ---------- State (persistence, share links, examples) ----------
+  function currentState() {
+    return {
+      role: roleSel.value, roleOther: roleOther.value,
+      context: ctxSel.value, contextOther: ctxOther.value,
+      task: taskSel.value, taskOther: taskOther.value,
+      format: fmtSel.value, formatOther: fmtOther.value,
+      tones: selectedTones(),
+      ask: askToggle.checked,
+      details: collectDetails()
+    };
+  }
+
+  function save() {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(currentState()));
+    } catch (e) { /* ignore */ }
+  }
+
+  // Clear every control back to the blank state (does not touch localStorage).
+  function clearForm() {
+    roleSel.value = ""; fmtSel.value = "";
+    hide(roleOtherWrap); hide(fmtOtherWrap);
+    roleOther.value = ""; fmtOther.value = "";
+    clearWarn(roleOther); clearWarn(fmtOther);
+    resetDependent();
+    toneGroup.querySelectorAll(".chip").forEach(function (c) { c.setAttribute("aria-pressed", "false"); });
+    askToggle.checked = false;
+    renderDetailFields();
+  }
+
+  // Apply a saved / shared / example state to the form.
+  function applyState(d) {
+    clearForm();
+    if (d.role) {
+      roleSel.value = d.role;
+      if (roleSel.value !== d.role) roleSel.value = ""; // option missing
+    }
+    if (roleSel.value) {
+      toggleOther(roleSel, roleOtherWrap, roleOther);
+      if (d.roleOther) { roleOther.value = d.roleOther; checkWarn(roleOther); }
+      // Populate for custom ("Other…") experts too — they get the shared
+      // situations and an "Other…" task slot.
+      populateContext(roleSel.value);
+      populateTasks(roleSel.value);
+      if (d.context) ctxSel.value = d.context;
+      if (d.task) taskSel.value = d.task;
+      toggleOther(ctxSel, ctxOtherWrap, ctxOther);
+      toggleOther(taskSel, taskOtherWrap, taskOther);
+      if (d.contextOther) { ctxOther.value = d.contextOther; checkWarn(ctxOther); }
+      if (d.taskOther) { taskOther.value = d.taskOther; checkWarn(taskOther); }
+    }
+    if (d.format) {
+      fmtSel.value = d.format;
+      if (fmtSel.value !== d.format) fmtSel.value = ""; // option missing
+      toggleOther(fmtSel, fmtOtherWrap, fmtOther);
+      if (d.formatOther) { fmtOther.value = d.formatOther; checkWarn(fmtOther); }
+    }
+    if (d.tones && d.tones.length) {
+      toneGroup.querySelectorAll(".chip").forEach(function (c) {
+        if (d.tones.indexOf(c.getAttribute("data-tone")) !== -1) {
+          c.setAttribute("aria-pressed", "true");
+        }
+      });
+    }
+    if (d.ask) askToggle.checked = true;
+    renderDetailFields();
+    if (d.details) {
+      detailsWrap.querySelectorAll("input").forEach(function (i) {
+        var k = i.getAttribute("data-key");
+        if (d.details[k]) i.value = d.details[k];
+      });
+      checkDetailsWarn();
+    }
+    updatePreview();
+  }
+
+  function restore() {
+    var raw;
+    try { raw = localStorage.getItem(STORAGE_KEY); } catch (e) { return; }
+    if (!raw) return;
+    var d;
+    try { d = JSON.parse(raw); } catch (e) { return; }
+    applyState(d);
+  }
+
+  // Share links: the state, JSON-encoded, as a URL-safe base64 "?p=" param.
+  function encodeState(obj) {
+    return btoa(unescape(encodeURIComponent(JSON.stringify(obj))))
+      .replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+  }
+  function decodeState(s) {
+    s = s.replace(/-/g, "+").replace(/_/g, "/");
+    while (s.length % 4) s += "=";
+    return JSON.parse(decodeURIComponent(escape(atob(s))));
+  }
+  function readShareLink() {
+    try {
+      var m = location.search.match(/[?&]p=([^&]+)/);
+      return m ? decodeState(m[1]) : null;
+    } catch (e) { return null; }
+  }
+
+  // ---------- Events ----------
+  roleSel.addEventListener("change", function () {
+    toggleOther(roleSel, roleOtherWrap, roleOther);
+    if (roleSel.value) {
+      // A custom ("Other…") expert still gets the shared situations and an
+      // "Other…" task slot, so the rest of the form stays usable.
+      populateContext(roleSel.value);
+      populateTasks(roleSel.value);
+      hide(ctxOtherWrap); hide(taskOtherWrap);
+      ctxOther.value = ""; taskOther.value = "";
+      clearWarn(ctxOther); clearWarn(taskOther);
+    } else {
+      resetDependent();
+    }
+    renderDetailFields();
+    updatePreview();
+  });
+
+  ctxSel.addEventListener("change", function () {
+    toggleOther(ctxSel, ctxOtherWrap, ctxOther);
+    updatePreview();
+  });
+  taskSel.addEventListener("change", function () {
+    toggleOther(taskSel, taskOtherWrap, taskOther);
+    renderDetailFields();
+    updatePreview();
+  });
+  fmtSel.addEventListener("change", function () {
+    toggleOther(fmtSel, fmtOtherWrap, fmtOther);
+    updatePreview();
+  });
+
+  [roleOther, ctxOther, taskOther, fmtOther].forEach(function (inp) {
+    inp.addEventListener("input", function () {
+      checkWarn(inp);
+      updatePreview();
+    });
+  });
+
+  toneGroup.addEventListener("click", function (e) {
+    var chip = e.target.closest(".chip");
+    if (!chip) return;
+    var pressed = chip.getAttribute("aria-pressed") === "true";
+    chip.setAttribute("aria-pressed", pressed ? "false" : "true");
+    updatePreview();
+  });
+
+  askToggle.addEventListener("change", updatePreview);
+
+  genBtn.addEventListener("click", function () {
+    updatePreview();
+    promptOut.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  });
+
+  copyBtn.addEventListener("click", function () {
+    var text = buildPrompt();
+    if (!text) return;
+    copyText(text, function () {
+      copyBtn.classList.add("copied");
+      copyLabel.textContent = "Copied!";
+      setTimeout(function () {
+        copyBtn.classList.remove("copied");
+        copyLabel.textContent = "Copy prompt";
+      }, 1800);
+      showFollowups();
+    });
+  });
+
+  // Open the prompt in a chosen AI tool. Always copy first (the fallback for any
+  // provider that doesn't pre-fill, and a safety net if the URL param is dropped).
+  providerRow.addEventListener("click", function (e) {
+    var btn = e.target.closest(".provider-btn");
+    if (!btn || btn.disabled) return;
+    var p = PROVIDERS_BY_ID[btn.getAttribute("data-provider")];
+    if (!p) return;
+    var text = buildPrompt();
+    if (!text) return;
+
+    copyText(text);
+    var url = p.prefill ? p.base + encodeURIComponent(text) : p.base;
+    window.open(url, "_blank", "noopener");
+
+    sendNote.hidden = false;
+    sendNote.textContent = p.prefill
+      ? "Opening " + p.name + " with your prompt. It's also copied — just paste (Cmd/Ctrl+V) if it didn't carry over."
+      : "Opening " + p.name + ". Your prompt is copied — paste it (Cmd/Ctrl+V) into the box.";
+    showFollowups();
+  });
+
+  resetBtn.addEventListener("click", function () {
+    clearForm();
+    try { localStorage.removeItem(STORAGE_KEY); } catch (e) {}
+    updatePreview();
+  });
+
+  detailsWrap.addEventListener("input", function () {
+    checkDetailsWarn();
+    updatePreview();
+  });
+
+  // Copy a link that reopens this app with the current picks pre-filled.
+  shareBtn.addEventListener("click", function () {
+    if (!readyToGenerate()) return;
+    var url = location.href.split(/[?#]/)[0] + "?p=" + encodeState(currentState());
+    copyText(url, function () {
+      shareLabel.textContent = "Link copied!";
+      setTimeout(function () { shareLabel.textContent = "Copy share link"; }, 1800);
+    });
+  });
+
+  // ---------- Follow-ups ----------
+  function showFollowups() {
+    var task = (taskSel.value && taskSel.value !== OTHER) ? taskSel.value : null;
+    var list = (task && TASK_FOLLOWUPS[task]) || DEFAULT_FOLLOWUPS;
+    followupRow.innerHTML = "";
+    list.forEach(function (t) {
+      var b = document.createElement("button");
+      b.type = "button"; b.className = "chip"; b.textContent = t;
+      b.addEventListener("click", function () {
+        copyText(t, function () {
+          b.textContent = "Copied!";
+          setTimeout(function () { b.textContent = t; }, 1200);
+        });
+      });
+      followupRow.appendChild(b);
+    });
+    show(followupsPanel);
+  }
+
+  // ---------- Saved prompts (favorites) ----------
+  var FAVS_KEY = STORAGE_KEY + "-favs";
+  function loadFavs() {
+    try { return JSON.parse(localStorage.getItem(FAVS_KEY)) || []; } catch (e) { return []; }
+  }
+  function storeFavs(favs) {
+    try { localStorage.setItem(FAVS_KEY, JSON.stringify(favs)); } catch (e) { /* ignore */ }
+  }
+  function renderFavs() {
+    var favs = loadFavs();
+    favsList.innerHTML = "";
+    if (!favs.length) { hide(favsCard); return; }
+    favs.forEach(function (f, idx) {
+      var row = document.createElement("div");
+      row.className = "fav-row";
+      var load = document.createElement("button");
+      load.type = "button"; load.className = "fav-load"; load.textContent = f.name;
+      load.addEventListener("click", function () {
+        applyState(f.state);
+        document.querySelector(".preview-card").scrollIntoView({ behavior: "smooth", block: "nearest" });
+      });
+      var del = document.createElement("button");
+      del.type = "button"; del.className = "fav-del"; del.textContent = "×";
+      del.setAttribute("aria-label", "Delete saved prompt: " + f.name);
+      del.addEventListener("click", function () {
+        var cur = loadFavs();
+        cur.splice(idx, 1);
+        storeFavs(cur);
+        renderFavs();
+      });
+      row.appendChild(load); row.appendChild(del);
+      favsList.appendChild(row);
+    });
+    show(favsCard);
+  }
+
+  saveBtn.addEventListener("click", function () {
+    if (saveBtn.disabled) return;
+    saveRow.hidden = !saveRow.hidden;
+    if (!saveRow.hidden) saveName.focus();
+  });
+  function confirmSave() {
+    var name = saveName.value.trim() || getTaskText() || "Saved prompt";
+    var favs = loadFavs();
+    favs.unshift({ name: name, state: currentState(), ts: Date.now() });
+    if (favs.length > 20) favs.length = 20; // keep the list sane
+    storeFavs(favs);
+    renderFavs();
+    saveName.value = "";
+    hide(saveRow);
+    saveLabel.textContent = "Saved!";
+    setTimeout(function () { saveLabel.textContent = "Save"; }, 1500);
+  }
+  saveConfirm.addEventListener("click", confirmSave);
+  saveName.addEventListener("keydown", function (e) {
+    if (e.key === "Enter") { e.preventDefault(); confirmSave(); }
+  });
+
+  // ---------- Examples ----------
+  function buildExampleChips() {
+    EXAMPLES.forEach(function (ex) {
+      var b = document.createElement("button");
+      b.type = "button"; b.className = "chip"; b.textContent = ex.label;
+      b.addEventListener("click", function () {
+        applyState(ex.state);
+        document.querySelector(".preview-card").scrollIntoView({ behavior: "smooth", block: "nearest" });
+      });
+      exampleRow.appendChild(b);
+    });
+  }
+
+  // ---------- Init ----------
+  populateRoles();
+  populateFormats();
+  buildExampleChips();
+  renderFavs();
+  var linkState = readShareLink();
+  if (linkState) {
+    applyState(linkState);
+    try { history.replaceState(null, "", location.pathname); } catch (e) {}
+  } else {
+    restore();
+  }
+  updatePreview();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,1444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Bridge Dental Team Prompt Builder</title>
+<meta name="description" content="Build a strong, PHI-safe AI prompt in four picks — Role, Context, Task, Format." />
+<link rel="icon" type="image/png" href="../assets/favicon.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Mulish:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  /* ============================================================
+     Bridge Dental — design tokens
+     ============================================================ */
+  :root {
+    --rose:        #EF3A66;
+    --rose-dark:   #D62B56;
+    --rose-tint:   #FDE8EE;
+    --indigo:      #3A1F6E;
+    --purple:      #6E3AA6;
+    --purple-2:    #8A3F9C;
+    --ink:         #2A2E3F;
+    --ink-soft:    #5C6070;
+    --muted:       #8B8F9B;
+    --white:       #FFFFFF;
+    --lavender:    #EAE8F6;
+    --cloud:       #F0F0F2;
+    --line:        #E6E6EE;
+    --grad-hero:   linear-gradient(104deg, #1a1340 0%, #3a1f4e 50%, #d62b56 100%);
+    --warn:        #B8772A;
+    --warn-bg:     #FBF0E1;
+
+    --font-head: 'Poppins', system-ui, -apple-system, sans-serif;
+    --font-body: 'Mulish', system-ui, -apple-system, sans-serif;
+
+    --radius-sm:   10px;
+    --radius:      15px;
+    --radius-lg:   22px;
+    --radius-pill: 999px;
+    --shadow:      0 1px 2px rgba(42,46,63,.04), 0 8px 24px rgba(42,46,63,.06);
+    --shadow-rose: 0 8px 24px rgba(239,58,102,.18);
+  }
+
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    font-family: var(--font-body);
+    color: var(--ink-soft);
+    background: var(--cloud);
+    line-height: 1.6;
+    font-size: 17px;
+  }
+
+  h1, h2, h3 {
+    font-family: var(--font-head);
+    color: var(--ink);
+    letter-spacing: -0.01em;
+    line-height: 1.12;
+    margin: 0 0 .4em;
+  }
+
+  /* ---------- Header / hero band ---------- */
+  .hero {
+    background: var(--grad-hero);
+    color: #fff;
+    padding: 1.6rem 1.25rem 2.4rem;
+  }
+  .hero-inner { max-width: 920px; margin: 0 auto; }
+  .hero-top {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 1rem; flex-wrap: wrap; margin-bottom: 1.6rem;
+  }
+  .hero-logo { height: 30px; width: auto; display: block; }
+  .phi-badge {
+    font-family: var(--font-head); font-weight: 600; font-size: .8rem;
+    color: var(--rose); background: var(--rose-tint);
+    padding: .42rem .85rem; border-radius: var(--radius-pill);
+    display: inline-flex; align-items: center; gap: .45rem; white-space: nowrap;
+  }
+  .phi-badge svg { width: 15px; height: 15px; fill: none; stroke: currentColor;
+    stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; }
+  .hero h1 { color: #fff; font-weight: 800; font-size: clamp(1.8rem, 5vw, 2.6rem); margin-bottom: .35rem; }
+  .hero p { color: rgba(255,255,255,.86); font-size: 1.05rem; max-width: 36rem; margin: 0; }
+
+  /* ---------- Layout ---------- */
+  main { max-width: 920px; margin: 0 auto; padding: 1.5rem 1.25rem 4rem; }
+
+  /* ---------- Eyebrow ---------- */
+  .eyebrow {
+    font-family: var(--font-head); font-weight: 600; color: var(--rose);
+    text-transform: uppercase; letter-spacing: .12em; font-size: .76rem;
+    display: block; margin-bottom: .55rem;
+  }
+
+  /* ---------- Cards ---------- */
+  .card {
+    background: var(--white); border: 1px solid var(--line);
+    border-radius: var(--radius-lg); padding: 1.35rem 1.4rem;
+    box-shadow: var(--shadow); margin-bottom: 1rem;
+  }
+  .card h2 { font-size: 1.15rem; font-weight: 600; margin: 0; }
+  .card .sub { color: var(--muted); font-size: .92rem; margin: .15rem 0 .9rem; }
+
+  /* ---------- Form fields ---------- */
+  .field-label {
+    font-family: var(--font-head); font-weight: 600; color: var(--ink);
+    display: block; margin-bottom: .45rem; font-size: 1rem;
+  }
+  .req { color: var(--rose); }
+  select.bd-select, input.bd-text {
+    font-family: var(--font-body); font-size: 1rem; width: 100%;
+    padding: .8rem .9rem; border: 1px solid var(--line);
+    border-radius: var(--radius-sm); color: var(--ink); background: var(--white);
+    transition: border-color .15s, box-shadow .15s; -webkit-appearance: none; appearance: none;
+  }
+  select.bd-select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%235C6070' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: right .9rem center; padding-right: 2.6rem;
+  }
+  input.bd-text::placeholder { color: var(--muted); }
+  select.bd-select:focus, input.bd-text:focus {
+    outline: none; border-color: var(--rose);
+    box-shadow: 0 0 0 3px rgba(239,58,102,.25);
+  }
+  .other-wrap { margin-top: .7rem; }
+  .other-wrap[hidden] { display: none; }
+  .helper { font-size: .85rem; color: var(--muted); margin: .4rem 0 0; }
+
+  /* PHI inline warning */
+  .phi-warn {
+    margin-top: .55rem; font-size: .88rem; color: var(--warn);
+    background: var(--warn-bg); border-radius: var(--radius-sm);
+    padding: .55rem .75rem; display: flex; gap: .5rem; align-items: flex-start;
+  }
+  .phi-warn[hidden] { display: none; }
+  .phi-warn svg { width: 16px; height: 16px; flex: 0 0 auto; margin-top: 2px;
+    fill: none; stroke: currentColor; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; }
+
+  /* ---------- Tone chips & toggle ---------- */
+  .options-row { display: flex; flex-wrap: wrap; gap: 1.25rem; align-items: flex-start; }
+  .chip-group { display: flex; flex-wrap: wrap; gap: .5rem; }
+  .chip {
+    font-family: var(--font-head); font-weight: 600; font-size: .85rem;
+    color: var(--ink-soft); background: var(--white); border: 1px solid var(--line);
+    padding: .42rem .85rem; border-radius: var(--radius-pill); cursor: pointer;
+    transition: all .15s;
+  }
+  .chip:hover { border-color: var(--muted); }
+  .chip[aria-pressed="true"] {
+    color: var(--rose); background: var(--rose-tint); border-color: var(--rose);
+  }
+  .chip:focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(239,58,102,.25); }
+  .toggle-row { display: flex; align-items: center; gap: .6rem; cursor: pointer; }
+  .toggle-row input { width: 18px; height: 18px; accent-color: var(--rose); cursor: pointer; }
+  .toggle-row span { font-size: .95rem; color: var(--ink-soft); }
+
+  /* ---------- Preview ---------- */
+  .preview-card {
+    background: var(--white); border: 1px solid var(--line);
+    border-radius: var(--radius-lg); box-shadow: var(--shadow);
+    overflow: hidden; margin-top: 1.5rem;
+  }
+  .preview-head {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 1rem; padding: 1.1rem 1.4rem; border-bottom: 1px solid var(--line);
+    flex-wrap: wrap;
+  }
+  .preview-head h2 { font-size: 1.15rem; margin: 0; }
+  .preview-body { padding: 1.3rem 1.4rem; }
+  .prompt-out {
+    font-family: var(--font-body); font-size: 1rem; color: var(--ink);
+    white-space: pre-wrap; word-break: break-word; margin: 0;
+    background: var(--cloud); border-radius: var(--radius);
+    padding: 1.1rem 1.15rem; line-height: 1.65;
+  }
+  .prompt-out.placeholder { color: var(--muted); }
+
+  /* ---------- Buttons ---------- */
+  .actions { display: flex; gap: .7rem; flex-wrap: wrap; margin-top: 1.5rem; }
+  .btn {
+    font-family: var(--font-head); font-weight: 600; font-size: 1rem;
+    padding: .85rem 1.5rem; border-radius: var(--radius-sm);
+    border: 1px solid transparent; cursor: pointer; display: inline-flex;
+    align-items: center; justify-content: center; gap: .5rem;
+    transition: background .15s, box-shadow .15s, border-color .15s;
+  }
+  .btn svg { width: 18px; height: 18px; fill: none; stroke: currentColor;
+    stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; }
+  .btn--primary { background: var(--rose); color: #fff; box-shadow: var(--shadow-rose); }
+  .btn--primary:hover:not(:disabled) { background: var(--rose-dark); }
+  .btn--primary:disabled { background: #F4B6C6; cursor: not-allowed; box-shadow: none; }
+  .btn--secondary { background: var(--white); color: var(--ink); border-color: var(--line); }
+  .btn--secondary:hover:not(:disabled) { border-color: var(--muted); }
+  .btn--secondary:disabled { color: var(--muted); cursor: not-allowed; opacity: .6; }
+  .btn:focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(239,58,102,.35); }
+  .btn--copy { min-width: 8.5rem; }
+  .btn--copy.copied { background: #1E8E5A; box-shadow: none; }
+
+  .copy-note { font-size: .85rem; color: var(--muted); margin: .8rem 0 0; }
+
+  /* ---------- Send to AI tool ---------- */
+  .send-group { margin-top: 1.4rem; padding-top: 1.2rem; border-top: 1px solid var(--line); }
+  .send-label {
+    font-family: var(--font-head); font-weight: 600; color: var(--ink);
+    display: block; margin-bottom: .65rem; font-size: .95rem;
+  }
+  .provider-row { display: flex; flex-wrap: wrap; gap: .6rem; }
+  .provider-btn {
+    font-family: var(--font-head); font-weight: 600; font-size: .92rem;
+    color: var(--ink); background: var(--white); border: 1px solid var(--line);
+    border-radius: var(--radius-sm); padding: .6rem .95rem; cursor: pointer;
+    display: inline-flex; align-items: center; gap: .5rem;
+    transition: border-color .15s, box-shadow .15s, background .15s;
+  }
+  .provider-btn:hover:not(:disabled) { border-color: var(--muted); background: #fcfcfd; }
+  .provider-btn:focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(239,58,102,.25); }
+  .provider-btn:disabled { opacity: .5; cursor: not-allowed; }
+  .send-note { font-size: .85rem; color: var(--ink-soft); margin: .7rem 0 0; }
+  .send-note[hidden] { display: none; }
+
+  /* ---------- Task detail fields ---------- */
+  .details-panel { margin-top: .9rem; background: var(--lavender); border-radius: var(--radius); padding: .95rem 1.05rem 1.05rem; }
+  .details-panel[hidden] { display: none; }
+  .details-title {
+    font-family: var(--font-head); font-weight: 600; color: var(--ink);
+    font-size: .95rem; display: block;
+  }
+  .details-sub { font-size: .85rem; color: var(--ink-soft); margin: .1rem 0 .1rem; }
+  .detail-field { margin-top: .6rem; }
+  .detail-field label {
+    font-family: var(--font-head); font-weight: 600; font-size: .85rem;
+    color: var(--ink); display: block; margin-bottom: .3rem;
+  }
+
+  /* ---------- Follow-ups & saved prompts ---------- */
+  .followups { margin-top: 1.4rem; padding-top: 1.2rem; border-top: 1px solid var(--line); }
+  .followups[hidden] { display: none; }
+  .followups-sub { font-size: .85rem; color: var(--muted); margin: .15rem 0 .7rem; }
+  .followups .chip { text-align: left; }
+  .save-row { display: flex; gap: .6rem; margin-bottom: 1.1rem; }
+  .save-row[hidden] { display: none; }
+  .save-row input { flex: 1; }
+  .fav-row { display: flex; align-items: center; gap: .4rem; border-bottom: 1px solid var(--line); }
+  .fav-row:last-child { border-bottom: none; }
+  .fav-load {
+    flex: 1; text-align: left; font-family: var(--font-body); font-size: 1rem;
+    color: var(--ink); background: none; border: none; padding: .7rem .2rem; cursor: pointer;
+  }
+  .fav-load:hover { color: var(--rose); }
+  .fav-load:focus-visible, .fav-del:focus-visible {
+    outline: none; box-shadow: 0 0 0 3px rgba(239,58,102,.25); border-radius: var(--radius-sm);
+  }
+  .fav-del {
+    background: none; border: none; color: var(--muted); font-size: 1.25rem;
+    cursor: pointer; padding: .2rem .55rem; line-height: 1;
+  }
+  .fav-del:hover { color: var(--rose-dark); }
+  .hub-crumb { margin: 0 0 .9rem; font-size: .85rem; }
+  .hub-crumb a {
+    color: rgba(255,255,255,.75); text-decoration: none;
+    font-family: var(--font-head); font-weight: 600;
+  }
+  .hub-crumb a:hover { color: #fff; }
+
+  footer { text-align: center; color: var(--muted); font-size: .85rem; padding: 0 1.25rem 2.5rem; }
+
+  @media (max-width: 560px) {
+    body { font-size: 16px; }
+    .actions .btn { flex: 1 1 100%; }
+  }
+
+  /* Respect reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; }
+  }
+</style>
+</head>
+<body>
+  <header class="hero">
+    <div class="hero-inner">
+      <p class="hub-crumb"><a href="../">← All prompt builders</a></p>
+      <div class="hero-top">
+        <img class="hero-logo" src="../assets/bridge-logo-white.png" alt="Bridge Dental" />
+        <span class="phi-badge">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
+          PHI-safe by design
+        </span>
+      </div>
+      <h1>Build a strong, PHI-safe prompt in four picks.</h1>
+      <p>Pick a role, who you're talking to, the job, and the shape of the answer. We write the prompt — you paste it into your own AI tool. No patient details, ever.</p>
+    </div>
+  </header>
+
+  <main class="bd-scope">
+    <!-- Quick start -->
+    <section class="card">
+      <span class="eyebrow">Quick start</span>
+      <h2>New here? Try an example</h2>
+      <p class="sub">One click fills in all four picks — then tweak anything you like.</p>
+      <div class="chip-group" id="example-row"></div>
+    </section>
+
+    <!-- 01 ROLE -->
+    <section class="card">
+      <span class="eyebrow">01 — Role</span>
+      <h2>Who should the AI act as?</h2>
+      <p class="sub">Pick the person whose job this is.</p>
+      <label class="field-label" for="role">Role <span class="req" aria-hidden="true">*</span></label>
+      <select id="role" class="bd-select" aria-required="true">
+        <option value="" selected>Choose a role…</option>
+      </select>
+      <div class="other-wrap" id="role-other-wrap" hidden>
+        <input type="text" class="bd-text" id="role-other" placeholder="Type the role…" aria-label="Other role" />
+        <p class="helper">Use [brackets] for any patient-specific detail — never real names, DOB, or chart numbers.</p>
+        <div class="phi-warn" id="role-warn" hidden role="status">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          <span>This looks like it might contain patient detail — swap it for a [bracket].</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 02 CONTEXT -->
+    <section class="card">
+      <span class="eyebrow">02 — Context</span>
+      <h2>Who are they talking to, or what's the situation?</h2>
+      <p class="sub">Optional, but it makes the answer sharper.</p>
+      <label class="field-label" for="context">Context</label>
+      <select id="context" class="bd-select" disabled>
+        <option value="" selected>Pick a role first…</option>
+      </select>
+      <div class="other-wrap" id="context-other-wrap" hidden>
+        <input type="text" class="bd-text" id="context-other" placeholder="Describe the situation…" aria-label="Other context" />
+        <p class="helper">Use [brackets] for any patient-specific detail — never real names, DOB, or chart numbers.</p>
+        <div class="phi-warn" id="context-warn" hidden role="status">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          <span>This looks like it might contain patient detail — swap it for a [bracket].</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 03 TASK -->
+    <section class="card">
+      <span class="eyebrow">03 — Task</span>
+      <h2>What's the job to do?</h2>
+      <p class="sub">The specific thing you want written.</p>
+      <label class="field-label" for="task">Task <span class="req" aria-hidden="true">*</span></label>
+      <select id="task" class="bd-select" disabled aria-required="true">
+        <option value="" selected>Pick a role first…</option>
+      </select>
+      <div class="other-wrap" id="task-other-wrap" hidden>
+        <input type="text" class="bd-text" id="task-other" placeholder="Describe the task…" aria-label="Other task" />
+        <p class="helper">Use [brackets] for any patient-specific detail — never real names, DOB, or chart numbers.</p>
+        <div class="phi-warn" id="task-warn" hidden role="status">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          <span>This looks like it might contain patient detail — swap it for a [bracket].</span>
+        </div>
+      </div>
+      <div class="details-panel" id="details-panel" hidden>
+        <span class="details-title">Add details (optional)</span>
+        <p class="details-sub">These get woven into the prompt — skip any you don't know.</p>
+        <div id="details-wrap"></div>
+        <div class="phi-warn" id="details-warn" hidden role="status">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          <span>This looks like it might contain patient detail — swap it for a [bracket].</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 04 FORMAT -->
+    <section class="card">
+      <span class="eyebrow">04 — Format</span>
+      <h2>How should the answer be shaped?</h2>
+      <p class="sub">The format the AI should write in.</p>
+      <label class="field-label" for="format">Format <span class="req" aria-hidden="true">*</span></label>
+      <select id="format" class="bd-select" aria-required="true">
+        <option value="" selected>Choose a format…</option>
+      </select>
+      <div class="other-wrap" id="format-other-wrap" hidden>
+        <input type="text" class="bd-text" id="format-other" placeholder="Describe the format…" aria-label="Other format" />
+        <p class="helper">Use [brackets] for any patient-specific detail — never real names, DOB, or chart numbers.</p>
+        <div class="phi-warn" id="format-warn" hidden role="status">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          <span>This looks like it might contain patient detail — swap it for a [bracket].</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Optional enhancements -->
+    <section class="card">
+      <span class="eyebrow">Optional — Polish</span>
+      <h2>Add a little extra (optional)</h2>
+      <p class="sub">Nudge the tone, or have the AI ask you a couple of questions first.</p>
+      <div class="options-row">
+        <div>
+          <label class="field-label" id="tone-label">Tone</label>
+          <div class="chip-group" role="group" aria-labelledby="tone-label" id="tone-group">
+            <button type="button" class="chip" data-tone="caring" aria-pressed="false">Caring</button>
+            <button type="button" class="chip" data-tone="clear" aria-pressed="false">Clear</button>
+            <button type="button" class="chip" data-tone="upbeat" aria-pressed="false">Upbeat</button>
+            <button type="button" class="chip" data-tone="calm" aria-pressed="false">Calm</button>
+            <button type="button" class="chip" data-tone="professional" aria-pressed="false">Professional</button>
+          </div>
+        </div>
+        <div>
+          <label class="field-label" for="ask-toggle">Quick questions</label>
+          <label class="toggle-row" for="ask-toggle">
+            <input type="checkbox" id="ask-toggle" />
+            <span>Ask me 2–3 quick questions first</span>
+          </label>
+        </div>
+      </div>
+    </section>
+
+    <!-- PREVIEW -->
+    <section class="preview-card" aria-live="polite">
+      <div class="preview-head">
+        <div>
+          <span class="eyebrow">Your prompt</span>
+          <h2>Copy-ready prompt</h2>
+        </div>
+        <button type="button" class="btn btn--secondary" id="save-btn" disabled>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l2.7 5.5 6.05.88-4.38 4.27 1.03 6.03L12 16.84l-5.4 2.84 1.03-6.03L3.25 9.38 9.3 8.5z"/></svg>
+          <span id="save-label">Save</span>
+        </button>
+        <button type="button" class="btn btn--primary btn--copy" id="copy-btn" disabled>
+          <svg viewBox="0 0 24 24" aria-hidden="true" id="copy-icon"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          <span id="copy-label">Copy prompt</span>
+        </button>
+      </div>
+      <div class="preview-body">
+        <div class="save-row" id="save-row" hidden>
+          <input type="text" class="bd-text" id="save-name" placeholder="Name this prompt — e.g. Monday recall texts" aria-label="Name for this saved prompt" />
+          <button type="button" class="btn btn--secondary" id="save-confirm">Save</button>
+        </div>
+        <pre class="prompt-out placeholder" id="prompt-out">Pick a Role, Task, and Format to see your prompt here. The PHI safety rule is added automatically.</pre>
+        <p class="copy-note">The safety rule below is added to every prompt automatically — it can't be removed. Treat the output as a first draft and review it before anyone sees it.</p>
+
+        <div class="send-group">
+          <span class="send-label">Open it in your AI tool</span>
+          <div class="provider-row" id="provider-row" role="group" aria-label="Open prompt in an AI tool">
+            <button type="button" class="provider-btn" data-provider="chatgpt" disabled>ChatGPT</button>
+            <button type="button" class="provider-btn" data-provider="claude" disabled>Claude</button>
+            <button type="button" class="provider-btn" data-provider="gemini" disabled>Gemini</button>
+            <button type="button" class="provider-btn" data-provider="grok" disabled>Grok</button>
+          </div>
+          <p class="send-note" id="send-note" role="status" hidden></p>
+        </div>
+
+        <div class="actions">
+          <button type="button" class="btn btn--secondary" id="generate-btn" disabled>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4"/></svg>
+            Generate prompt
+          </button>
+          <button type="button" class="btn btn--secondary" id="share-btn" disabled>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+            <span id="share-label">Copy share link</span>
+          </button>
+          <button type="button" class="btn btn--secondary" id="reset-btn">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>
+            Reset
+          </button>
+        </div>
+
+        <div class="followups" id="followups" hidden>
+          <span class="send-label">Good follow-ups to ask next</span>
+          <p class="followups-sub">After the AI answers, paste one of these to push further. Click to copy.</p>
+          <div class="chip-group" id="followup-row"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SAVED PROMPTS -->
+    <section class="card" id="favs-card" hidden>
+      <span class="eyebrow">Saved prompts</span>
+      <h2>Load a saved prompt</h2>
+      <p class="sub">Saved in this browser only. Click one to load it.</p>
+      <div id="favs-list"></div>
+    </section>
+  </main>
+
+  <footer>
+    Bridge Dental — built by dentists, for dental teams. Your prompt is built in the browser and stays there until you choose to open it in an AI tool.
+  </footer>
+
+<script>
+(function () {
+  "use strict";
+
+  var OTHER = "__other__";
+
+  // ---------- Seed data ----------
+  // role: prompt = lowercase phrase with article for "Act as {prompt}"
+  var ROLES = [
+    { value: "frontdesk",  label: "Front desk coordinator",        prompt: "a front desk coordinator" },
+    { value: "hygienist",  label: "Dental hygienist",              prompt: "a dental hygienist" },
+    { value: "assistant",  label: "Dental assistant",              prompt: "a dental assistant" },
+    { value: "treatment",  label: "Treatment coordinator",         prompt: "a treatment coordinator" },
+    { value: "manager",    label: "Office manager",                prompt: "an office manager" },
+    { value: "marketing",  label: "Marketing / reputation manager",prompt: "a marketing and reputation manager" },
+    { value: "doctor",     label: "Dentist (doctor)",              prompt: "a dentist" }
+  ];
+
+  // Shared context options, always appended (before Other…)
+  var SHARED_CONTEXT = [
+    "a general patient",
+    "a nervous adult",
+    "a new patient"
+  ];
+
+  var CONTEXT = {
+    frontdesk: [
+      "a busy adult overdue 12+ months",
+      "a first-time caller comparing offices",
+      "a price-shopper",
+      "a patient who no-showed",
+      "a frustrated patient on the phone",
+      "a new-to-the-area family",
+      "the whole patient list (general)"
+    ],
+    hygienist: [
+      "an adult hearing a recommendation for the first time",
+      "a patient worried about cost",
+      "a patient with dental anxiety",
+      "a confused patient",
+      "a curious adult",
+      "a parent or young patient"
+    ],
+    assistant: [
+      "the patient who just had a procedure",
+      "an anxious patient",
+      "a nervous child and watching parent",
+      "a newer team member (training)",
+      "our dental lab",
+      "the front desk"
+    ],
+    treatment: [
+      "a nervous adult worried about cost",
+      "a patient with sticker shock",
+      "a patient who said “let me think about it”",
+      "a patient who went cold ~60 days ago",
+      "a self-pay / uninsured patient",
+      "a value-focused patient comparing quotes"
+    ],
+    manager: [
+      "the whole team",
+      "a team member missing the mark",
+      "two team members in conflict",
+      "strong local job candidates",
+      "a vendor or insurer",
+      "a new hire"
+    ],
+    marketing: [
+      "local prospective patients",
+      "a happy reviewer",
+      "a negative reviewer",
+      "loyal patients",
+      "dormant / lapsed patients",
+      "everyday patients (education)"
+    ],
+    doctor: [
+      "a patient with no clinical background",
+      "a patient who could feel overwhelmed",
+      "a patient who hoped to keep a tooth",
+      "a patient weighing options",
+      "myself (notes / documentation)"
+    ]
+  };
+
+  var TASK = {
+    frontdesk: [
+      "Re-engage overdue patients",
+      "Fill a same-day cancellation",
+      "Convert a new-patient phone inquiry",
+      "Write an appointment-confirmation sequence",
+      "Ask a happy patient for a review",
+      "Answer “do you take my insurance?”",
+      "Send a gentle balance reminder",
+      "Calm a frustrated reschedule call",
+      "Make it right after a service failure"
+    ],
+    hygienist: [
+      "Explain why a deep cleaning is needed",
+      "Write a recare reactivation message",
+      "Explain a night-guard recommendation",
+      "Explain prophy vs SRP vs maintenance",
+      "Motivate better home care",
+      "Explain why X-rays are needed today",
+      "Write a post-deep-cleaning home-care handout"
+    ],
+    assistant: [
+      "Write post-op instructions for a procedure",
+      "Turn the doctor's shorthand into a clinical note",
+      "Build a tray / instrument setup checklist",
+      "Write a pre-appointment prep text",
+      "Reassure an anxious patient chairside",
+      "Write a sterilization / processing SOP",
+      "Write an emergency call triage script"
+    ],
+    treatment: [
+      "Present a crown to a hesitant patient",
+      "Follow up on unscheduled treatment",
+      "Handle “let me think about it”",
+      "Explain financing options",
+      "Phase a large treatment plan",
+      "Handle sticker shock",
+      "Write a treatment-plan email summary",
+      "Explain “watch” vs “treat now”"
+    ],
+    manager: [
+      "Turn a messy process into an SOP",
+      "Build a team-meeting agenda",
+      "Write a job posting",
+      "Write a first-week onboarding checklist",
+      "Write interview questions",
+      "Draft an employee-handbook section",
+      "Write a firm email for a vendor / insurer dispute",
+      "Write a do-say / don't-say brief for a sensitive situation",
+      "Write a year-end team appreciation message"
+    ],
+    marketing: [
+      "Respond to a negative review (safe)",
+      "Respond to a one-star review that mentions clinical details",
+      "Calm a complaint that's going viral",
+      "Respond to a 5-star review",
+      "Write a reactivation email to dormant patients",
+      "Build a monthly social content calendar",
+      "Write a new-patient special announcement",
+      "Ask happy patients for referrals",
+      "Write an educational post",
+      "Announce the launch of a new service"
+    ],
+    doctor: [
+      "Explain a treatment in plain language",
+      "Draft a clinical note from shorthand",
+      "Present a comprehensive plan ethically",
+      "Deliver difficult news kindly",
+      "Explain informed consent"
+    ]
+  };
+
+  // Formats are shared. usesPlaceholders flags formats that imply [brackets].
+  var FORMATS = [
+    { text: "3 short text messages (under 35 words each)", ph: true },
+    { text: "One text message (under 45 words)",           ph: true },
+    { text: "A phone script (under 150 words)",            ph: true },
+    { text: "A chairside script (under 130 words)",        ph: true },
+    { text: "An email (short and warm)",                   ph: true },
+    { text: "One text + one email version",                ph: true },
+    { text: "A take-home handout with labeled sections",   ph: true },
+    { text: "A checklist in setup / step order",           ph: false },
+    { text: "A standard operating procedure (numbered steps)", ph: false },
+    { text: "A public review reply (under 70 words)",       ph: true },
+    { text: "Short labeled bullet points",                 ph: false },
+    { text: "A social post with a soft call to action",    ph: true },
+    { text: "A week-by-week content table",                ph: true }
+  ];
+
+  // Tasks that need the user to paste in source material for the AI to work from.
+  // Maps the exact task text -> the noun used in the "paste it here" block.
+  var TASK_INPUT = {
+    "Respond to a negative review (safe)": "negative review",
+    "Respond to a 5-star review": "5-star review",
+    "Turn the doctor's shorthand into a clinical note": "doctor's shorthand",
+    "Draft a clinical note from shorthand": "doctor's shorthand",
+    "Turn a messy process into an SOP": "current process (the rough steps as they happen today)",
+    "Write a treatment-plan email summary": "treatment plan",
+    "Phase a large treatment plan": "treatment plan",
+    "Write a firm email for a vendor / insurer dispute": "details of the dispute",
+    "Draft an employee-handbook section": "topic or rough notes for this section",
+    "Respond to a one-star review that mentions clinical details": "one-star review",
+    "Calm a complaint that's going viral": "complaint thread (remove any names)"
+  };
+
+  // Extra per-task instructions woven into the prompt — reputation-safety
+  // specifics distilled from the practice's prompt vault.
+  var TASK_DETAIL = {
+    "Respond to a negative review (safe)":
+      "Never confirm whether the reviewer is a patient, share no treatment or billing details, and invite a private conversation.",
+    "Respond to a one-star review that mentions clinical details":
+      "Acknowledge their feelings and stay gracious. Never confirm the person is a patient, share no treatment or billing specifics, avoid anything defensive, and invite a private conversation.",
+    "Calm a complaint that's going viral":
+      "Write one calm, non-defensive public reply under 60 words, then give three internal next-step bullets including private outreach. No arguing in the thread, and no patient details.",
+    "Make it right after a service failure":
+      "Own the mistake plainly, apologize without excuses, and offer one concrete next step to make it right — under 80 words with a [first name] placeholder.",
+    "Write a do-say / don't-say brief for a sensitive situation":
+      "One page: a do-say / don't-say list, the single point of contact for questions, and a reminder that no one discusses patient details publicly."
+  };
+
+  // Optional per-task detail fields. Filled values are woven into the prompt as
+  // sentences, turning a generic prompt into a tailored one. (Post-op and
+  // explain-a-treatment use these instead of a paste block — a name is easier.)
+  var TASK_FIELDS = {
+    "Write post-op instructions for a procedure": [
+      { key: "procedure", label: "Procedure",                 placeholder: "e.g. an extraction",                sentence: "The procedure is {v}" },
+      { key: "specifics", label: "Any specifics (optional)",  placeholder: "e.g. upper molar, sutures placed",  sentence: "Specifics: {v}" }
+    ],
+    "Explain a treatment in plain language": [
+      { key: "treatment", label: "Treatment", placeholder: "e.g. a root canal", sentence: "The treatment is {v}" }
+    ],
+    "Announce the launch of a new service": [
+      { key: "service", label: "The new service", placeholder: "e.g. same-day crowns", sentence: "The new service is {v}" }
+    ],
+    "Write a job posting": [
+      { key: "position", label: "Position",                    placeholder: "e.g. dental hygienist",           sentence: "The position is {v}" },
+      { key: "perks",    label: "A few highlights (optional)", placeholder: "e.g. 4-day week, great team",     sentence: "Highlights worth mentioning: {v}" }
+    ],
+    "Fill a same-day cancellation": [
+      { key: "slot", label: "The open slot ([time] is fine)", placeholder: "e.g. [today at 2pm]", sentence: "The open slot is {v}" }
+    ],
+    "Build a monthly social content calendar": [
+      { key: "month", label: "Month or theme", placeholder: "e.g. August — back to school", sentence: "The month or theme is {v}" }
+    ],
+    "Make it right after a service failure": [
+      { key: "issue", label: "What went wrong", placeholder: "e.g. a 50-minute wait", sentence: "What happened: {v}" }
+    ]
+  };
+
+  // One-click starter examples — each fills all four picks.
+  var EXAMPLES = [
+    { label: "Re-engage overdue patients",
+      state: { role: "frontdesk", context: "a busy adult overdue 12+ months",
+               task: "Re-engage overdue patients",
+               format: "3 short text messages (under 35 words each)", tones: ["caring"] } },
+    { label: "Handle sticker shock",
+      state: { role: "treatment", context: "a patient with sticker shock",
+               task: "Handle sticker shock",
+               format: "A phone script (under 150 words)", tones: ["calm", "clear"] } },
+    { label: "Reply to a negative review",
+      state: { role: "marketing", context: "a negative reviewer",
+               task: "Respond to a negative review (safe)",
+               format: "A public review reply (under 70 words)", tones: ["professional"] } }
+  ];
+
+  // Follow-up suggestions shown after copying — the first AI answer is rarely
+  // the end; these teach the push-further habit. Keyed by task; DEFAULT for the rest.
+  var DEFAULT_FOLLOWUPS = [
+    "Make it shorter and warmer.",
+    "Give me two more versions to choose from.",
+    "What did I forget to consider?"
+  ];
+  var TASK_FOLLOWUPS = {
+    "Re-engage overdue patients": [
+      "Make a version B with a different hook so I can test both.",
+      "Write the reply for a patient who says they can't afford it right now.",
+      "Turn the best message into an email version."
+    ],
+    "Respond to a negative review (safe)": [
+      "Make it warmer without admitting fault.",
+      "Draft the private follow-up message to the patient.",
+      "What should we change so this complaint doesn't happen again?"
+    ],
+    "Respond to a one-star review that mentions clinical details": [
+      "Make it warmer without admitting fault.",
+      "Draft the private message to send them directly.",
+      "Give me a reusable template for reviews like this."
+    ],
+    "Calm a complaint that's going viral": [
+      "Draft the internal do-say / don't-say brief for the team.",
+      "Write the private outreach message to the original poster.",
+      "What should we watch over the next 48 hours?"
+    ],
+    "Handle sticker shock": [
+      "Give me the two most likely objections after this, with responses.",
+      "Make a version that leads with financing options.",
+      "Role-play the patient so I can practice the conversation."
+    ],
+    "Explain why a deep cleaning is needed": [
+      "Simplify it for a patient with no dental background.",
+      "Add a version for a patient who's worried about cost.",
+      "What questions will the patient most likely ask next?"
+    ],
+    "Fill a same-day cancellation": [
+      "Write a shorter, more urgent version.",
+      "Draft the follow-up if nobody responds in an hour.",
+      "Make a version for our ASAP-list regulars."
+    ],
+    "Turn a messy process into an SOP": [
+      "Which steps are most likely to be skipped, and how do we prevent that?",
+      "Turn this into a one-page checklist for the wall.",
+      "Write a 5-minute training huddle script to roll this out."
+    ]
+  };
+
+  // AI tools the prompt can be sent to. prefill: provider supports a URL query
+  // param that pre-fills the composer. We always copy to the clipboard first as a
+  // fallback, so even providers without prefill just need a paste.
+  var PROVIDERS = [
+    { id: "chatgpt", name: "ChatGPT", prefill: true,  base: "https://chatgpt.com/?q=" },
+    { id: "claude",  name: "Claude",  prefill: true,  base: "https://claude.ai/new?q=" },
+    { id: "gemini",  name: "Gemini",  prefill: false, base: "https://gemini.google.com/app" },
+    { id: "grok",    name: "Grok",    prefill: true,  base: "https://grok.com/?q=" }
+  ];
+  var PROVIDERS_BY_ID = {};
+  PROVIDERS.forEach(function (p) { PROVIDERS_BY_ID[p.id] = p; });
+
+  var TONE_CLAUSE = {
+    caring: "caring",
+    clear: "clear",
+    upbeat: "upbeat",
+    calm: "calm",
+    professional: "professional"
+  };
+
+  var SAFETY = "Safety rule: Use no patient identifiers. Never include patient names, dates of birth, addresses, phone numbers, chart/account numbers, or insurance IDs — use [bracket] placeholders instead. This output is a first draft; review it before anyone (especially a patient) sees it.";
+
+  var STORAGE_KEY = "bridge-rctf-prompt-v1";
+
+  // ---------- DOM refs ----------
+  var $ = function (id) { return document.getElementById(id); };
+  var roleSel = $("role"), ctxSel = $("context"), taskSel = $("task"), fmtSel = $("format");
+  var roleOtherWrap = $("role-other-wrap"), ctxOtherWrap = $("context-other-wrap"),
+      taskOtherWrap = $("task-other-wrap"), fmtOtherWrap = $("format-other-wrap");
+  var roleOther = $("role-other"), ctxOther = $("context-other"),
+      taskOther = $("task-other"), fmtOther = $("format-other");
+  var promptOut = $("prompt-out");
+  var genBtn = $("generate-btn"), copyBtn = $("copy-btn"), resetBtn = $("reset-btn");
+  var copyLabel = $("copy-label");
+  var askToggle = $("ask-toggle");
+  var toneGroup = $("tone-group");
+  var providerRow = $("provider-row"), sendNote = $("send-note");
+  var detailsPanel = $("details-panel"), detailsWrap = $("details-wrap"), detailsWarn = $("details-warn");
+  var shareBtn = $("share-btn"), shareLabel = $("share-label");
+  var exampleRow = $("example-row");
+  var followupsPanel = $("followups"), followupRow = $("followup-row");
+  var saveBtn = $("save-btn"), saveLabel = $("save-label");
+  var saveRow = $("save-row"), saveName = $("save-name"), saveConfirm = $("save-confirm");
+  var favsCard = $("favs-card"), favsList = $("favs-list");
+
+  // ---------- Helpers ----------
+  function makeOption(value, label) {
+    var o = document.createElement("option");
+    o.value = value; o.textContent = label;
+    return o;
+  }
+
+  function fillSelect(sel, items, placeholder) {
+    sel.innerHTML = "";
+    sel.appendChild(makeOption("", placeholder));
+    items.forEach(function (it) {
+      sel.appendChild(makeOption(it.value, it.label));
+    });
+    sel.appendChild(makeOption(OTHER, "Other…"));
+  }
+
+  function populateRoles() {
+    fillSelect(roleSel, ROLES.map(function (r) { return { value: r.value, label: r.label }; }), "Choose a role…");
+  }
+
+  function populateFormats() {
+    fillSelect(fmtSel, FORMATS.map(function (f) { return { value: f.text, label: f.text }; }), "Choose a format…");
+  }
+
+  function populateContext(roleVal) {
+    var list = (CONTEXT[roleVal] || []).concat(SHARED_CONTEXT);
+    var items = list.map(function (c) { return { value: c, label: c }; });
+    fillSelect(ctxSel, items, "Pick a situation…");
+    ctxSel.disabled = false;
+  }
+
+  function populateTasks(roleVal) {
+    var list = TASK[roleVal] || [];
+    var items = list.map(function (t) { return { value: t, label: t }; });
+    fillSelect(taskSel, items, "Pick a task…");
+    taskSel.disabled = false;
+  }
+
+  function resetDependent() {
+    ctxSel.innerHTML = ""; ctxSel.appendChild(makeOption("", "Pick a role first…")); ctxSel.disabled = true;
+    taskSel.innerHTML = ""; taskSel.appendChild(makeOption("", "Pick a role first…")); taskSel.disabled = true;
+    hide(ctxOtherWrap); hide(taskOtherWrap);
+    ctxOther.value = ""; taskOther.value = "";
+    clearWarn(ctxOther); clearWarn(taskOther);
+  }
+
+  function show(el) { el.hidden = false; }
+  function hide(el) { el.hidden = true; }
+
+  function toggleOther(sel, wrap, input) {
+    if (sel.value === OTHER) { show(wrap); }
+    else { hide(wrap); input.value = ""; clearWarn(input); }
+  }
+
+  // ---------- PHI detection ----------
+  var reDate  = /\b\d{1,2}[\/\-]\d{1,2}[\/\-]\d{2,4}\b/;
+  var reEmail = /[A-Za-z0-9._%+\-]+@[A-Za-z0-9.\-]+\.[A-Za-z]{2,}/;
+  var rePhone = /(?:\+?\d[\s.\-]?)?\(?\d{3}\)?[\s.\-]?\d{3}[\s.\-]?\d{4}\b/;
+  var reLongNum = /\d{7,}/;
+
+  function looksLikePHI(text) {
+    if (!text) return false;
+    var stripped = text.replace(/\[[^\]]*\]/g, ""); // ignore content inside [brackets]
+    return reDate.test(stripped) || reEmail.test(stripped) ||
+           rePhone.test(stripped) || reLongNum.test(stripped);
+  }
+
+  function warnElFor(input) {
+    return $(input.id.replace("-other", "-warn"));
+  }
+  function checkWarn(input) {
+    var w = warnElFor(input);
+    if (!w) return;
+    if (looksLikePHI(input.value)) { show(w); } else { hide(w); }
+  }
+  function clearWarn(input) {
+    var w = warnElFor(input);
+    if (w) hide(w);
+  }
+
+  // ---------- Task detail fields ----------
+  function currentFieldDefs() {
+    var task = (taskSel.value && taskSel.value !== OTHER) ? taskSel.value : null;
+    return task ? (TASK_FIELDS[task] || null) : null;
+  }
+
+  function renderDetailFields() {
+    var defs = currentFieldDefs();
+    detailsWrap.innerHTML = "";
+    hide(detailsWarn);
+    if (!defs) { hide(detailsPanel); return; }
+    defs.forEach(function (f) {
+      var wrap = document.createElement("div");
+      wrap.className = "detail-field";
+      var lab = document.createElement("label");
+      lab.textContent = f.label;
+      lab.setAttribute("for", "detail-" + f.key);
+      var inp = document.createElement("input");
+      inp.type = "text"; inp.className = "bd-text";
+      inp.id = "detail-" + f.key;
+      inp.placeholder = f.placeholder || "";
+      inp.setAttribute("data-key", f.key);
+      wrap.appendChild(lab); wrap.appendChild(inp);
+      detailsWrap.appendChild(wrap);
+    });
+    show(detailsPanel);
+  }
+
+  function collectDetails() {
+    var o = {};
+    detailsWrap.querySelectorAll("input").forEach(function (i) {
+      if (i.value.trim()) o[i.getAttribute("data-key")] = i.value.trim();
+    });
+    return o;
+  }
+
+  function detailSentences() {
+    var defs = currentFieldDefs();
+    if (!defs) return [];
+    var vals = collectDetails();
+    var out = [];
+    defs.forEach(function (f) {
+      if (vals[f.key]) out.push(ensurePeriod(f.sentence.replace("{v}", vals[f.key])));
+    });
+    return out;
+  }
+
+  function checkDetailsWarn() {
+    var any = false;
+    detailsWrap.querySelectorAll("input").forEach(function (i) {
+      if (looksLikePHI(i.value)) any = true;
+    });
+    if (any) { show(detailsWarn); } else { hide(detailsWarn); }
+  }
+
+  // ---------- Selection readout ----------
+  function selectedTones() {
+    var out = [];
+    toneGroup.querySelectorAll(".chip").forEach(function (c) {
+      if (c.getAttribute("aria-pressed") === "true") out.push(c.getAttribute("data-tone"));
+    });
+    return out;
+  }
+
+  function getRolePrompt() {
+    if (roleSel.value === OTHER) return roleOther.value.trim();
+    var r = ROLES.filter(function (x) { return x.value === roleSel.value; })[0];
+    return r ? r.prompt : "";
+  }
+  function getContextText() {
+    if (!ctxSel.value) return "";
+    if (ctxSel.value === OTHER) return ctxOther.value.trim();
+    return ctxSel.value;
+  }
+  function getTaskText() {
+    if (!taskSel.value) return "";
+    if (taskSel.value === OTHER) return taskOther.value.trim();
+    return taskSel.value;
+  }
+  function getFormatInfo() {
+    if (!fmtSel.value) return null;
+    if (fmtSel.value === OTHER) {
+      var t = fmtOther.value.trim();
+      return t ? { text: t, ph: true } : null;
+    }
+    var f = FORMATS.filter(function (x) { return x.text === fmtSel.value; })[0];
+    return f || { text: fmtSel.value, ph: false };
+  }
+
+  // ---------- Grammar helpers ----------
+  function ensurePeriod(s) {
+    s = s.trim();
+    if (!s) return "";
+    if (/[.!?]$/.test(s)) return s;
+    return s + ".";
+  }
+  function capitalize(s) {
+    s = s.trim();
+    if (!s) return "";
+    return s.charAt(0).toUpperCase() + s.slice(1);
+  }
+
+  // ---------- Assemble ----------
+  function readyToGenerate() {
+    return getRolePrompt() && getTaskText() && getFormatInfo();
+  }
+
+  function buildPrompt() {
+    var role = getRolePrompt();
+    var ctx = getContextText();
+    var task = getTaskText();
+    var fmt = getFormatInfo();
+
+    if (!role && !task && !fmt) return "";
+
+    // Sentence 1: Act as {role} [speaking to {ctx}].
+    var s1 = "Act as " + (role || "[role]");
+    if (ctx) s1 += " speaking to " + ctx;
+    s1 = ensurePeriod(s1);
+
+    // Sentence 2: the task.
+    var s2 = ensurePeriod(capitalize(task || "[task]"));
+
+    var parts = [s1, s2];
+
+    // Extra per-task instructions (e.g. reputation-safety specifics).
+    var isMenuTask = taskSel.value && taskSel.value !== OTHER;
+    if (isMenuTask && TASK_DETAIL[task]) parts.push(ensurePeriod(TASK_DETAIL[task]));
+
+    // Optional details the user filled in.
+    var detailBits = detailSentences();
+    if (detailBits.length) parts.push(detailBits.join(" "));
+
+    // Tone clause
+    var tones = selectedTones();
+    if (tones.length) {
+      var words = tones.map(function (t) { return TONE_CLAUSE[t]; });
+      var joined;
+      if (words.length === 1) joined = words[0];
+      else if (words.length === 2) joined = words[0] + " and " + words[1];
+      else joined = words.slice(0, -1).join(", ") + ", and " + words[words.length - 1];
+      parts.push("Use a " + joined + " tone.");
+    }
+
+    // Format
+    if (fmt) parts.push("Format: " + ensurePeriod(fmt.text));
+    else parts.push("Format: [format].");
+
+    // Placeholder encouragement when format implies it
+    if (fmt && fmt.ph) {
+      parts.push("Where a specific detail is needed, use bracketed placeholders like [first name], [date], [time], [booking link], or [practice name].");
+    }
+
+    // Ask-questions-first
+    if (askToggle.checked) {
+      parts.push("Before you write, ask me 2–3 quick questions to get the details right.");
+    }
+
+    var body = parts.join(" ");
+    var sections = [body];
+
+    // Paste block — for tasks that need source material the AI must work from.
+    var pasteLabel = TASK_INPUT[task];
+    if (pasteLabel) {
+      sections.push(
+        "Here is the " + pasteLabel + " to work from. Paste it between the lines below, " +
+        "with any patient names or identifiers removed — use [brackets] instead:\n" +
+        "---\n[ paste the " + pasteLabel + " here ]\n---"
+      );
+    }
+
+    sections.push(SAFETY);
+    return sections.join("\n\n");
+  }
+
+  function updatePreview() {
+    var ready = readyToGenerate();
+    genBtn.disabled = !ready;
+    copyBtn.disabled = !ready;
+    shareBtn.disabled = !ready;
+    saveBtn.disabled = !ready;
+    if (!ready) { hide(saveRow); }
+    hide(followupsPanel); // selections changed — stale suggestions
+
+    providerRow.querySelectorAll(".provider-btn").forEach(function (b) { b.disabled = !ready; });
+    if (!ready) { sendNote.hidden = true; }
+
+    var prompt = buildPrompt();
+    if (!prompt) {
+      promptOut.textContent = "Pick a Role, Task, and Format to see your prompt here. The PHI safety rule is added automatically.";
+      promptOut.classList.add("placeholder");
+    } else {
+      promptOut.textContent = prompt;
+      promptOut.classList.remove("placeholder");
+    }
+    save();
+  }
+
+  // ---------- Clipboard ----------
+  function copyText(text, onDone) {
+    function fallback() {
+      var ta = document.createElement("textarea");
+      ta.value = text; ta.style.position = "fixed"; ta.style.opacity = "0";
+      document.body.appendChild(ta); ta.focus(); ta.select();
+      try { document.execCommand("copy"); if (onDone) onDone(); } catch (e) {}
+      document.body.removeChild(ta);
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function () { if (onDone) onDone(); }, fallback);
+    } else {
+      fallback();
+    }
+  }
+
+  // ---------- State (persistence, share links, examples) ----------
+  function currentState() {
+    return {
+      role: roleSel.value, roleOther: roleOther.value,
+      context: ctxSel.value, contextOther: ctxOther.value,
+      task: taskSel.value, taskOther: taskOther.value,
+      format: fmtSel.value, formatOther: fmtOther.value,
+      tones: selectedTones(),
+      ask: askToggle.checked,
+      details: collectDetails()
+    };
+  }
+
+  function save() {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(currentState()));
+    } catch (e) { /* ignore */ }
+  }
+
+  // Clear every control back to the blank state (does not touch localStorage).
+  function clearForm() {
+    roleSel.value = ""; fmtSel.value = "";
+    hide(roleOtherWrap); hide(fmtOtherWrap);
+    roleOther.value = ""; fmtOther.value = "";
+    clearWarn(roleOther); clearWarn(fmtOther);
+    resetDependent();
+    toneGroup.querySelectorAll(".chip").forEach(function (c) { c.setAttribute("aria-pressed", "false"); });
+    askToggle.checked = false;
+    renderDetailFields();
+  }
+
+  // Apply a saved / shared / example state to the form.
+  function applyState(d) {
+    clearForm();
+    if (d.role) {
+      roleSel.value = d.role;
+      if (roleSel.value !== d.role) roleSel.value = ""; // option missing
+    }
+    if (roleSel.value) {
+      toggleOther(roleSel, roleOtherWrap, roleOther);
+      if (d.roleOther) { roleOther.value = d.roleOther; checkWarn(roleOther); }
+      // Populate for custom ("Other…") roles too — they get the shared
+      // contexts and an "Other…" task slot.
+      populateContext(roleSel.value);
+      populateTasks(roleSel.value);
+      if (d.context) ctxSel.value = d.context;
+      if (d.task) taskSel.value = d.task;
+      toggleOther(ctxSel, ctxOtherWrap, ctxOther);
+      toggleOther(taskSel, taskOtherWrap, taskOther);
+      if (d.contextOther) { ctxOther.value = d.contextOther; checkWarn(ctxOther); }
+      if (d.taskOther) { taskOther.value = d.taskOther; checkWarn(taskOther); }
+    }
+    if (d.format) {
+      fmtSel.value = d.format;
+      if (fmtSel.value !== d.format) fmtSel.value = ""; // option missing
+      toggleOther(fmtSel, fmtOtherWrap, fmtOther);
+      if (d.formatOther) { fmtOther.value = d.formatOther; checkWarn(fmtOther); }
+    }
+    if (d.tones && d.tones.length) {
+      toneGroup.querySelectorAll(".chip").forEach(function (c) {
+        if (d.tones.indexOf(c.getAttribute("data-tone")) !== -1) {
+          c.setAttribute("aria-pressed", "true");
+        }
+      });
+    }
+    if (d.ask) askToggle.checked = true;
+    renderDetailFields();
+    if (d.details) {
+      detailsWrap.querySelectorAll("input").forEach(function (i) {
+        var k = i.getAttribute("data-key");
+        if (d.details[k]) i.value = d.details[k];
+      });
+      checkDetailsWarn();
+    }
+    updatePreview();
+  }
+
+  function restore() {
+    var raw;
+    try { raw = localStorage.getItem(STORAGE_KEY); } catch (e) { return; }
+    if (!raw) return;
+    var d;
+    try { d = JSON.parse(raw); } catch (e) { return; }
+    applyState(d);
+  }
+
+  // Share links: the state, JSON-encoded, as a URL-safe base64 "?p=" param.
+  function encodeState(obj) {
+    return btoa(unescape(encodeURIComponent(JSON.stringify(obj))))
+      .replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+  }
+  function decodeState(s) {
+    s = s.replace(/-/g, "+").replace(/_/g, "/");
+    while (s.length % 4) s += "=";
+    return JSON.parse(decodeURIComponent(escape(atob(s))));
+  }
+  function readShareLink() {
+    try {
+      var m = location.search.match(/[?&]p=([^&]+)/);
+      return m ? decodeState(m[1]) : null;
+    } catch (e) { return null; }
+  }
+
+  // ---------- Events ----------
+  roleSel.addEventListener("change", function () {
+    toggleOther(roleSel, roleOtherWrap, roleOther);
+    if (roleSel.value) {
+      // A custom ("Other…") role still gets the shared contexts and an
+      // "Other…" task slot, so the rest of the form stays usable.
+      populateContext(roleSel.value);
+      populateTasks(roleSel.value);
+      hide(ctxOtherWrap); hide(taskOtherWrap);
+      ctxOther.value = ""; taskOther.value = "";
+      clearWarn(ctxOther); clearWarn(taskOther);
+    } else {
+      resetDependent();
+    }
+    renderDetailFields();
+    updatePreview();
+  });
+
+  ctxSel.addEventListener("change", function () {
+    toggleOther(ctxSel, ctxOtherWrap, ctxOther);
+    updatePreview();
+  });
+  taskSel.addEventListener("change", function () {
+    toggleOther(taskSel, taskOtherWrap, taskOther);
+    renderDetailFields();
+    updatePreview();
+  });
+  fmtSel.addEventListener("change", function () {
+    toggleOther(fmtSel, fmtOtherWrap, fmtOther);
+    updatePreview();
+  });
+
+  [roleOther, ctxOther, taskOther, fmtOther].forEach(function (inp) {
+    inp.addEventListener("input", function () {
+      checkWarn(inp);
+      updatePreview();
+    });
+  });
+
+  toneGroup.addEventListener("click", function (e) {
+    var chip = e.target.closest(".chip");
+    if (!chip) return;
+    var pressed = chip.getAttribute("aria-pressed") === "true";
+    chip.setAttribute("aria-pressed", pressed ? "false" : "true");
+    updatePreview();
+  });
+
+  askToggle.addEventListener("change", updatePreview);
+
+  genBtn.addEventListener("click", function () {
+    updatePreview();
+    promptOut.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  });
+
+  copyBtn.addEventListener("click", function () {
+    var text = buildPrompt();
+    if (!text) return;
+    copyText(text, function () {
+      copyBtn.classList.add("copied");
+      copyLabel.textContent = "Copied!";
+      setTimeout(function () {
+        copyBtn.classList.remove("copied");
+        copyLabel.textContent = "Copy prompt";
+      }, 1800);
+      showFollowups();
+    });
+  });
+
+  // Open the prompt in a chosen AI tool. Always copy first (the fallback for any
+  // provider that doesn't pre-fill, and a safety net if the URL param is dropped).
+  providerRow.addEventListener("click", function (e) {
+    var btn = e.target.closest(".provider-btn");
+    if (!btn || btn.disabled) return;
+    var p = PROVIDERS_BY_ID[btn.getAttribute("data-provider")];
+    if (!p) return;
+    var text = buildPrompt();
+    if (!text) return;
+
+    copyText(text);
+    var url = p.prefill ? p.base + encodeURIComponent(text) : p.base;
+    window.open(url, "_blank", "noopener");
+
+    sendNote.hidden = false;
+    sendNote.textContent = p.prefill
+      ? "Opening " + p.name + " with your prompt. It's also copied — just paste (Cmd/Ctrl+V) if it didn't carry over."
+      : "Opening " + p.name + ". Your prompt is copied — paste it (Cmd/Ctrl+V) into the box.";
+    showFollowups();
+  });
+
+  resetBtn.addEventListener("click", function () {
+    clearForm();
+    try { localStorage.removeItem(STORAGE_KEY); } catch (e) {}
+    updatePreview();
+  });
+
+  detailsWrap.addEventListener("input", function () {
+    checkDetailsWarn();
+    updatePreview();
+  });
+
+  // Copy a link that reopens this app with the current picks pre-filled.
+  shareBtn.addEventListener("click", function () {
+    if (!readyToGenerate()) return;
+    var url = location.href.split(/[?#]/)[0] + "?p=" + encodeState(currentState());
+    copyText(url, function () {
+      shareLabel.textContent = "Link copied!";
+      setTimeout(function () { shareLabel.textContent = "Copy share link"; }, 1800);
+    });
+  });
+
+  // ---------- Follow-ups ----------
+  function showFollowups() {
+    var task = (taskSel.value && taskSel.value !== OTHER) ? taskSel.value : null;
+    var list = (task && TASK_FOLLOWUPS[task]) || DEFAULT_FOLLOWUPS;
+    followupRow.innerHTML = "";
+    list.forEach(function (t) {
+      var b = document.createElement("button");
+      b.type = "button"; b.className = "chip"; b.textContent = t;
+      b.addEventListener("click", function () {
+        copyText(t, function () {
+          b.textContent = "Copied!";
+          setTimeout(function () { b.textContent = t; }, 1200);
+        });
+      });
+      followupRow.appendChild(b);
+    });
+    show(followupsPanel);
+  }
+
+  // ---------- Saved prompts (favorites) ----------
+  var FAVS_KEY = STORAGE_KEY + "-favs";
+  function loadFavs() {
+    try { return JSON.parse(localStorage.getItem(FAVS_KEY)) || []; } catch (e) { return []; }
+  }
+  function storeFavs(favs) {
+    try { localStorage.setItem(FAVS_KEY, JSON.stringify(favs)); } catch (e) { /* ignore */ }
+  }
+  function renderFavs() {
+    var favs = loadFavs();
+    favsList.innerHTML = "";
+    if (!favs.length) { hide(favsCard); return; }
+    favs.forEach(function (f, idx) {
+      var row = document.createElement("div");
+      row.className = "fav-row";
+      var load = document.createElement("button");
+      load.type = "button"; load.className = "fav-load"; load.textContent = f.name;
+      load.addEventListener("click", function () {
+        applyState(f.state);
+        document.querySelector(".preview-card").scrollIntoView({ behavior: "smooth", block: "nearest" });
+      });
+      var del = document.createElement("button");
+      del.type = "button"; del.className = "fav-del"; del.textContent = "×";
+      del.setAttribute("aria-label", "Delete saved prompt: " + f.name);
+      del.addEventListener("click", function () {
+        var cur = loadFavs();
+        cur.splice(idx, 1);
+        storeFavs(cur);
+        renderFavs();
+      });
+      row.appendChild(load); row.appendChild(del);
+      favsList.appendChild(row);
+    });
+    show(favsCard);
+  }
+
+  saveBtn.addEventListener("click", function () {
+    if (saveBtn.disabled) return;
+    saveRow.hidden = !saveRow.hidden;
+    if (!saveRow.hidden) saveName.focus();
+  });
+  function confirmSave() {
+    var name = saveName.value.trim() || getTaskText() || "Saved prompt";
+    var favs = loadFavs();
+    favs.unshift({ name: name, state: currentState(), ts: Date.now() });
+    if (favs.length > 20) favs.length = 20; // keep the list sane
+    storeFavs(favs);
+    renderFavs();
+    saveName.value = "";
+    hide(saveRow);
+    saveLabel.textContent = "Saved!";
+    setTimeout(function () { saveLabel.textContent = "Save"; }, 1500);
+  }
+  saveConfirm.addEventListener("click", confirmSave);
+  saveName.addEventListener("keydown", function (e) {
+    if (e.key === "Enter") { e.preventDefault(); confirmSave(); }
+  });
+
+  // ---------- Examples ----------
+  function buildExampleChips() {
+    EXAMPLES.forEach(function (ex) {
+      var b = document.createElement("button");
+      b.type = "button"; b.className = "chip"; b.textContent = ex.label;
+      b.addEventListener("click", function () {
+        applyState(ex.state);
+        document.querySelector(".preview-card").scrollIntoView({ behavior: "smooth", block: "nearest" });
+      });
+      exampleRow.appendChild(b);
+    });
+  }
+
+  // ---------- Init ----------
+  populateRoles();
+  populateFormats();
+  buildExampleChips();
+  renderFavs();
+  var linkState = readShareLink();
+  if (linkState) {
+    applyState(linkState);
+    try { history.replaceState(null, "", location.pathname); } catch (e) {}
+  } else {
+    restore();
+  }
+  updatePreview();
+})();
+</script>
+</body>
+</html>

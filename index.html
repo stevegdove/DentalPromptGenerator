@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Bridge Dental Prompt Builders</title>
+<meta name="description" content="Two small tools that write strong, safe AI prompts for dental teams and practice owners." />
+<link rel="icon" type="image/png" href="assets/favicon.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Mulish:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --rose:        #EF3A66;
+    --rose-dark:   #D62B56;
+    --rose-tint:   #FDE8EE;
+    --indigo:      #3A1F6E;
+    --ink:         #2A2E3F;
+    --ink-soft:    #5C6070;
+    --muted:       #8B8F9B;
+    --white:       #FFFFFF;
+    --lavender:    #EAE8F6;
+    --cloud:       #F0F0F2;
+    --line:        #E6E6EE;
+    --grad-hero:   linear-gradient(104deg, #1a1340 0%, #3a1f4e 50%, #d62b56 100%);
+
+    --font-head: 'Poppins', system-ui, -apple-system, sans-serif;
+    --font-body: 'Mulish', system-ui, -apple-system, sans-serif;
+
+    --radius-sm:   10px;
+    --radius:      15px;
+    --radius-lg:   22px;
+    --radius-pill: 999px;
+    --shadow:      0 1px 2px rgba(42,46,63,.04), 0 8px 24px rgba(42,46,63,.06);
+    --shadow-rose: 0 8px 24px rgba(239,58,102,.18);
+  }
+
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    font-family: var(--font-body);
+    color: var(--ink-soft);
+    background: var(--cloud);
+    line-height: 1.6;
+    font-size: 17px;
+  }
+  h1, h2 {
+    font-family: var(--font-head); color: var(--ink);
+    letter-spacing: -0.01em; line-height: 1.12; margin: 0 0 .4em;
+  }
+
+  .hero {
+    background: var(--grad-hero);
+    color: #fff;
+    padding: 1.6rem 1.25rem 2.6rem;
+  }
+  .hero-inner { max-width: 920px; margin: 0 auto; }
+  .hero-top {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 1rem; flex-wrap: wrap; margin-bottom: 1.8rem;
+  }
+  .hero-logo { height: 30px; width: auto; display: block; }
+  .safe-badge {
+    font-family: var(--font-head); font-weight: 600; font-size: .8rem;
+    color: var(--rose); background: var(--rose-tint);
+    padding: .42rem .85rem; border-radius: var(--radius-pill);
+    display: inline-flex; align-items: center; gap: .45rem; white-space: nowrap;
+  }
+  .safe-badge svg { width: 15px; height: 15px; fill: none; stroke: currentColor;
+    stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; }
+  .hero h1 { color: #fff; font-weight: 800; font-size: clamp(1.8rem, 5vw, 2.6rem); margin-bottom: .35rem; }
+  .hero p { color: rgba(255,255,255,.86); font-size: 1.05rem; max-width: 40rem; margin: 0; }
+
+  main { max-width: 920px; margin: -1.4rem auto 0; padding: 0 1.25rem 4rem; }
+
+  .picker { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  @media (max-width: 700px) { .picker { grid-template-columns: 1fr; } }
+
+  .card {
+    background: var(--white); border: 1px solid var(--line);
+    border-radius: var(--radius-lg); padding: 1.6rem 1.5rem;
+    box-shadow: var(--shadow);
+    display: flex; flex-direction: column;
+  }
+  .eyebrow {
+    font-family: var(--font-head); font-weight: 600; color: var(--rose);
+    text-transform: uppercase; letter-spacing: .12em; font-size: .76rem;
+    display: block; margin-bottom: .55rem;
+  }
+  .card h2 { font-size: 1.35rem; font-weight: 700; }
+  .card p { margin: 0 0 .9rem; }
+  .who {
+    list-style: none; padding: 0; margin: 0 0 1.4rem;
+    font-size: .95rem; color: var(--muted);
+  }
+  .who li { padding: .18rem 0 .18rem 1.3rem; position: relative; }
+  .who li::before {
+    content: ""; position: absolute; left: 0; top: .62em;
+    width: 7px; height: 7px; border-radius: 50%;
+    background: var(--rose-tint); border: 1.5px solid var(--rose);
+  }
+  .btn {
+    font-family: var(--font-head); font-weight: 600; font-size: 1rem;
+    padding: .85rem 1.5rem; border-radius: var(--radius-sm);
+    border: 1px solid transparent; cursor: pointer;
+    display: inline-flex; align-items: center; justify-content: center; gap: .5rem;
+    text-decoration: none; margin-top: auto;
+    background: var(--rose); color: #fff; box-shadow: var(--shadow-rose);
+    transition: background .15s;
+  }
+  .btn:hover { background: var(--rose-dark); }
+  .btn:focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(239,58,102,.35); }
+  .btn svg { width: 18px; height: 18px; fill: none; stroke: currentColor;
+    stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; }
+
+  .founders {
+    background: var(--white); border: 1px solid var(--line);
+    border-radius: var(--radius-lg); box-shadow: var(--shadow);
+    margin-top: 1rem; padding: 1.6rem 1.5rem;
+    display: grid; grid-template-columns: minmax(220px, 340px) 1fr;
+    gap: 1.6rem; align-items: center;
+  }
+  .founders[hidden] { display: none; }
+  .founders-photo { width: 100%; height: auto; display: block; border-radius: var(--radius); }
+  .founders-copy h2 { font-size: 1.35rem; font-weight: 700; }
+  .founders-copy p { margin: 0; }
+  @media (max-width: 700px) { .founders { grid-template-columns: 1fr; } }
+
+  .how {
+    background: var(--white); border: 1px solid var(--line);
+    border-radius: var(--radius-lg); padding: 1.6rem 1.5rem;
+    box-shadow: var(--shadow); margin-top: 1rem;
+  }
+  .how h2 { font-size: 1.35rem; font-weight: 700; }
+  .steps {
+    display: grid; grid-template-columns: 1fr auto 1fr auto 1fr;
+    gap: 1rem; align-items: start; margin-top: 1.1rem;
+  }
+  .step-art {
+    width: 100%; height: auto; display: block;
+    background: var(--cloud); border-radius: var(--radius); padding: .6rem;
+  }
+  .step-title { display: flex; align-items: center; gap: .55rem; margin: .85rem 0 .3rem; }
+  .step-num {
+    width: 26px; height: 26px; border-radius: 50%; flex: 0 0 auto;
+    background: var(--rose-tint); color: var(--rose);
+    font-family: var(--font-head); font-weight: 700; font-size: .9rem;
+    display: inline-flex; align-items: center; justify-content: center;
+  }
+  .step h3 { font-size: 1.05rem; font-weight: 600; margin: 0; }
+  .step p { margin: 0; font-size: .95rem; }
+  .step-arrow { align-self: center; color: var(--muted); display: flex; padding-top: 1rem; }
+  .step-arrow svg { width: 24px; height: 24px; fill: none; stroke: currentColor;
+    stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  @media (max-width: 700px) {
+    .steps { grid-template-columns: 1fr; }
+    .step-arrow { justify-content: center; padding: 0; }
+    .step-arrow svg { transform: rotate(90deg); }
+  }
+
+  footer { text-align: center; color: var(--muted); font-size: .85rem; padding: 0 1.25rem 2.5rem; }
+
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="hero-top">
+        <img class="hero-logo" src="assets/bridge-logo-white.png" alt="Bridge Dental" />
+        <span class="safe-badge">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
+          Safe by design
+        </span>
+      </div>
+      <h1>Prompt builders for dental practices.</h1>
+      <p>Two small tools that write strong, safe AI prompts in four picks. Choose the one that fits what you're doing today — the safety rules are baked in either way.</p>
+    </div>
+  </header>
+
+  <main>
+    <div class="picker">
+      <section class="card">
+        <span class="eyebrow">For your team</span>
+        <h2>Day-to-day practice prompts</h2>
+        <p>Patient messages, phone and chairside scripts, clinical notes, checklists, SOPs, and reviews — the daily work of the practice, with a PHI-safety rule added to every prompt automatically.</p>
+        <ul class="who">
+          <li>Front desk &middot; hygiene &middot; assistants</li>
+          <li>Treatment &amp; office coordinators</li>
+          <li>Marketing &amp; doctors</li>
+        </ul>
+        <a class="btn" href="team/">
+          Open the team builder
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+      </section>
+
+      <section class="card">
+        <span class="eyebrow">For owners</span>
+        <h2>Run-the-practice prompts</h2>
+        <p>Statement audits, P&amp;L reviews, location scouting, team systems, and growth plans — with a confidential-data rule added to every prompt automatically.</p>
+        <ul class="who">
+          <li>Money &amp; cost control</li>
+          <li>Growth, locations &amp; acquisitions</li>
+          <li>Team, marketing &amp; vision</li>
+        </ul>
+        <a class="btn" href="owner/">
+          Open the owner builder
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+      </section>
+    </div>
+
+    <section class="founders">
+      <img class="founders-photo" src="assets/founders.jpg"
+           alt="Dr. Beau and Dr. Steve, the dentists behind Bridge Dental"
+           onerror="this.closest('.founders').hidden = true" />
+      <div class="founders-copy">
+        <span class="eyebrow">Built by dentists</span>
+        <h2>Meet Dr. Beau and Dr. Steve.</h2>
+        <p>Bridge Dental is built by dentists, for dental teams. Dr. Beau and Dr. Steve created these builders to take the guesswork out of using AI in a dental office — safely at the front desk, chairside, and in the owner's office.</p>
+      </div>
+    </section>
+
+    <section class="how">
+      <span class="eyebrow">How it works</span>
+      <h2>Three steps, about a minute.</h2>
+      <div class="steps">
+
+        <div class="step">
+          <svg class="step-art" viewBox="0 0 220 100" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Four dropdown menus, one being clicked">
+            <rect x="14" y="6"  width="150" height="17" rx="6" fill="#FFFFFF" stroke="#E6E6EE"/>
+            <rect x="22" y="12" width="62"  height="5"  rx="2.5" fill="#EAE8F6"/>
+            <polyline points="148,11 152,15 156,11" fill="none" stroke="#8B8F9B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            <rect x="14" y="29" width="150" height="17" rx="6" fill="#FFFFFF" stroke="#E6E6EE"/>
+            <rect x="22" y="35" width="84"  height="5"  rx="2.5" fill="#EAE8F6"/>
+            <polyline points="148,34 152,38 156,34" fill="none" stroke="#8B8F9B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            <rect x="14" y="52" width="150" height="17" rx="6" fill="#FFFFFF" stroke="#E6E6EE"/>
+            <rect x="22" y="58" width="70"  height="5"  rx="2.5" fill="#EAE8F6"/>
+            <polyline points="148,57 152,61 156,57" fill="none" stroke="#8B8F9B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            <rect x="14" y="75" width="150" height="17" rx="6" fill="#FFFFFF" stroke="#EF3A66" stroke-width="1.5"/>
+            <polyline points="148,80 152,84 156,80" fill="none" stroke="#EF3A66" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M178 70 l0 17 4.6 -4.2 3.2 7.4 4.2 -1.9 -3.2 -7.3 6.2 -1z" fill="#2A2E3F"/>
+          </svg>
+          <div class="step-title">
+            <span class="step-num">1</span>
+            <h3>Make four picks</h3>
+          </div>
+          <p>Who the AI acts as, the situation, the job, and the shape of the answer. Dropdowns — no writing.</p>
+        </div>
+
+        <div class="step-arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></svg></div>
+
+        <div class="step">
+          <svg class="step-art" viewBox="0 0 220 100" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A finished prompt with a copy button">
+            <rect x="14" y="8" width="150" height="84" rx="10" fill="#FFFFFF" stroke="#E6E6EE"/>
+            <rect x="26" y="22" width="90"  height="5" rx="2.5" fill="#EAE8F6"/>
+            <rect x="26" y="34" width="112" height="5" rx="2.5" fill="#EAE8F6"/>
+            <rect x="26" y="46" width="100" height="5" rx="2.5" fill="#EAE8F6"/>
+            <rect x="26" y="58" width="72"  height="5" rx="2.5" fill="#EAE8F6"/>
+            <rect x="118" y="64" width="60" height="24" rx="12" fill="#EF3A66"/>
+            <rect x="133" y="71" width="9" height="9" rx="2" fill="none" stroke="#FFFFFF" stroke-width="1.6"/>
+            <rect x="137" y="75" width="9" height="9" rx="2" fill="#EF3A66" stroke="#FFFFFF" stroke-width="1.6"/>
+            <path d="M156 76 h8 M156 80 h6" stroke="#FFFFFF" stroke-width="1.6" stroke-linecap="round"/>
+          </svg>
+          <div class="step-title">
+            <span class="step-num">2</span>
+            <h3>Copy your prompt</h3>
+          </div>
+          <p>It's written for you, safety rule included. Copy it — or open it straight in ChatGPT, Claude, Gemini, or Grok.</p>
+        </div>
+
+        <div class="step-arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></svg></div>
+
+        <div class="step">
+          <svg class="step-art" viewBox="0 0 220 100" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="The AI's answer with an approval check">
+            <rect x="14" y="10" width="132" height="58" rx="12" fill="#FFFFFF" stroke="#E6E6EE"/>
+            <polygon points="40,66 48,82 58,66" fill="#FFFFFF"/>
+            <path d="M40 67 L48 82 L58 67" fill="none" stroke="#E6E6EE"/>
+            <rect x="26" y="24" width="82"  height="5" rx="2.5" fill="#EAE8F6"/>
+            <rect x="26" y="36" width="102" height="5" rx="2.5" fill="#EAE8F6"/>
+            <rect x="26" y="48" width="64"  height="5" rx="2.5" fill="#EAE8F6"/>
+            <circle cx="178" cy="60" r="22" fill="#E5F4ED"/>
+            <polyline points="168,60 176,68 190,52" fill="none" stroke="#1E8E5A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <div class="step-title">
+            <span class="step-num">3</span>
+            <h3>Review, then use</h3>
+          </div>
+          <p>The AI's answer is a first draft. Give it a quick read, then send it, print it, or post it.</p>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    Bridge Dental — built by dentists, for dental teams. Everything runs in your browser; prompts leave only when you choose to open them in an AI tool.
+  </footer>
+</body>
+</html>
