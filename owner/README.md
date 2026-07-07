@@ -1,6 +1,6 @@
-# Bridge Dental Owner's Prompt Generator
+# Bridge Dental Owner & Operator Prompt Generator
 
-A confidential-safe, single-page tool that helps a **dental practice owner** assemble a strong AI
+A confidential-safe, single-page tool that helps a **dental practice owner or operations leader** assemble a strong AI
 prompt from four picks — **Expert → Situation → Task → Format**. The app writes a clean,
 copy-ready prompt you run in your own AI tool (ChatGPT, Claude, Gemini, Grok). A confidential-data
 safety rule is baked into every prompt automatically, so sensitive numbers never have to be typed.
@@ -17,7 +17,7 @@ No backend, no build step, no dependencies.
 modern browser. Keep the `assets/` folder (the Bridge Dental logo) next to it.
 
 > Or use a local server: `python3 -m http.server 4601` and visit
-> http://localhost:4600. (This is also wired into the app's play button via `.claude/launch.json`.)
+> http://localhost:4601. (This is also wired into the app's play button via `.claude/launch.json`.)
 
 ## How it works
 
@@ -33,8 +33,10 @@ The **preview** updates live and stitches the picks into one instruction, then a
 
 ### Quick-start examples, detail fields, and share links
 
-- **Try an example** — three one-click starters at the top ("Audit my card statements",
-  "Vet a second location", "Vision organizer") fill all four picks instantly.
+- **Try an example** — five one-click starters at the top ("Audit my card statements",
+  "Vet a second location", "Vision organizer", "Morning huddle scorecard",
+  "Standardize supply ordering") fill all four picks instantly. The last two speak to
+  operations managers in larger practices.
 - **Add details (optional)** — tasks that benefit from specifics (location, budget, equipment,
   patient counts…) reveal a small panel under the Task dropdown; filled values are woven into
   the prompt as sentences ("The area under consideration is Frisco, TX."). The per-task field

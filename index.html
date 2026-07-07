@@ -4,8 +4,18 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Bridge Dental Prompt Builders</title>
-<meta name="description" content="Two small tools that write strong, safe AI prompts for dental teams and practice owners." />
+<meta name="description" content="Two small tools that write strong, safe AI prompts for dental teams and practice owners & operators." />
 <link rel="icon" type="image/png" href="assets/favicon.png" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://stevegdove.github.io/DentalPromptGenerator/" />
+<meta property="og:title" content="Bridge Dental Prompt Builders" />
+<meta property="og:description" content="Free tools that write strong, safe AI prompts for dental teams and practice owners & operators — four picks, safety rules baked in." />
+<meta property="og:image" content="https://stevegdove.github.io/DentalPromptGenerator/assets/og-card.png" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Bridge Dental Prompt Builders" />
+<meta name="twitter:description" content="Free tools that write strong, safe AI prompts for dental teams and practice owners & operators — four picks, safety rules baked in." />
+<meta name="twitter:image" content="https://stevegdove.github.io/DentalPromptGenerator/assets/og-card.png" />
+<script data-goatcounter="https://bridgedental.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Mulish:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -160,6 +170,8 @@
   }
 
   footer { text-align: center; color: var(--muted); font-size: .85rem; padding: 0 1.25rem 2.5rem; }
+  footer a { color: var(--rose); text-decoration: none; font-weight: 600; }
+  footer a:hover { text-decoration: underline; }
 
   @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
 </style>
@@ -168,7 +180,7 @@
   <header class="hero">
     <div class="hero-inner">
       <div class="hero-top">
-        <img class="hero-logo" src="assets/bridge-logo-white.png" alt="Bridge Dental" />
+        <img class="hero-logo" src="data:image/png;base64,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" alt="Bridge Dental" />
         <span class="safe-badge">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
           Safe by design
@@ -190,25 +202,26 @@
           <li>Treatment &amp; office coordinators</li>
           <li>Marketing &amp; doctors</li>
         </ul>
-        <a class="btn" href="team/">
+        <a class="btn" href="team/" data-track="hub-open-team">
           Open the team builder
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </a>
       </section>
 
       <section class="card">
-        <span class="eyebrow">For owners</span>
-        <h2>Run-the-practice prompts</h2>
+        <span class="eyebrow">For owners &amp; operators</span>
+        <h2>Run-the-business prompts</h2>
         <p>Statement audits, P&amp;L reviews, location scouting, team systems, and growth plans — with a confidential-data rule added to every prompt automatically.</p>
         <ul class="who">
           <li>Money &amp; cost control</li>
           <li>Growth, locations &amp; acquisitions</li>
           <li>Team, marketing &amp; vision</li>
         </ul>
-        <a class="btn" href="owner/">
-          Open the owner builder
+        <a class="btn" href="owner/" data-track="hub-open-owner">
+          Open the owner / operator builder
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </a>
+        <p style="font-size:.85rem; color:var(--muted); margin:.6rem 0 0; text-align:center;">Password required — for owners &amp; operations leaders.</p>
       </section>
     </div>
 
@@ -219,7 +232,7 @@
       <div class="founders-copy">
         <span class="eyebrow">Built by dentists</span>
         <h2>Meet Dr. Beau and Dr. Steve.</h2>
-        <p>Bridge Dental is built by dentists, for dental teams. Dr. Beau and Dr. Steve created these builders to take the guesswork out of using AI in a dental office — safely at the front desk, chairside, and in the owner's office.</p>
+        <p>Bridge Dental is built by dentists, for dental teams. Dr. Beau and Dr. Steve created these builders to take the guesswork out of using AI in a dental office — safely at the front desk, chairside, and in the business office.</p>
       </div>
     </section>
 
@@ -293,10 +306,61 @@
 
       </div>
     </section>
+
+    <section class="how" id="signup-card" hidden>
+      <span class="eyebrow">Stay in the loop</span>
+      <h2>Get new prompts monthly.</h2>
+      <p>One short email with fresh, field-tested prompts for your practice. No spam; unsubscribe anytime.</p>
+      <form id="signup-form" style="display:flex; gap:.6rem; flex-wrap:wrap; margin-top:1rem;">
+        <label for="signup-email" style="position:absolute; left:-9999px;">Email address</label>
+        <input id="signup-email" name="email" type="email" required placeholder="you@yourpractice.com"
+               style="flex:1 1 240px; font-family:var(--font-body); font-size:1rem; padding:.8rem .9rem; border:1px solid var(--line); border-radius:var(--radius-sm); color:var(--ink);" />
+        <button type="submit" class="btn" style="background:#fff; color:var(--ink); border:1px solid var(--line); box-shadow:none; margin-top:0;">Sign up</button>
+      </form>
+      <p id="signup-done" hidden style="margin-top:1rem; color:#1E8E5A; font-weight:600;">Thanks — you're on the list.</p>
+    </section>
   </main>
 
   <footer>
-    Bridge Dental — built by dentists, for dental teams. Everything runs in your browser; prompts leave only when you choose to open them in an AI tool.
+    Bridge Dental — built by dentists, for dental teams. Everything runs in your browser; prompts leave only when you choose to open them in an AI tool.<br />
+    These builders are free from the team behind <a href="https://bridgedental.ai/?utm_source=prompt-builders&utm_medium=referral&utm_campaign=hub" data-track="hub-outbound-bridgedental">bridgedental.ai</a> — less insurance busywork for dental offices.
   </footer>
+  <script>
+    document.addEventListener("click", function (e) {
+      var el = e.target.closest("[data-track]");
+      if (el && window.goatcounter && window.goatcounter.count) {
+        window.goatcounter.count({ path: el.getAttribute("data-track"), event: true });
+      }
+    });
+
+    // Email signup — hidden until a form endpoint is configured.
+    // To enable: create a free form at formspree.io (or similar) and paste its
+    // POST URL here, e.g. "https://formspree.io/f/abcdwxyz".
+    var FORM_ENDPOINT = "";
+    (function () {
+      if (!FORM_ENDPOINT) return;
+      var card = document.getElementById("signup-card");
+      var form = document.getElementById("signup-form");
+      var done = document.getElementById("signup-done");
+      card.hidden = false;
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        var data = new FormData(form);
+        fetch(FORM_ENDPOINT, { method: "POST", body: data, headers: { Accept: "application/json" } })
+          .then(function () {
+            form.hidden = true;
+            done.hidden = false;
+            if (window.goatcounter && window.goatcounter.count) {
+              window.goatcounter.count({ path: "hub-signup", event: true });
+            }
+          })
+          .catch(function () {
+            done.textContent = "Hmm, that didn't go through — please try again.";
+            done.style.color = "#B8772A";
+            done.hidden = false;
+          });
+      });
+    })();
+  </script>
 </body>
 </html>

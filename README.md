@@ -8,7 +8,7 @@ bridge-prompts/
 ├── team/             ← patient-communication prompts (PHI-safe)
 │   ├── index.html
 │   └── README.md     ← full feature docs for the team builder
-├── owner/            ← run-the-practice prompts (confidential-safe)
+├── owner/            ← owner & operator prompts (confidential-safe)
 │   ├── index.html
 │   └── README.md     ← full feature docs for the owner builder
 └── assets/           ← shared Bridge Dental logos
@@ -38,6 +38,9 @@ Share links (`?p=…`) and the hub breadcrumbs work automatically under this lay
 Both share the same engine: four cascading RCTF picks → live prompt preview → Copy /
 open-in-ChatGPT/Claude/Gemini/Grok, plus quick-start examples, optional per-task detail
 fields, share links, follow-up suggestions after copying, and saved favorites (localStorage).
+Task and Format dropdowns open with a **"★ Most popular"** group above the full list —
+the curated sets live in `POPULAR_TASKS` / `POPULAR_FORMATS` in each app's `index.html`;
+update them from GoatCounter task data once real usage accumulates.
 A non-removable safety rule is appended to every prompt — PHI-focused in `team/`,
 confidential-data-focused in `owner/` (money & deal experts also get a CPA/attorney
 verify rule). Task content is curated from the practice's own prompt vaults —
@@ -45,3 +48,53 @@ verify rule). Task content is curated from the practice's own prompt vaults —
 
 This folder is the single home for both apps — the original standalone folders
 (`prompt-generator/`, `owner-prompt-generator/`) were retired into it in July 2026.
+
+## Growth plumbing (added July 2026)
+
+### Analytics — GoatCounter (one setup step required)
+All three pages carry a privacy-friendly [GoatCounter](https://www.goatcounter.com) snippet
+(no cookies, no consent banner, prompt content never touched). Pageviews are automatic;
+custom events fire on the actions that matter:
+`team-copy-prompt`, `team-open-<chatgpt|claude|gemini|grok>`, same for `owner-…`,
+`hub-open-team`, `hub-open-owner`, and `…-outbound-bridgedental` (footer link clicks).
+
+The dashboard lives at **https://bridgedental.goatcounter.com** (site code `bridgedental`
+— the snippet in each page must match it). If the script is blocked or unreachable, the
+snippet quietly no-ops; nothing breaks.
+
+### Social sharing
+Every page has Open Graph / Twitter meta tags pointing at `assets/og-card.png` (1200×630),
+so links shared in Facebook groups, LinkedIn, or texts render a branded card. The image
+URLs are absolute (`https://stevegdove.github.io/DentalPromptGenerator/...`) — update them
+if the site moves to a custom domain. After deploying changes, paste the URL into a share
+debugger (e.g. LinkedIn Post Inspector) to refresh the cached preview.
+
+### Custom domain (recommended): prompts.bridgedental.ai
+1. In the DNS for bridgedental.ai, add a **CNAME** record: `prompts` → `stevegdove.github.io`.
+2. In the GitHub repo → Settings → Pages → **Custom domain**, enter
+   `prompts.bridgedental.ai`, save, and tick **Enforce HTTPS** once the check passes.
+3. Update the `og:url` / `og:image` absolute URLs in all three HTML files to the new domain.
+
+### Owner builder password gate
+`owner/index.html` is behind a password prompt. It's a **courtesy lock, not security** —
+the site is a public repo, so a technically-inclined visitor can read the content regardless;
+it filters honest people, which is the point. The password is checked as a djb2 hash (never
+stored in plain text in the source), unlock is remembered per device (`localStorage`), and
+`owner-unlock-success` / `owner-unlock-fail` events land in GoatCounter. Passwords are
+case-insensitive.
+
+**To change the password:** compute the new hash —
+```bash
+python3 -c "
+h = 5381
+for c in 'your-new-password-lowercase':
+    h = ((h * 33) & 0xFFFFFFFF) ^ ord(c)
+print(format(h, 'x'))"
+```
+— then replace the old hash in **both** places in `owner/index.html`: the early-lock
+script in `<head>` and the `HASH` constant in the gate script at the bottom.
+
+### Email capture (hidden until enabled)
+The hub has a "Get new prompts monthly" card that is **hidden by default**. To enable:
+create a free form endpoint (e.g. formspree.io), then set `FORM_ENDPOINT` in the script at
+the bottom of `index.html` to its POST URL. The builders themselves are never gated.
