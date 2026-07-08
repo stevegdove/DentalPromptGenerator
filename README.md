@@ -120,3 +120,66 @@ script in `<head>` and the `HASH` constant in the gate script at the bottom.
 The hub has a "Get new prompts monthly" card that is **hidden by default**. To enable:
 create a free form endpoint (e.g. formspree.io), then set `FORM_ENDPOINT` in the script at
 the bottom of `index.html` to its POST URL. The builders themselves are never gated.
+
+## Installable app (PWA, added July 2026)
+
+The whole site is an installable Progressive Web App — visitors can add it to the
+home screen on **iPhone (Safari)** and **Android (Chrome/Edge)** and it launches
+full-screen, works offline, and shows the Bridge bridge-mark icon. Still no build
+step: it's four plain files plus icons.
+
+- `manifest.webmanifest` (root) — app name, colors, and icons. All paths are
+  **relative** (`start_url: "."`, `scope: "./"`), so the same files work on the
+  GitHub Pages subpath today *and* on `prompts.bridgedental.ai` later with no edits.
+- `service-worker.js` (root) — offline shell. **Network-first for HTML** so prompt
+  and content edits ship immediately (users never get stuck on a stale page),
+  stale-while-revalidate for images, cache-first for Google Fonts. Bump
+  `CACHE_VERSION` at the top when you change the SW to retire old caches.
+- `assets/pwa-install.js` — registers the SW and shows the custom install prompt.
+  Included on all three pages; it self-resolves the app root from its own URL.
+- `assets/icons/…` — the icon set (192/512 standard + maskable, and a 180px
+  apple-touch-icon), generated from `assets/bridge-logo-color.png`.
+
+### The install prompt ("after brief usage")
+A branded bottom banner appears only **after the visitor has actually used a
+tool** — never on first paint. It opens when any of these is true (tracked in
+`localStorage`): they copied a prompt or opened a provider tab, **or** they've
+viewed 2+ pages, **or** they've spent ~45s on a page.
+
+- **Android/Chromium** uses the native `beforeinstallprompt` flow — the banner's
+  **Install** button triggers the real OS install sheet.
+- **iPhone/iPad Safari** has no install event, so the banner shows the manual
+  steps instead: *tap Share → Add to Home Screen*.
+- **Anti-nag:** never shown once installed, dismissal snoozes for 14 days, hard
+  cap of 3 lifetime shows. On the password-gated **owner** builder it only appears
+  once the courtesy gate is unlocked (never on the password screen).
+- **iOS note:** installed home-screen apps get a *separate* storage jar from
+  Safari, so an owner who installs will re-enter the courtesy password once inside
+  the installed app. Android shares storage, so no re-entry there.
+
+### Analytics
+The install funnel lands in GoatCounter alongside the existing events:
+`pwa-prompt-shown`, `pwa-install-accepted`, `pwa-install-dismissed`,
+`pwa-installed`, and `pwa-launch` (fired when the app is opened in standalone mode).
+
+### Regenerating icons
+The icons are built from the color logo. To rebuild (e.g. after a logo change):
+```bash
+python3 - <<'PY'
+from PIL import Image
+mark = Image.open('assets/bridge-logo-color.png').convert('RGBA').crop((0,0,230,198))
+def make(size, frac, out):
+    c = Image.new('RGBA', (size, size), (255,255,255,255))
+    w = int(size*frac); m = mark.resize((w, int(mark.height*w/mark.width)), Image.LANCZOS)
+    c.alpha_composite(m, ((size-m.width)//2, (size-m.height)//2))
+    c.convert('RGB').save(out)
+make(192,0.72,'assets/icons/icon-192.png');  make(512,0.72,'assets/icons/icon-512.png')
+make(192,0.58,'assets/icons/icon-192-maskable.png'); make(512,0.58,'assets/icons/icon-512-maskable.png')
+make(180,0.70,'assets/icons/apple-touch-icon.png')
+PY
+```
+
+### Custom domain reminder
+When moving to `prompts.bridgedental.ai`, the manifest and SW need **no changes**
+(relative paths). Only the absolute `og:`/`twitter:` image URLs need updating, as
+already noted above.
