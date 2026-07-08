@@ -192,38 +192,7 @@
   </header>
 
   <main>
-    <div class="picker">
-      <section class="card">
-        <span class="eyebrow">For your team</span>
-        <h2>Day-to-day practice prompts</h2>
-        <p>Patient messages, phone and chairside scripts, clinical notes, checklists, SOPs, and reviews — the daily work of the practice, with a PHI-safety rule added to every prompt automatically.</p>
-        <ul class="who">
-          <li>Front desk &middot; hygiene &middot; assistants</li>
-          <li>Treatment &amp; office coordinators</li>
-          <li>Marketing &amp; doctors</li>
-        </ul>
-        <a class="btn" href="team/" data-track="hub-open-team">
-          Open the team builder
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </a>
-      </section>
-
-      <section class="card">
-        <span class="eyebrow">For owners &amp; operators</span>
-        <h2>Run-the-business prompts</h2>
-        <p>Statement audits, P&amp;L reviews, location scouting, team systems, and growth plans — with a confidential-data rule added to every prompt automatically.</p>
-        <ul class="who">
-          <li>Money &amp; cost control</li>
-          <li>Growth, locations &amp; acquisitions</li>
-          <li>Team, marketing &amp; vision</li>
-        </ul>
-        <a class="btn" href="owner/" data-track="hub-open-owner">
-          Open the owner / operator builder
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </a>
-        <p style="font-size:.85rem; color:var(--muted); margin:.6rem 0 0; text-align:center;">Password required — for owners &amp; operations leaders.</p>
-      </section>
-    </div>
+    <div class="picker" id="vertical-cards"></div>
 
     <section class="founders">
       <img class="founders-photo" src="assets/founders.jpg"
@@ -361,6 +330,17 @@
           });
       });
     })();
+  </script>
+  <script type="module">
+    const res = await fetch("verticals/manifest.json");
+    const { verticals } = await res.json();
+    const wrap = document.getElementById("vertical-cards");
+    wrap.innerHTML = verticals.map((v) => `
+      <section class="card" style="--accent:${v.accent}">
+        <h2>${v.name}</h2>
+        <p>${v.tagline}</p>
+        <a class="btn" href="${v.path}" data-track="hub-pick-${v.id}">Open ${v.name}</a>
+      </section>`).join("");
   </script>
 </body>
 </html>
