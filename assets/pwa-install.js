@@ -11,8 +11,7 @@
      4. Fires GoatCounter events so the install funnel is measurable.
 
    Anti-nag: never shown once installed, dismissal snoozes for 14 days, and a
-   hard lifetime cap of 3 shows. On the password-gated owner page the prompt
-   only appears once the courtesy gate is unlocked. */
+   hard lifetime cap of 3 shows. */
 
 (function () {
   "use strict";
@@ -78,12 +77,6 @@
     return false;
   }
 
-  // On the owner page, wait until the courtesy password gate is unlocked.
-  function ownerGateOK() {
-    if (location.pathname.indexOf("/owner") === -1) return true;
-    return lsGet("bd-owner-unlocked") === "f36b8ed8";
-  }
-
   // ---- "brief usage" gate ----
   var views = parseInt(lsGet("bp_pwa_views") || "0", 10) + 1;
   lsSet("bp_pwa_views", String(views));
@@ -139,7 +132,7 @@
 
   function maybeShow() {
     if (shown || isStandalone) return;
-    if (!ownerGateOK() || suppressed() || !usageQualifies()) return;
+    if (suppressed() || !usageQualifies()) return;
     if (deferredPrompt) { showBanner("android"); return; }
     if (isIOS && isSafari) { showBanner("ios"); return; }
     // Other browsers offer no install affordance — stay silent.

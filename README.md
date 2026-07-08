@@ -64,7 +64,7 @@ placeholder matching live in `PROFILE_FIELDS` / `fillPracticePlaceholders()` in 
 Both builders have a **guided tour** — a spotlight walkthrough of every step with a
 recommendation per stop (hand-rolled, no libraries). It launches from the "Take the
 60-second tour" button in the hero, and first-time visitors get a one-time dismissible
-toast offering it (never re-shown once dismissed; suppressed on the owner password gate).
+toast offering it (never re-shown once dismissed).
 Esc exits, arrow keys navigate. `{page}-tour-start / -complete / -skip` events land in
 GoatCounter, so completion rates are measurable. Step copy lives in the `STEPS` array in
 each app's tour script.
@@ -116,25 +116,6 @@ debugger (e.g. LinkedIn Post Inspector) to refresh the cached preview.
    `prompts.bridgedental.ai`, save, and tick **Enforce HTTPS** once the check passes.
 3. Update the `og:url` / `og:image` absolute URLs in all three HTML files to the new domain.
 
-### Owner builder password gate
-`owner/index.html` is behind a password prompt. It's a **courtesy lock, not security** —
-the site is a public repo, so a technically-inclined visitor can read the content regardless;
-it filters honest people, which is the point. The password is checked as a djb2 hash (never
-stored in plain text in the source), unlock is remembered per device (`localStorage`), and
-`owner-unlock-success` / `owner-unlock-fail` events land in GoatCounter. Passwords are
-case-insensitive.
-
-**To change the password:** compute the new hash —
-```bash
-python3 -c "
-h = 5381
-for c in 'your-new-password-lowercase':
-    h = ((h * 33) & 0xFFFFFFFF) ^ ord(c)
-print(format(h, 'x'))"
-```
-— then replace the old hash in **both** places in `owner/index.html`: the early-lock
-script in `<head>` and the `HASH` constant in the gate script at the bottom.
-
 ### Email capture (hidden until enabled)
 The hub has a "Get new prompts monthly" card that is **hidden by default**. To enable:
 create a free form endpoint (e.g. formspree.io), then set `FORM_ENDPOINT` in the script at
@@ -170,11 +151,7 @@ viewed 2+ pages, **or** they've spent ~45s on a page.
 - **iPhone/iPad Safari** has no install event, so the banner shows the manual
   steps instead: *tap Share → Add to Home Screen*.
 - **Anti-nag:** never shown once installed, dismissal snoozes for 14 days, hard
-  cap of 3 lifetime shows. On the password-gated **owner** builder it only appears
-  once the courtesy gate is unlocked (never on the password screen).
-- **iOS note:** installed home-screen apps get a *separate* storage jar from
-  Safari, so an owner who installs will re-enter the courtesy password once inside
-  the installed app. Android shares storage, so no re-entry there.
+  cap of 3 lifetime shows.
 
 ### Analytics
 The install funnel lands in GoatCounter alongside the existing events:

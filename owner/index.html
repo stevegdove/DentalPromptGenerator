@@ -23,15 +23,6 @@
 <meta name="twitter:description" content="Build a sharp, confidential-safe AI prompt for running your practice — statement audits, P&L reviews, growth plans, and more." />
 <meta name="twitter:image" content="https://stevegdove.github.io/DentalPromptGenerator/assets/og-card.png" />
 <script data-goatcounter="https://bridgedental.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
-<script>
-  // Courtesy lock: hides the owner builder until the password has been entered
-  // once on this device. Not real security — the content still ships to the browser.
-  (function () {
-    var locked = true;
-    try { locked = localStorage.getItem("bd-owner-unlocked") !== "f36b8ed8"; } catch (e) {}
-    if (locked) document.documentElement.classList.add("bd-locked");
-  })();
-</script>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Mulish:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -470,37 +461,6 @@
   .toast-close { background: none; color: rgba(255,255,255,.7); font-size: 1.05rem; padding: .2rem .4rem; }
   .toast-close:hover { color: #fff; }
 
-  /* ---------- Owner password gate ---------- */
-  #owner-gate { display: none; }
-  html.bd-locked header, html.bd-locked main, html.bd-locked footer { display: none; }
-  html.bd-locked #owner-gate {
-    display: flex; position: fixed; inset: 0; z-index: 50;
-    background: var(--grad-hero);
-    padding: 4.5rem 1.25rem 1.6rem;   /* top clearance for the crumb */
-    overflow-y: auto;
-  }
-  .gate-card {
-    background: var(--white); border-radius: var(--radius-lg);
-    box-shadow: var(--shadow); padding: 2rem 1.8rem;
-    max-width: 26rem; width: 100%;
-    margin: auto;   /* centers when there's room, scrolls (never clips) when not */
-  }
-  .gate-card h2 { font-size: 1.3rem; font-weight: 700; margin-bottom: .4rem; }
-  .gate-card p { margin: 0 0 1rem; }
-  .gate-form { display: flex; gap: .6rem; flex-wrap: wrap; }
-  .gate-form input {
-    flex: 1 1 160px; font-family: var(--font-body); font-size: 1rem;
-    padding: .8rem .9rem; border: 1px solid var(--line);
-    border-radius: var(--radius-sm); color: var(--ink);
-    transition: border-color .15s, box-shadow .15s;
-  }
-  .gate-form input:focus { outline: none; border-color: var(--rose);
-    box-shadow: 0 0 0 3px rgba(239,58,102,.25); }
-  .gate-err { color: #B8772A; font-weight: 600; margin-top: .8rem; }
-  .gate-help { font-size: .88rem; color: var(--muted); margin-top: 1rem; }
-  .gate-help a { color: var(--rose); text-decoration: none; font-weight: 600; }
-  .gate-crumb { position: absolute; top: 1.6rem; left: 1.25rem; margin: 0; }
-
   @media (max-width: 560px) {
     body { font-size: 16px; }
     .actions .btn { flex: 1 1 100%; }
@@ -514,21 +474,6 @@
 </style>
 </head>
 <body>
-  <div id="owner-gate" role="dialog" aria-modal="true" aria-labelledby="gate-title">
-    <p class="hub-crumb gate-crumb"><a href="../">← All prompt builders</a></p>
-    <div class="gate-card">
-      <span class="eyebrow">Owners &amp; operators</span>
-      <h2 id="gate-title">This builder is password-protected.</h2>
-      <p>This builder is for practice owners, partners, and operations leaders. Enter the password to continue.</p>
-      <form class="gate-form" id="gate-form">
-        <label for="gate-pass" style="position:absolute; left:-9999px;">Password</label>
-        <input id="gate-pass" type="password" autocomplete="off" placeholder="Password" autofocus />
-        <button type="submit" class="btn btn--primary">Unlock</button>
-      </form>
-      <p class="gate-err" id="gate-err" hidden>That's not it — double-check with Dr. Steve or Dr. Beau.</p>
-      <p class="gate-help">Don't have the password? Ask Dr. Steve or Dr. Beau. The <a href="../team/">team builder</a> is open to everyone.</p>
-    </div>
-  </div>
   <header class="hero">
     <div class="hero-inner">
       <p class="hub-crumb"><a href="../">← All prompt builders</a></p>
@@ -1011,7 +956,7 @@
       });
       var seen = null;
       try { seen = localStorage.getItem(SEEN_KEY); } catch (e) {}
-      if (!seen && !document.documentElement.classList.contains("bd-locked")) {
+      if (!seen) {
         setTimeout(function () { toast.hidden = false; }, 900);
       }
     })();
@@ -2355,34 +2300,6 @@
   }
   updatePreview();
 })();
-</script>
-<script>
-  // Password gate. Compares a djb2 hash so the password isn't readable in
-  // source; unlock is remembered per device. See README to change the password.
-  (function () {
-    var HASH = "f36b8ed8";
-    function djb2(s) {
-      var h = 5381;
-      for (var i = 0; i < s.length; i++) h = (Math.imul(h, 33) ^ s.charCodeAt(i)) >>> 0;
-      return h.toString(16);
-    }
-    var form = document.getElementById("gate-form");
-    if (!form) return;
-    form.addEventListener("submit", function (e) {
-      e.preventDefault();
-      var v = document.getElementById("gate-pass").value.trim().toLowerCase();
-      var ok = djb2(v) === HASH;
-      if (ok) {
-        try { localStorage.setItem("bd-owner-unlocked", HASH); } catch (err) {}
-        document.documentElement.classList.remove("bd-locked");
-      } else {
-        document.getElementById("gate-err").hidden = false;
-      }
-      if (window.goatcounter && window.goatcounter.count) {
-        window.goatcounter.count({ path: ok ? "owner-unlock-success" : "owner-unlock-fail", event: true });
-      }
-    });
-  })();
 </script>
 <script src="../assets/pwa-install.js"></script>
 </body>
