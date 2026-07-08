@@ -67,30 +67,49 @@ flag** so nothing regresses.
 
 ## Architecture
 
+**Folder-per-vertical stubs over one shared, module-based engine.** The engine lives once
+as native **ES modules** under `/app/`; each vertical is a tiny HTML stub folder that
+imports those modules and loads its own pack.
+
 ```
-/index.html            ← hub: vertical picker (reads a manifest of packs)
-/app/index.html        ← the ONE generic engine (loads ?type=<vertical>)
+/index.html            ← hub: vertical picker (reads the manifest)
 /app/engine.js         ← buildPrompt(), cascading selects, tone, details, share, providers
 /app/pack.js           ← pack loader + schema validator (fails loudly)
 /app/library.js        ← unified saved-prompt store (localStorage backend, swappable)
 /app/theme.js          ← applies theme tokens → CSS custom properties
-/verticals/manifest.json   ← list of available packs (id, name, tagline, theme accent)
+/app/analytics.js      ← GoatCounter event helper (enforces the naming scheme)
+/dental/index.html     ← tiny stub: imports /app/*.js, loads verticals/dental.json
+/church/index.html     ← tiny stub → verticals/church.json
+/auto-shop/index.html  ← tiny stub → verticals/auto-shop.json
+/team/index.html       ← redirect stub → /dental/  (preserves old share links)
+/owner/index.html      ← redirect stub → /dental/
+/verticals/manifest.json   ← list of packs (id, name, tagline, theme accent)
 /verticals/dental.json
 /verticals/church.json
 /verticals/auto-shop.json
-/assets/<vertical>/...     ← per-vertical logos/images
+/assets/<vertical>/...     ← per-vertical logos / og:image cards
 ```
 
-> Final file layout (single-file vs split JS) is an implementation-planning detail; the
-> engine MUST be de-duplicated into shared code either way. Vanilla JS, no bundler; scripts
-> included directly. Must run from a static file server / GitHub Pages with the folder
-> structure intact (same constraint as today).
+**Decisions (resolved from earlier open questions):**
+- **Engine split:** native **ES modules** (`<script type="module">` + `import`/`export`),
+  **no bundler** — standards-based and de-duplicated. Trade-off, stated intentionally: ES
+  modules and `fetch()` of pack JSON **do not run over `file://`**, so the app **must be
+  served** (GitHub Pages, or the `python3 -m http.server` command already in the README).
+  Double-click-to-open is no longer supported; this is an accepted cost of external packs +
+  modules.
+- **URL layout:** **folder per vertical** (`/dental/`, `/church/`, `/auto-shop/`). Clean
+  readable URLs, per-vertical `og:image`, and existing `?p=` share links keep working as
+  `/dental/?p=…`. Legacy `/team/` and `/owner/` become **redirect stubs** to `/dental/`
+  (query string preserved) so links already in the wild don't break.
+- **Per-vertical stubs** are near-identical and can be generated; each sets its own
+  `og:image`/title and names its pack.
 
 ### Data flow
 
 1. Hub reads `verticals/manifest.json` → renders picker cards (themed by accent).
-2. User picks a vertical → navigates to `app/?type=<id>`.
-3. `pack.js` fetches `verticals/<id>.json`, validates it, hands it to the engine.
+2. User picks a vertical → navigates to `/<vertical>/` (e.g. `/dental/`).
+3. The stub imports the `/app/` modules; `pack.js` fetches `verticals/<id>.json`,
+   validates it, hands it to the engine.
 4. `theme.js` maps `pack.theme` → CSS custom properties (the "skin").
 5. Engine renders vocabulary labels + cascading Role → Context → Task → Format from the
    pack; `buildPrompt()` assembles the prompt and appends the **role-resolved safety rule**.
@@ -199,6 +218,30 @@ Replaces the existing `favorites` feature entirely.
   a **schema-valid** JSON pack for hand-editing. This is an **authoring aid**, not a runtime
   feature. No AI runs in the app.
 
+## Analytics (GoatCounter) — event-naming scheme
+
+GoatCounter's free tier has no custom properties, so the **event name carries every
+dimension**. Rules: never put user/prompt content in a name (privacy + cardinality); use a
+**fixed, closed vocabulary of action verbs reused identically across every vertical** so
+verticals are directly comparable; **vertical first**, hyphen-delimited, lowercase.
+
+**Pattern:** `{vertical}-{action}[-{target}]`
+
+| Event | Fires on |
+|---|---|
+| `{vertical}-copy` | Copy prompt |
+| `{vertical}-open-{chatgpt\|claude\|gemini\|grok}` | Open-in provider |
+| `{vertical}-save` | Save to Library |
+| `{vertical}-share` | Create `?p=` share link |
+| `{vertical}-library-open` | Open the Library view |
+| `{vertical}-gate-{success\|fail}` | Courtesy gate (sensitive roles) |
+| `{vertical}-outbound-bridgedental` | Footer link |
+| `hub-pick-{vertical}` | Vertical chosen on the hub |
+
+`/app/analytics.js` centralizes emission so names can't drift per vertical. This renames
+today's ad-hoc `team-*`/`owner-*` events into one system; historical data stays under the
+old names (a one-time, accepted discontinuity).
+
 ## Phased Roadmap
 
 | Phase | Scope | Ships on |
@@ -232,9 +275,16 @@ are built to lift into it later — none of Phase 4 is implemented in this proje
   (`team-*`, `owner-*`). *Mitigation:* define a consistent event-naming scheme across
   verticals during Phase 1 (implementation-planning detail).
 
+## Resolved Decisions (formerly open questions)
+
+- **Engine file split** → native **ES modules** under `/app/`, no bundler; app must be
+  served (no `file://`). See Architecture.
+- **GoatCounter naming** → `{vertical}-{action}[-{target}]` with a closed verb set,
+  centralized in `/app/analytics.js`. See Analytics.
+- **URL layout** → **folder per vertical** (`/dental/`, `/church/`, `/auto-shop/`) over
+  shared `/app/` modules; `/team/` and `/owner/` become redirect stubs. See Architecture.
+
 ## Open Questions (for implementation planning)
 
-- Exact file split of the shared engine (single `app/index.html` vs. split JS modules).
-- GoatCounter event-naming scheme across verticals.
-- Whether the hub picker and the app live at `/` + `/app/` or another layout that keeps
-  existing `?p=` share links and og:image URLs working.
+- None outstanding at the design level. Remaining choices (e.g. exact stub-generation
+  approach, `og:image` card production per vertical) are implementation-plan details.
