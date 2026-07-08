@@ -832,9 +832,38 @@
         })[0];
         return eb ? eb.closest("section") : null;
       }
+      // Practice-details panel helpers (used by the "make it yours" step below).
+      var tourOpenedProfile = false;
+      var PF_IDS = ["pf-name", "pf-doctors", "pf-phone", "pf-website", "pf-booking", "pf-address", "pf-hours", "pf-review", "pf-signoff"];
+      function profilePanelOpen() {
+        var f = document.getElementById("profile-form");
+        return !!f && !f.hidden;
+      }
+      function profileFieldsEmpty() {
+        return PF_IDS.every(function (id) {
+          var e = document.getElementById(id);
+          return !e || !e.value.trim();
+        });
+      }
+      function openProfilePanel() {
+        var t = document.getElementById("profile-toggle");
+        if (t && !profilePanelOpen()) { t.click(); tourOpenedProfile = true; }
+      }
+      function restoreProfilePanel() {
+        // Collapse the panel again only if the tour opened it and nothing was typed or
+        // saved — so we never yank away details the user started entering.
+        if (tourOpenedProfile && profilePanelOpen() && profileFieldsEmpty()) {
+          var t = document.getElementById("profile-toggle");
+          if (t) t.click();
+        }
+        tourOpenedProfile = false;
+      }
       var STEPS = [
         { t: "Welcome! 👋", el: null,
           b: "Four picks turn into a sharp, confidential-safe prompt for running the business. About a minute — let's walk through it." },
+        { t: "First — make it yours", el: function () { return document.getElementById("profile-card"); },
+          enter: openProfilePanel, leave: restoreProfilePanel,
+          b: "Add your practice details once — name, phone, website, sign-off — and we'll weave them into every prompt automatically, so you never type [practice name] by hand again. It's saved on this device only, and confidential account or patient info always stays a blank. Optional, but it's the biggest time-saver here." },
         { t: "Fast lane", el: function () { return document.querySelector(".quickstart"); },
           b: "In a hurry? One click on any example fills in all four picks — then tweak whatever you like." },
         { t: "1 · Pick your expert", el: function () { return byEyebrow("01"); },
@@ -862,6 +891,8 @@
         window.removeEventListener("scroll", onMove, true);
       }
       function end(done) {
+        var cur = STEPS[idx];
+        if (cur && cur.leave) cur.leave();
         track(PAGE + (done ? "-tour-complete" : "-tour-skip"));
         cleanup();
       }
@@ -877,6 +908,8 @@
         requestAnimationFrame(function () { rafPending = false; if (active) position(); });
       }
       function next(dir) {
+        var cur = STEPS[idx];
+        if (cur && cur.leave) cur.leave();
         var i = idx + dir;
         while (i >= 0 && i < STEPS.length) {
           var el = STEPS[i].el ? STEPS[i].el() : undefined;
@@ -890,6 +923,7 @@
       }
       function render() {
         var step = STEPS[idx];
+        if (step.enter) step.enter();
         if (!card) {
           card = document.createElement("div");
           card.className = "tour-card";
