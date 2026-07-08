@@ -309,7 +309,8 @@ export async function initApp({ verticalId }) {
       format: getFormatInfo(),
       ask: askToggle.checked,
       phrasing: ph || null,
-      researchNote: (task && task.research && ph && ph.researchNote) ? ph.researchNote : ""
+      researchNote: (task && task.research && ph && ph.researchNote) ? ph.researchNote : "",
+      extraSafetyKeys: (task && Array.isArray(task.safetyKeys)) ? task.safetyKeys : []
     };
   }
 

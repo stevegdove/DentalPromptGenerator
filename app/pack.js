@@ -23,6 +23,12 @@ export function validatePack(obj) {
     if (!Array.isArray(r.safetyKeys)) errors.push(`role[${i}] safetyKeys must be an array`);
     else r.safetyKeys.forEach((k) => { if (!safetyKeys.includes(k)) errors.push(`role[${i}] references unknown safety rule "${k}"`); });
     if (!Array.isArray(r.tasks)) errors.push(`role[${i}] tasks must be an array`);
+    else r.tasks.forEach((t, j) => {
+      if (t && typeof t === "object" && !Array.isArray(t) && t.safetyKeys !== undefined) {
+        if (!Array.isArray(t.safetyKeys)) errors.push(`role[${i}].tasks[${j}] safetyKeys must be an array`);
+        else t.safetyKeys.forEach((k) => { if (!safetyKeys.includes(k)) errors.push(`role[${i}].tasks[${j}] references unknown safety rule "${k}"`); });
+      }
+    });
     if (typeof r.phrasing === "string" && r.phrasing) {
       const hasPhrasing = obj.phrasings && typeof obj.phrasings === "object" && !Array.isArray(obj.phrasings)
         && Object.prototype.hasOwnProperty.call(obj.phrasings, r.phrasing);

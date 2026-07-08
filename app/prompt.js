@@ -9,9 +9,18 @@ export function capitalize(s) {
   return s ? s.charAt(0).toUpperCase() + s.slice(1) : "";
 }
 
-export function resolveSafety(pack, roleValue) {
+// Resolves the ordered safety strings for a role, optionally augmented by
+// task-level keys (e.g. a wealth task under a tax role adding the investment
+// disclaimer). Role keys come first, then any extra keys not already present;
+// dedup is by key so a rule never appears twice.
+export function resolveSafety(pack, roleValue, extraKeys = []) {
   const role = (pack.roles || []).find((r) => r.value === roleValue);
-  const keys = (role && role.safetyKeys) || pack.defaultSafety || [];
+  const roleKeys = (role && role.safetyKeys) || pack.defaultSafety || [];
+  const seen = new Set();
+  const keys = [];
+  for (const k of [...roleKeys, ...(extraKeys || [])]) {
+    if (!seen.has(k)) { seen.add(k); keys.push(k); }
+  }
   return keys.map((k) => pack.safety[k]).filter(Boolean);
 }
 
@@ -77,6 +86,6 @@ export function buildPrompt(pack, sel) {
   if (sel.taskInput) {
     sections.push(ph.pasteTemplate.replace(/\{label\}/g, sel.taskInput));
   }
-  resolveSafety(pack, sel.roleValue).forEach((s) => sections.push(s));
+  resolveSafety(pack, sel.roleValue, sel.extraSafetyKeys || []).forEach((s) => sections.push(s));
   return sections.join("\n\n");
 }
