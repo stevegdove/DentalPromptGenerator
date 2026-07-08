@@ -31,6 +31,17 @@ modern browser. Keep the `assets/` folder (the Bridge Dental logo) next to it.
 Every dropdown has an **"Other…"** option that reveals a free-text box, used verbatim in the prompt.
 The **preview** updates live and stitches the picks into one instruction, then appends the safety rule.
 
+### Practice profile — personalize once, shared with the team builder
+
+A **"Make prompts sound like your practice"** card at the top lets the practice fill in its own
+details once (name, doctor(s), phone, website, booking link, address, office hours, review link,
+sign-off). When set, the office's own fill-in-the-blanks (`[practice name]`, `[website]`,
+`[phone]`, …) are swapped for the real values and a short **"Practice details you can use
+directly"** block is appended above the safety rule. Confidential blanks like `[account #]` and
+`[patient name]` are never touched. Details are stored on-device under the shared `bd-practice-v1`
+key — the same one the team builder uses — so they're entered only once. See `PROFILE_FIELDS` /
+`fillPracticePlaceholders()` in `index.html`.
+
 ### Quick-start examples, detail fields, and share links
 
 - **Try an example** — five one-click starters at the top ("Audit my card statements",

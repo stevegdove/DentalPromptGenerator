@@ -48,6 +48,19 @@ question, ask for a review, balance reminder, calm an upset caller, explain a de
 One tap fills all four picks, ready to copy; the full builder below covers the custom cases.
 The set lives in the `EXAMPLES` array in `team/index.html`.
 
+Both builders open with a **"Make prompts sound like your office" practice profile** — a
+quick, one-time onboarding at the top of the page. A practice fills in its own details once
+(office name, doctor(s), phone, website, online booking link, address, office hours, Google
+review link, and a sign-off) and every prompt is then personalized two ways: the office's own
+fill-in-the-blanks (`[practice name]`, `[phone]`, `[website]`, `[booking link]`, `[address]`,
+`[office hours]`, `[review link]`, and common variants) are swapped for the real values, and a
+short **"Practice details you can use directly"** reference block is appended above the safety
+rule so the AI uses them wherever a message needs them. **Patient / confidential blanks are
+never touched** — `[first name]`, `[date]`, `[account #]`, etc. always stay blank. Details are
+saved on-device under the shared `bd-practice-v1` key, so they're entered **once** and reused
+across both builders. The card collapses to summary chips with Edit / Clear all. Field list and
+placeholder matching live in `PROFILE_FIELDS` / `fillPracticePlaceholders()` in each `index.html`.
+
 Both builders have a **guided tour** — a spotlight walkthrough of every step with a
 recommendation per stop (hand-rolled, no libraries). It launches from the "Take the
 60-second tour" button in the hero, and first-time visitors get a one-time dismissible

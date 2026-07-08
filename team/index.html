@@ -349,6 +349,65 @@
   }
   .quickstart .chip:hover { border-color: var(--rose); color: var(--rose); }
 
+  /* ---------- Practice profile (personalize once) ---------- */
+  .profile {
+    background: var(--white); border: 1px solid var(--line);
+    border-radius: var(--radius-lg); box-shadow: var(--shadow);
+    padding: 1.15rem 1.4rem 1.25rem; margin-bottom: 1rem;
+  }
+  .profile-head { display: flex; align-items: flex-start; gap: .8rem; flex-wrap: wrap; }
+  .profile-icon {
+    width: 34px; height: 34px; border-radius: var(--radius-sm); flex: 0 0 auto;
+    background: var(--rose-tint); color: var(--rose);
+    display: inline-flex; align-items: center; justify-content: center;
+  }
+  .profile-icon svg { width: 18px; height: 18px; fill: none; stroke: currentColor;
+    stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+  .profile-head-copy { flex: 1 1 15rem; min-width: 0; }
+  .profile-title { font-family: var(--font-head); font-weight: 700; color: var(--ink); font-size: 1rem; display: block; }
+  .profile-sub { font-size: .85rem; color: var(--ink-soft); margin: .15rem 0 0; }
+  .profile-sub code {
+    font-family: var(--font-body); background: var(--lavender); color: var(--indigo);
+    padding: .05rem .35rem; border-radius: 5px; font-size: .82rem;
+  }
+  .profile-toggle {
+    font-family: var(--font-head); font-weight: 600; font-size: .88rem;
+    color: var(--rose); background: var(--rose-tint); border: 1px solid transparent;
+    border-radius: var(--radius-pill); padding: .5rem 1.05rem; cursor: pointer;
+    white-space: nowrap; transition: background .15s;
+  }
+  .profile-toggle:hover { background: #FBD4DF; }
+  .profile-toggle:focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(239,58,102,.3); }
+
+  .profile-summary { margin-top: .85rem; display: flex; flex-wrap: wrap; gap: .45rem; }
+  .profile-summary[hidden] { display: none; }
+  .profile-chip {
+    display: inline-flex; align-items: center; gap: .4rem;
+    background: var(--lavender); color: var(--indigo);
+    font-size: .85rem; font-weight: 600; border-radius: var(--radius-pill);
+    padding: .35rem .8rem;
+  }
+  .profile-chip svg { width: 13px; height: 13px; fill: none; stroke: currentColor;
+    stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; }
+
+  .profile-form { margin-top: 1rem; }
+  .profile-form[hidden] { display: none; }
+  .profile-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .75rem 1rem; }
+  @media (max-width: 560px) { .profile-grid { grid-template-columns: 1fr; } }
+  .pf-field { display: block; }
+  .pf-field > span {
+    font-family: var(--font-head); font-weight: 600; font-size: .85rem;
+    color: var(--ink); display: block; margin-bottom: .3rem;
+  }
+  .pf-note { font-size: .82rem; color: var(--muted); margin: .9rem 0 0; }
+  .profile-actions { display: flex; align-items: center; gap: .6rem; margin-top: 1rem; flex-wrap: wrap; }
+  .pf-clear {
+    background: none; border: none; color: var(--muted); font-family: var(--font-head);
+    font-weight: 600; font-size: .85rem; cursor: pointer; margin-left: auto; padding: .5rem;
+  }
+  .pf-clear:hover { color: var(--rose-dark); }
+  .pf-clear[hidden] { display: none; }
+
   /* ---------- Guided tour ---------- */
   .tour-launch {
     display: inline-flex; align-items: center; gap: .5rem;
@@ -447,6 +506,52 @@
   </header>
 
   <main class="bd-scope">
+    <!-- Practice profile — personalize prompts once, reused everywhere -->
+    <section class="profile" id="profile-card" aria-label="Your practice details">
+      <div class="profile-head">
+        <span class="profile-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M3 21h18"/><path d="M5 21V7l7-4 7 4v14"/><path d="M9 9h.01M15 9h.01M9 13h.01M15 13h.01M9 17h6"/></svg>
+        </span>
+        <div class="profile-head-copy">
+          <span class="profile-title">Make prompts sound like your office</span>
+          <p class="profile-sub">Add your practice details once and we’ll weave them into every prompt — no more typing <code>[practice name]</code> or <code>[booking link]</code> by hand. Saved on this device only.</p>
+        </div>
+        <button type="button" class="profile-toggle" id="profile-toggle" aria-expanded="false">Add practice details</button>
+      </div>
+
+      <!-- Summary chips shown when a profile exists and the form is collapsed -->
+      <div class="profile-summary" id="profile-summary" hidden></div>
+
+      <form class="profile-form" id="profile-form" hidden>
+        <div class="profile-grid">
+          <label class="pf-field"><span>Practice / office name</span>
+            <input type="text" id="pf-name" class="bd-text" placeholder="e.g. Bridge Dental" autocomplete="organization" /></label>
+          <label class="pf-field"><span>Doctor(s)</span>
+            <input type="text" id="pf-doctors" class="bd-text" placeholder="e.g. Dr. Beau Smith &amp; Dr. Steve Dove" /></label>
+          <label class="pf-field"><span>Phone</span>
+            <input type="tel" id="pf-phone" class="bd-text" placeholder="e.g. (555) 123-4567" autocomplete="tel" /></label>
+          <label class="pf-field"><span>Website</span>
+            <input type="text" id="pf-website" class="bd-text" placeholder="e.g. bridgedental.ai" inputmode="url" /></label>
+          <label class="pf-field"><span>Online booking link</span>
+            <input type="text" id="pf-booking" class="bd-text" placeholder="e.g. bridgedental.ai/book" inputmode="url" /></label>
+          <label class="pf-field"><span>Address / area</span>
+            <input type="text" id="pf-address" class="bd-text" placeholder="e.g. 123 Main St, Austin TX" /></label>
+          <label class="pf-field"><span>Office hours</span>
+            <input type="text" id="pf-hours" class="bd-text" placeholder="e.g. Mon–Thu 8–5, Fri 8–1" /></label>
+          <label class="pf-field"><span>Google review link</span>
+            <input type="text" id="pf-review" class="bd-text" placeholder="Your “leave a review” short link" inputmode="url" /></label>
+          <label class="pf-field"><span>Sign messages off as</span>
+            <input type="text" id="pf-signoff" class="bd-text" placeholder="e.g. The team at Bridge Dental" /></label>
+        </div>
+        <p class="pf-note">These are your office’s own public details — never a patient’s. Patient names, dates, and chart numbers always stay as fill-in-the-blanks like [first name].</p>
+        <div class="profile-actions">
+          <button type="submit" class="btn btn--primary" id="pf-save">Save details</button>
+          <button type="button" class="btn btn--secondary" id="pf-cancel">Cancel</button>
+          <button type="button" class="pf-clear" id="pf-clear" hidden>Clear all</button>
+        </div>
+      </form>
+    </section>
+
     <!-- Quick start — one-tap everyday tasks (the 80% case) -->
     <section class="quickstart" aria-label="Everyday tasks">
       <div class="quickstart-head">
@@ -1209,6 +1314,8 @@
   var saveBtn = $("save-btn"), saveLabel = $("save-label");
   var saveRow = $("save-row"), saveName = $("save-name"), saveConfirm = $("save-confirm");
   var favsCard = $("favs-card"), favsList = $("favs-list");
+  var profileToggle = $("profile-toggle"), profileSummary = $("profile-summary"),
+      profileForm = $("profile-form"), pfClear = $("pf-clear"), pfCancel = $("pf-cancel");
 
   // ---------- Helpers ----------
   function makeOption(value, label) {
@@ -1510,9 +1617,15 @@
     if (fmt) parts.push("Format: " + ensurePeriod(fmt.text));
     else parts.push("Format: [format].");
 
-    // Placeholder encouragement when format implies it
+    // Placeholder encouragement when format implies it. Practice details the
+    // user has saved are dropped from the examples (they'll be filled in for real).
     if (fmt && fmt.ph) {
-      parts.push("Where a specific detail is needed, leave fill-in-the-blanks like [first name], [date], [time], [booking link], or [practice name].");
+      var prof = loadProfile();
+      var egs = ["[first name]", "[date]", "[time]"];
+      if (!(profileVal(prof, "booking") || profileVal(prof, "website"))) egs.push("[booking link]");
+      if (!profileVal(prof, "name")) egs.push("[practice name]");
+      var lastEg = egs.pop();
+      parts.push("Where a specific detail is needed, leave fill-in-the-blanks like " + egs.join(", ") + ", or " + lastEg + ".");
     }
 
     // Ask-questions-first
@@ -1520,8 +1633,12 @@
       parts.push("Before you write, ask me 2–3 quick questions to get the details right.");
     }
 
-    var body = parts.join(" ");
+    // Swap the practice's own placeholders for saved real values, then add a
+    // short "Practice details" reference block so the AI uses them naturally.
+    var body = fillPracticePlaceholders(parts.join(" "));
     var sections = [body];
+    var pBlock = practiceBlock();
+    if (pBlock) sections.push(pBlock);
 
     // Paste block — for tasks that need source material the AI must work from.
     // If the user pasted the document into the panel under Task, weave it in;
@@ -1950,7 +2067,130 @@
     });
   }
 
+  // ---------- Practice profile (personalize once, reused everywhere) ----------
+  // Shared across both builders (team + owner) so a practice fills this in once.
+  // Stored on-device only; the office's own public details are NOT patient data.
+  var PROFILE_KEY = "bd-practice-v1";
+  var PROFILE_FIELDS = [
+    { key: "name",    id: "pf-name",    label: "Practice name",         short: "Practice" },
+    { key: "doctors", id: "pf-doctors", label: "Doctor(s)",             short: "Doctor(s)" },
+    { key: "phone",   id: "pf-phone",   label: "Phone",                 short: "Phone" },
+    { key: "website", id: "pf-website", label: "Website",               short: "Website" },
+    { key: "booking", id: "pf-booking", label: "Online booking",        short: "Booking" },
+    { key: "address", id: "pf-address", label: "Address",               short: "Address" },
+    { key: "hours",   id: "pf-hours",   label: "Office hours",          short: "Hours" },
+    { key: "review",  id: "pf-review",  label: "Review link",           short: "Reviews" },
+    { key: "signoff", id: "pf-signoff", label: "Sign messages off as",  short: "Sign-off" }
+  ];
+
+  function loadProfile() {
+    try { return JSON.parse(localStorage.getItem(PROFILE_KEY)) || {}; } catch (e) { return {}; }
+  }
+  function storeProfile(p) {
+    try { localStorage.setItem(PROFILE_KEY, JSON.stringify(p)); } catch (e) { /* ignore */ }
+  }
+  function profileVal(p, key) { return (p[key] || "").trim(); }
+  function profileHasValues(p) {
+    return PROFILE_FIELDS.some(function (f) { return profileVal(p, f.key); });
+  }
+
+  // A short reference block appended to the prompt so the AI uses the real office
+  // details (not blanks) wherever a message needs them.
+  function practiceBlock() {
+    var p = loadProfile();
+    var lines = [];
+    PROFILE_FIELDS.forEach(function (f) {
+      var v = profileVal(p, f.key);
+      if (v) lines.push("- " + f.label + ": " + v);
+    });
+    if (!lines.length) return "";
+    return "Practice details you can use directly (the office’s own public info — not patient data). " +
+           "Use them wherever the message calls for the practice’s name, phone, website, booking link, or sign-off:\n" +
+           lines.join("\n");
+  }
+
+  // Swap only the practice's OWN placeholders (name, phone, website, booking,
+  // address, hours, reviews) for real values. Patient blanks like [first name],
+  // [date], [time] are never touched — they must stay blanks for privacy.
+  function fillPracticePlaceholders(text) {
+    var p = loadProfile();
+    if (!profileHasValues(p)) return text;
+    var website = profileVal(p, "website"), booking = profileVal(p, "booking");
+    var subs = [
+      { re: /\[\s*(?:practice name|practice|office name|our office|clinic name|clinic)\s*\]/gi, val: profileVal(p, "name") },
+      { re: /\[\s*(?:doctor'?s? names?|doctors?|dentist'?s? names?|dentists?)\s*\]/gi,          val: profileVal(p, "doctors") },
+      { re: /\[\s*(?:phone numbers?|phone|office numbers?|number to call)\s*\]/gi,               val: profileVal(p, "phone") },
+      { re: /\[\s*(?:booking links?|book online|online booking|scheduling links?|schedule links?|booking url)\s*\]/gi, val: booking || website },
+      { re: /\[\s*(?:website address|web ?site|website url|website|url)\s*\]/gi,                 val: website || booking },
+      { re: /\[\s*(?:office address|address|location)\s*\]/gi,                                   val: profileVal(p, "address") },
+      { re: /\[\s*(?:office hours|business hours|hours)\s*\]/gi,                                  val: profileVal(p, "hours") },
+      { re: /\[\s*(?:google review links?|review links?|review url)\s*\]/gi,                     val: profileVal(p, "review") }
+    ];
+    subs.forEach(function (s) { if (s.val) text = text.replace(s.re, s.val); });
+    return text;
+  }
+
+  function renderProfile() {
+    var p = loadProfile();
+    var has = profileHasValues(p);
+    profileSummary.innerHTML = "";
+    if (has) {
+      PROFILE_FIELDS.forEach(function (f) {
+        var v = profileVal(p, f.key);
+        if (!v) return;
+        var chip = document.createElement("span");
+        chip.className = "profile-chip";
+        chip.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>';
+        chip.appendChild(document.createTextNode(f.short + ": " + v));
+        profileSummary.appendChild(chip);
+      });
+      show(profileSummary);
+      profileToggle.textContent = "Edit practice details";
+      pfClear.hidden = false;
+    } else {
+      hide(profileSummary);
+      profileToggle.textContent = "Add practice details";
+      pfClear.hidden = true;
+    }
+  }
+
+  function openProfileForm() {
+    var p = loadProfile();
+    PROFILE_FIELDS.forEach(function (f) { $(f.id).value = p[f.key] || ""; });
+    hide(profileSummary);
+    show(profileForm);
+    profileToggle.setAttribute("aria-expanded", "true");
+    $("pf-name").focus();
+  }
+  function closeProfileForm() {
+    hide(profileForm);
+    profileToggle.setAttribute("aria-expanded", "false");
+    renderProfile();
+  }
+
+  profileToggle.addEventListener("click", function () {
+    if (profileForm.hidden) openProfileForm();
+    else closeProfileForm();
+  });
+  pfCancel.addEventListener("click", closeProfileForm);
+  profileForm.addEventListener("submit", function (e) {
+    e.preventDefault();
+    var p = {};
+    PROFILE_FIELDS.forEach(function (f) { p[f.key] = $(f.id).value.trim(); });
+    storeProfile(p);
+    closeProfileForm();
+    updatePreview(); // refresh the live prompt with the new details
+  });
+  pfClear.addEventListener("click", function () {
+    if (!confirm("Remove all saved practice details from this device?")) return;
+    try { localStorage.removeItem(PROFILE_KEY); } catch (e) {}
+    PROFILE_FIELDS.forEach(function (f) { $(f.id).value = ""; });
+    closeProfileForm();
+    updatePreview();
+  });
+
   // ---------- Init ----------
+  renderProfile();
   populateRoles();
   populateFormats();
   buildExampleChips();
