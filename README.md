@@ -42,6 +42,19 @@ Task and Format dropdowns open with a **"★ Most popular"** group above the ful
 the curated sets live in `POPULAR_TASKS` / `POPULAR_FORMATS` in each app's `index.html`;
 update them from GoatCounter task data once real usage accumulates.
 
+Both builders have a **guided tour** — a spotlight walkthrough of every step with a
+recommendation per stop (hand-rolled, no libraries). It launches from the "Take the
+60-second tour" button in the hero, and first-time visitors get a one-time dismissible
+toast offering it (never re-shown once dismissed; suppressed on the owner password gate).
+Esc exits, arrow keys navigate. `{page}-tour-start / -complete / -skip` events land in
+GoatCounter, so completion rates are measurable. Step copy lives in the `STEPS` array in
+each app's tour script.
+
+The **"Ask me 2–3 quick questions first" toggle auto-checks** for tasks where clarifying
+questions pay off (scripts, handouts, SOPs, plans, tough conversations — and all custom
+"Other…" tasks) and stays off for quick single-output tasks; the user can always flip it.
+The curated sets live in `ASK_FIRST` in each app's `index.html`.
+
 The assembled **prompt is an editable text box** — users can tweak it before copying or
 sending. Hand edits stick until a pick changes (or Generate is hit), which rebuilds it.
 The safety rule (and the owner builder's verify rule for money roles) is silently

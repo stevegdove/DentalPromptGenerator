@@ -82,7 +82,14 @@
     display: flex; align-items: center; justify-content: space-between;
     gap: 1rem; flex-wrap: wrap; margin-bottom: 1.6rem;
   }
-  .hero-logo { height: 30px; width: auto; display: block; }
+  .hero-logo { height: 32px; width: auto; display: block; }
+  .brand-lockup { display: flex; align-items: center; gap: .85rem; min-width: 0; }
+  .brand-slogan {
+    font-family: var(--font-body); font-weight: 600; font-size: .92rem;
+    color: rgba(255,255,255,.85); line-height: 1.35;
+    padding-left: .85rem; border-left: 1px solid rgba(255,255,255,.35);
+    max-width: 15rem;
+  }
   .phi-badge {
     font-family: var(--font-head); font-weight: 600; font-size: .8rem;
     color: var(--rose); background: var(--rose-tint);
@@ -313,9 +320,67 @@
   select optgroup { font-family: var(--font-head); font-weight: 600; color: var(--muted); }
   select option { color: var(--ink); font-weight: 400; }
 
+  /* ---------- Guided tour ---------- */
+  .tour-launch {
+    display: inline-flex; align-items: center; gap: .5rem;
+    background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.35);
+    border-radius: var(--radius-pill); padding: .45rem 1rem;
+    font-family: var(--font-head); font-weight: 600; font-size: .88rem; color: #fff;
+    cursor: pointer; margin-top: .8rem; transition: background .15s;
+  }
+  .tour-launch:hover { background: rgba(255,255,255,.2); }
+  .tour-launch svg { width: 14px; height: 14px; fill: currentColor; }
+  .tour-spot {
+    position: fixed; z-index: 70; pointer-events: none;
+    border-radius: 14px;
+    box-shadow: 0 0 0 4px rgba(239,58,102,.55), 0 0 0 9999px rgba(26,19,64,.62);
+    transition: all .25s ease;
+  }
+  .tour-card {
+    position: fixed; z-index: 71;
+    background: var(--white); border-radius: var(--radius);
+    box-shadow: 0 12px 40px rgba(26,19,64,.35);
+    padding: 1.1rem 1.2rem; width: min(22rem, calc(100vw - 2rem));
+  }
+  .tour-card h3 { font-family: var(--font-head); font-weight: 700; color: var(--ink);
+    font-size: 1.02rem; margin: 0 0 .3rem; }
+  .tour-card p { font-size: .93rem; color: var(--ink-soft); margin: 0 0 .85rem; line-height: 1.5; }
+  .tour-nav { display: flex; align-items: center; gap: .6rem; }
+  .tour-next {
+    font-family: var(--font-head); font-weight: 600; font-size: .9rem;
+    background: var(--rose); color: #fff; border: none; cursor: pointer;
+    padding: .5rem 1.1rem; border-radius: var(--radius-sm);
+  }
+  .tour-next:hover { background: var(--rose-dark); }
+  .tour-back, .tour-skip {
+    font-family: var(--font-head); font-weight: 600; font-size: .85rem;
+    background: none; border: none; cursor: pointer; color: var(--muted); padding: .5rem .3rem;
+  }
+  .tour-back:hover, .tour-skip:hover { color: var(--ink); }
+  .tour-skip { margin-left: auto; }
+  .tour-dots { display: flex; gap: .3rem; margin-bottom: .7rem; }
+  .tour-dots i { width: 6px; height: 6px; border-radius: 50%; background: var(--line); }
+  .tour-dots i.on { background: var(--rose); }
+  #tour-toast {
+    position: fixed; left: 50%; transform: translateX(-50%); bottom: 1rem; z-index: 40;
+    background: var(--ink); color: #fff; border-radius: var(--radius);
+    box-shadow: 0 8px 30px rgba(26,19,64,.35);
+    padding: .7rem .8rem .7rem 1.1rem; display: flex; align-items: center; gap: .8rem;
+    font-size: .92rem; width: max-content; max-width: calc(100vw - 2rem);
+  }
+  #tour-toast[hidden] { display: none; }
+  #tour-toast button {
+    font-family: var(--font-head); font-weight: 600; cursor: pointer; border: none;
+  }
+  .toast-start { background: var(--rose); color: #fff; border-radius: var(--radius-sm); padding: .45rem .9rem; font-size: .88rem; }
+  .toast-start:hover { background: var(--rose-dark); }
+  .toast-close { background: none; color: rgba(255,255,255,.7); font-size: 1.05rem; padding: .2rem .4rem; }
+  .toast-close:hover { color: #fff; }
+
   @media (max-width: 560px) {
     body { font-size: 16px; }
     .actions .btn { flex: 1 1 100%; }
+    .tour-card { left: 1rem !important; right: 1rem; width: auto; }
   }
 
   /* Respect reduced motion */
@@ -329,7 +394,10 @@
     <div class="hero-inner">
       <p class="hub-crumb"><a href="../">← All prompt builders</a></p>
       <div class="hero-top">
-        <img class="hero-logo" src="data:image/png;base64,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" alt="Bridge Dental" />
+        <div class="brand-lockup">
+          <img class="hero-logo" src="data:image/png;base64,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" alt="Bridge Dental" />
+          <span class="brand-slogan">Your team’s shortcut to useful AI</span>
+        </div>
         <span class="phi-badge">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
           PHI-safe by design
@@ -342,6 +410,10 @@
         <li><span class="hp-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span>About a minute, start to finish</li>
         <li><span class="hp-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></span>Hard conversations, handled kindly</li>
       </ul>
+      <button type="button" class="tour-launch" id="tour-btn">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="6 3 20 12 6 21 6 3"/></svg>
+        Take the 60-second tour
+      </button>
     </div>
   </header>
 
@@ -549,6 +621,13 @@
     Bridge Dental — built by dentists, for dental teams. Your prompt is built in the browser and stays there until you choose to open it in an AI tool.<br />
     Free from the team behind <a href="https://bridgedental.ai/?utm_source=prompt-builders&utm_medium=referral&utm_campaign=team" data-track="team-outbound-bridgedental">bridgedental.ai</a> — less insurance busywork for dental offices.
   </footer>
+
+  <div id="tour-toast" hidden>
+    <span>New here? See how it works in 60 seconds.</span>
+    <button type="button" class="toast-start" id="toast-start">Take the tour</button>
+    <button type="button" class="toast-close" id="toast-close" aria-label="Dismiss">✕</button>
+  </div>
+
   <script>
     document.addEventListener("click", function (e) {
       var el = e.target.closest("[data-track]");
@@ -556,6 +635,153 @@
         window.goatcounter.count({ path: el.getAttribute("data-track"), event: true });
       }
     });
+
+    // ---------- Guided tour (self-contained; no libraries) ----------
+    (function () {
+      var PAGE = "team";
+      var SEEN_KEY = "bd-tour-seen-" + PAGE;
+      function track(name) {
+        if (window.goatcounter && window.goatcounter.count) {
+          window.goatcounter.count({ path: name, event: true });
+        }
+      }
+      function byEyebrow(prefix) {
+        var eb = [].filter.call(document.querySelectorAll(".eyebrow"), function (e) {
+          return e.textContent.trim().toUpperCase().indexOf(prefix.toUpperCase()) === 0;
+        })[0];
+        return eb ? eb.closest("section") : null;
+      }
+      var STEPS = [
+        { t: "Welcome! 👋", el: null,
+          b: "Four picks turn into a ready-to-run AI prompt, with patient privacy handled automatically. This takes about a minute — let's walk through it." },
+        { t: "1 · Pick the role", el: function () { return byEyebrow("01"); },
+          b: "Who should the AI act as? Our recommendation: pick your own job — the wording comes out right for your chair." },
+        { t: "2 · Who's it for?", el: function () { return byEyebrow("02"); },
+          b: "Optional, but it sharpens everything. A nervous patient reads very differently than a price-shopper." },
+        { t: "3 · Pick the task", el: function () { return byEyebrow("03"); },
+          b: "The job to do. Start with the ★ Most popular group. Some tasks open a paste box below — drop in the review or note you're working from and it's woven straight into the prompt." },
+        { t: "4 · Shape the answer", el: function () { return byEyebrow("04"); },
+          b: "Texts, a phone script, an email, a handout — pick the shape you'd actually send." },
+        { t: "Add a little polish", el: function () { return byEyebrow("Optional"); },
+          b: "Set the tone if you like. The \"quick questions\" switch is pre-set on tasks where a couple of clarifying questions make the answer better." },
+        { t: "Your prompt, live", el: function () { return document.querySelector(".preview-card"); },
+          b: "It builds here as you pick — and you can edit anything, right in the box. The safety rule at the bottom is automatic and always stays." },
+        { t: "Send it 🚀", el: function () { return document.getElementById("provider-row"); },
+          b: "Copy the prompt, or open it in ChatGPT, Claude, Gemini, or Grok in one click. That's the whole flow — about a minute, start to finish." }
+      ];
+      var idx = 0, spot = null, card = null, active = false;
+      function cleanup() {
+        if (spot) spot.remove(); if (card) card.remove();
+        spot = card = null; active = false;
+        document.removeEventListener("keydown", onKey, true);
+        window.removeEventListener("resize", onMove);
+        window.removeEventListener("scroll", onMove, true);
+      }
+      function end(done) {
+        track(PAGE + (done ? "-tour-complete" : "-tour-skip"));
+        cleanup();
+      }
+      function onKey(e) {
+        if (e.key === "Escape") { end(false); }
+        else if (e.key === "ArrowRight") { next(1); }
+        else if (e.key === "ArrowLeft") { next(-1); }
+      }
+      var rafPending = false;
+      function onMove() {
+        if (rafPending) return;
+        rafPending = true;
+        requestAnimationFrame(function () { rafPending = false; if (active) position(); });
+      }
+      function next(dir) {
+        var i = idx + dir;
+        while (i >= 0 && i < STEPS.length) {
+          var el = STEPS[i].el ? STEPS[i].el() : undefined;
+          if (STEPS[i].el === null || (el && el.offsetParent !== null)) break;
+          i += dir;
+        }
+        if (i < 0) return;
+        if (i >= STEPS.length) { end(true); return; }
+        idx = i;
+        render();
+      }
+      function render() {
+        var step = STEPS[idx];
+        if (!card) {
+          card = document.createElement("div");
+          card.className = "tour-card";
+          document.body.appendChild(card);
+        }
+        var dots = STEPS.map(function (_, i) {
+          return "<i" + (i === idx ? ' class="on"' : "") + "></i>";
+        }).join("");
+        card.innerHTML =
+          '<div class="tour-dots">' + dots + "</div>" +
+          "<h3></h3><p></p>" +
+          '<div class="tour-nav">' +
+          (idx > 0 ? '<button type="button" class="tour-back">Back</button>' : "") +
+          '<button type="button" class="tour-next">' + (idx === STEPS.length - 1 ? "Done" : "Next") + "</button>" +
+          '<button type="button" class="tour-skip">Skip tour</button></div>';
+        card.querySelector("h3").textContent = step.t;
+        card.querySelector("p").textContent = step.b;
+        card.querySelector(".tour-next").addEventListener("click", function () { next(1); });
+        var back = card.querySelector(".tour-back");
+        if (back) back.addEventListener("click", function () { next(-1); });
+        card.querySelector(".tour-skip").addEventListener("click", function () { end(false); });
+        var el = step.el ? step.el() : null;
+        if (el) el.scrollIntoView({ block: "center" });
+        position();
+        card.querySelector(".tour-next").focus();
+      }
+      function position() {
+        var step = STEPS[idx];
+        var el = step.el ? step.el() : null;
+        if (!el) {
+          if (spot) { spot.remove(); spot = null; }
+          card.style.top = "50%"; card.style.left = "50%";
+          card.style.transform = "translate(-50%, -50%)";
+          return;
+        }
+        card.style.transform = "";
+        if (!spot) {
+          spot = document.createElement("div");
+          spot.className = "tour-spot";
+          document.body.appendChild(spot);
+        }
+        var r = el.getBoundingClientRect();
+        spot.style.top = (r.top - 8) + "px";
+        spot.style.left = (r.left - 8) + "px";
+        spot.style.width = (r.width + 16) + "px";
+        spot.style.height = (r.height + 16) + "px";
+        var ch = card.offsetHeight, cw = card.offsetWidth, vh = window.innerHeight, vw = window.innerWidth;
+        var top = (r.bottom + 14 + ch < vh) ? r.bottom + 14 : Math.max(12, r.top - ch - 14);
+        var left = Math.min(Math.max(12, r.left), vw - cw - 12);
+        card.style.top = top + "px";
+        card.style.left = left + "px";
+      }
+      function start() {
+        try { localStorage.setItem(SEEN_KEY, "1"); } catch (e) {}
+        hideToast();
+        track(PAGE + "-tour-start");
+        idx = 0; active = true;
+        document.addEventListener("keydown", onKey, true);
+        window.addEventListener("resize", onMove);
+        window.addEventListener("scroll", onMove, true);
+        render();
+      }
+      var toast = document.getElementById("tour-toast");
+      function hideToast() { if (toast) toast.hidden = true; }
+      document.getElementById("tour-btn").addEventListener("click", start);
+      document.getElementById("toast-start").addEventListener("click", start);
+      document.getElementById("toast-close").addEventListener("click", function () {
+        try { localStorage.setItem(SEEN_KEY, "1"); } catch (e) {}
+        hideToast();
+      });
+      var seen = null;
+      try { seen = localStorage.getItem(SEEN_KEY); } catch (e) {}
+      if (!seen && !document.documentElement.classList.contains("bd-locked")) {
+        setTimeout(function () { toast.hidden = false; }, 900);
+      }
+    })();
   </script>
 
 <script>
@@ -967,6 +1193,40 @@
     "An email (short and warm)"
   ];
 
+  // Tasks where clarifying questions genuinely pay off — the toggle auto-checks
+  // for these (and for custom "Other…" tasks, the most underspecified of all).
+  // A manual flip is respected until the task changes again.
+  var ASK_FIRST = [
+    "Calm a frustrated reschedule call",
+    "Make it right after a service failure",
+    "Convert a new-patient phone inquiry",
+    "Write a post-deep-cleaning home-care handout",
+    "Motivate better home care",
+    "Write a sterilization / processing SOP",
+    "Write an emergency call triage script",
+    "Write post-op instructions for a procedure",
+    "Present a crown to a hesitant patient",
+    "Phase a large treatment plan",
+    "Handle sticker shock",
+    "Handle “let me think about it”",
+    "Turn a messy process into an SOP",
+    "Write a job posting",
+    "Write interview questions",
+    "Write a do-say / don't-say brief for a sensitive situation",
+    "Draft an employee-handbook section",
+    "Build a monthly social content calendar",
+    "Write a new-patient special announcement",
+    "Announce the launch of a new service",
+    "Present a comprehensive plan ethically",
+    "Deliver difficult news kindly",
+    "Explain informed consent"
+  ];
+  function askDefaultForTask() {
+    if (!taskSel.value) return false;
+    if (taskSel.value === OTHER) return true;
+    return ASK_FIRST.indexOf(getTaskText()) !== -1;
+  }
+
   function populateRoles() {
     fillSelect(roleSel, ROLES.map(function (r) { return { value: r.value, label: r.label }; }), "Choose a role…");
   }
@@ -1350,7 +1610,7 @@
         }
       });
     }
-    if (d.ask) askToggle.checked = true;
+    askToggle.checked = (typeof d.ask === "boolean") ? d.ask : askDefaultForTask();
     renderDetailFields();
     if (d.details) {
       detailsWrap.querySelectorAll("input").forEach(function (i) {
@@ -1413,6 +1673,7 @@
   taskSel.addEventListener("change", function () {
     toggleOther(taskSel, taskOtherWrap, taskOther);
     renderDetailFields();
+    askToggle.checked = askDefaultForTask();
     updatePreview();
   });
   fmtSel.addEventListener("change", function () {
