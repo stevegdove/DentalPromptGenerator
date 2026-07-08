@@ -7,6 +7,24 @@ const CONF = "Safety rule: Keep confidential data out of this prompt. Don't incl
 const VERIFY = "Verify rule: AI-found figures and estimates are a starting point — confirm against primary sources, and with your CPA and attorney, before any offer, purchase, or filing.";
 const PLACEHOLDER = "Where a specific detail is needed, use bracketed placeholders like [first name], [date], [time], [booking link], or [practice name].";
 
+// The owner/advisor phrasing profile — mirrors legacy owner/index.html:1229-1300
+// (role alone, separate "Here's the situation:" sentence, "Keep it {tones}.",
+// no placeholder line ever, research note after format/before ask, and the
+// "attach or paste" document block).
+const ADVISOR_PHRASING = {
+  emptyRole: "[expert]",
+  contextMode: "situation",
+  toneTemplate: "Keep it {tones}.",
+  askClause: "Before you start, ask me 2–3 quick questions to get the details right.",
+  placeholderLine: false,
+  researchNote: "Use a web-connected AI tool for this (ChatGPT with search, Gemini, Grok, or Claude with web) so it can look up current data.",
+  pasteTemplate:
+    "Attach the {label} in your AI tool, or paste it between the lines below. " +
+    "First remove anything confidential — account or card numbers, patient names, individual " +
+    "employee pay, bank details — or replace it with [brackets]:\n" +
+    "---\n[ attach or paste the {label} here ]\n---"
+};
+
 const pack = {
   safety: { phi: PHI, confidential: CONF, verify: VERIFY },
   defaultSafety: ["phi"],
@@ -90,4 +108,71 @@ test("null format branch renders Format placeholder", () => {
   });
   assert.match(out, /Format: \[format\]\./);
   assert.doesNotMatch(out, new RegExp(PLACEHOLDER));
+});
+
+test("owner/advisor CFO prompt reproduces legacy owner output byte-for-byte", () => {
+  const out = buildPrompt(pack, {
+    rolePrompt: "a fractional CFO for a dental practice",
+    roleValue: "cfo",
+    context: "overhead feels too high",
+    task: "Review the P&L and flag categories that need attention",
+    taskDetail: "", taskInput: "profit & loss statement (P&L)", detailSentences: [],
+    tones: ["direct", "concise"],
+    format: { text: "A prioritized list of savings with estimated dollar impact", ph: false },
+    ask: true,
+    phrasing: ADVISOR_PHRASING
+  });
+  const expected =
+    "Act as a fractional CFO for a dental practice. " +
+    "Here's the situation: overhead feels too high. " +
+    "Review the P&L and flag categories that need attention. " +
+    "Keep it direct and concise. " +
+    "Format: A prioritized list of savings with estimated dollar impact. " +
+    "Before you start, ask me 2–3 quick questions to get the details right.\n\n" +
+    "Attach the profit & loss statement (P&L) in your AI tool, or paste it between the lines below. " +
+    "First remove anything confidential — account or card numbers, patient names, individual " +
+    "employee pay, bank details — or replace it with [brackets]:\n" +
+    "---\n[ attach or paste the profit & loss statement (P&L) here ]\n---" +
+    "\n\n" + CONF + "\n\n" + VERIFY;
+  assert.equal(out, expected);
+});
+
+test("advisor phrasing with a research task inserts the research note after format, before ask", () => {
+  const out = buildPrompt(pack, {
+    rolePrompt: "a dental-practice expansion and site-selection analyst",
+    roleValue: "cfo", // reuse cfo safetyKeys (confidential, verify) for this fixture
+    context: "scouting commercial real estate",
+    task: "Screen available properties on Crexi or LoopNet",
+    taskDetail: "", taskInput: "", detailSentences: [], tones: [],
+    format: { text: "A comparison table", ph: false },
+    ask: false,
+    phrasing: ADVISOR_PHRASING,
+    researchNote: ADVISOR_PHRASING.researchNote
+  });
+  const formatIdx = out.indexOf("Format: A comparison table.");
+  const researchIdx = out.indexOf(ADVISOR_PHRASING.researchNote);
+  assert.ok(formatIdx !== -1 && researchIdx !== -1 && researchIdx > formatIdx);
+});
+
+test("empty-role advisor placeholder is [expert], never [role]", () => {
+  const out = buildPrompt(pack, {
+    rolePrompt: "", roleValue: "cfo",
+    context: "", task: "Do something", taskDetail: "", taskInput: "",
+    detailSentences: [], tones: [],
+    format: { text: "A checklist", ph: false }, ask: false,
+    phrasing: ADVISOR_PHRASING
+  });
+  assert.match(out, /^Act as \[expert\]\./);
+  assert.doesNotMatch(out, /\[role\]/);
+});
+
+test("advisor phrasing never shows the placeholder line, even when format.ph is true", () => {
+  const out = buildPrompt(pack, {
+    rolePrompt: "a fractional CFO for a dental practice", roleValue: "cfo",
+    context: "just want a second opinion", task: "Give me options", taskDetail: "", taskInput: "",
+    detailSentences: [], tones: [],
+    format: { text: "An email (short and warm)", ph: true }, ask: false,
+    phrasing: ADVISOR_PHRASING
+  });
+  assert.equal(out.includes(PLACEHOLDER), false);
 });

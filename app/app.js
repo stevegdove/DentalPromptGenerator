@@ -58,7 +58,18 @@ function looksLikePHI(text) {
 
 export async function initApp({ verticalId }) {
   const packUrl = new URL(`../verticals/${verticalId}.json`, import.meta.url);
-  const pack = await loadPack(packUrl);
+  let pack;
+  try {
+    pack = await loadPack(packUrl);
+  } catch (err) {
+    console.error("Failed to load prompt pack for vertical \"" + verticalId + "\":", err);
+    const out = document.getElementById("prompt-out");
+    if (out) {
+      out.textContent = "Sorry — this page failed to load its prompt data. Please refresh, or try again shortly.";
+      out.classList.add("placeholder");
+    }
+    return;
+  }
 
   const STORAGE_KEY = "bridge-" + pack.id + "-prompt-v1";
   const FAVS_KEY = STORAGE_KEY + "-favs";
@@ -284,6 +295,8 @@ export async function initApp({ verticalId }) {
   // Build the `sel` object buildPrompt(pack, sel) expects (Task 3 shape).
   function buildSel() {
     const task = currentTaskObj();
+    const role = findRole(roleSel.value);
+    const ph = role && pack.phrasings ? pack.phrasings[role.phrasing] : null;
     return {
       rolePrompt: getRolePrompt(),
       roleValue: roleSel.value,
@@ -294,7 +307,9 @@ export async function initApp({ verticalId }) {
       detailSentences: detailSentences(),
       tones: selectedToneClauses(),
       format: getFormatInfo(),
-      ask: askToggle.checked
+      ask: askToggle.checked,
+      phrasing: ph || null,
+      researchNote: (task && task.research && ph && ph.researchNote) ? ph.researchNote : ""
     };
   }
 

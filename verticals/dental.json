@@ -21,6 +21,25 @@
   "defaultSafety": [
     "phi"
   ],
+  "phrasings": {
+    "patient": {
+      "emptyRole": "[role]",
+      "contextMode": "speaking-to",
+      "toneTemplate": "Use a {tones} tone.",
+      "askClause": "Before you write, ask me 2–3 quick questions to get the details right.",
+      "placeholderLine": true,
+      "pasteTemplate": "Here is the {label} to work from. Paste it between the lines below, with any patient names or identifiers removed — use [brackets] instead:\n---\n[ paste the {label} here ]\n---"
+    },
+    "advisor": {
+      "emptyRole": "[expert]",
+      "contextMode": "situation",
+      "toneTemplate": "Keep it {tones}.",
+      "askClause": "Before you start, ask me 2–3 quick questions to get the details right.",
+      "placeholderLine": false,
+      "researchNote": "Use a web-connected AI tool for this (ChatGPT with search, Gemini, Grok, or Claude with web) so it can look up current data.",
+      "pasteTemplate": "Attach the {label} in your AI tool, or paste it between the lines below. First remove anything confidential — account or card numbers, patient names, individual employee pay, bank details — or replace it with [brackets]:\n---\n[ attach or paste the {label} here ]\n---"
+    }
+  },
   "sensitiveRoles": [
     "cfo",
     "expansion",
@@ -169,7 +188,8 @@
           ],
           "popular": false
         }
-      ]
+      ],
+      "phrasing": "patient"
     },
     {
       "value": "hygienist",
@@ -271,7 +291,8 @@
           ],
           "popular": false
         }
-      ]
+      ],
+      "phrasing": "patient"
     },
     {
       "value": "assistant",
@@ -386,7 +407,8 @@
           ],
           "popular": false
         }
-      ]
+      ],
+      "phrasing": "patient"
     },
     {
       "value": "treatment",
@@ -500,7 +522,8 @@
           ],
           "popular": false
         }
-      ]
+      ],
+      "phrasing": "patient"
     },
     {
       "value": "manager",
@@ -639,7 +662,8 @@
           ],
           "popular": false
         }
-      ]
+      ],
+      "phrasing": "patient"
     },
     {
       "value": "marketing",
@@ -791,7 +815,8 @@
           ],
           "popular": false
         }
-      ]
+      ],
+      "phrasing": "patient"
     },
     {
       "value": "doctor",
@@ -875,7 +900,8 @@
           ],
           "popular": false
         }
-      ]
+      ],
+      "phrasing": "patient"
     },
     {
       "value": "cfo",
@@ -930,7 +956,8 @@
             "What would you need from me to make this more precise?",
             "Turn your top recommendation into concrete next steps for this week."
           ],
-          "popular": false
+          "popular": false,
+          "research": true
         },
         {
           "text": "Find recurring subscriptions and charges to cancel",
@@ -1141,7 +1168,8 @@
           ],
           "popular": false
         }
-      ]
+      ],
+      "phrasing": "advisor"
     },
     {
       "value": "expansion",
@@ -1191,7 +1219,8 @@
             "Estimate first-year cash flow for this location.",
             "What are the three biggest risks, and how would I de-risk each?"
           ],
-          "popular": true
+          "popular": true,
+          "research": true
         },
         {
           "text": "Screen available properties on Crexi or LoopNet",
@@ -1222,7 +1251,8 @@
             "What would you need from me to make this more precise?",
             "Turn your top recommendation into concrete next steps for this week."
           ],
-          "popular": false
+          "popular": false,
+          "research": true
         },
         {
           "text": "Analyze lease terms and flag risky clauses",
@@ -1298,7 +1328,8 @@
           ],
           "popular": false
         }
-      ]
+      ],
+      "phrasing": "advisor"
     },
     {
       "value": "deals",
@@ -1459,7 +1490,8 @@
           ],
           "popular": false
         }
-      ]
+      ],
+      "phrasing": "advisor"
     },
     {
       "value": "ops",
@@ -1576,7 +1608,8 @@
           ],
           "popular": false
         }
-      ]
+      ],
+      "phrasing": "advisor"
     },
     {
       "value": "growth",
@@ -1669,7 +1702,8 @@
           ],
           "popular": false
         }
-      ]
+      ],
+      "phrasing": "advisor"
     },
     {
       "value": "coach",
@@ -1773,7 +1807,8 @@
           ],
           "popular": false
         }
-      ]
+      ],
+      "phrasing": "advisor"
     }
   ],
   "sharedContext": [
