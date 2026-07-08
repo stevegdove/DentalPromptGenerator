@@ -315,7 +315,7 @@ export async function initApp({ verticalId }) {
     gateEl.setAttribute("aria-labelledby", "bd-gate-title");
     gateEl.style.cssText =
       "position:fixed;inset:0;z-index:9999;display:flex;align-items:center;" +
-      "justify-content:center;background:rgba(20,10,30,.55);padding:1rem;";
+      "justify-content:center;background:rgba(20,16,24,0.98);padding:1rem;";
     gateEl.innerHTML =
       '<div class="bd-gate-card" style="background:#fff;border-radius:16px;padding:1.5rem;' +
       'max-width:24rem;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.3);font-family:system-ui,sans-serif;">' +
@@ -601,6 +601,9 @@ export async function initApp({ verticalId }) {
   // Copy a link that reopens this app with the current picks pre-filled.
   shareBtn.addEventListener("click", () => {
     if (!readyToGenerate()) return;
+    const sensitive = isSensitive(roleSel.value);
+    const gated = sensitive && !isUnlocked();
+    if (gated) return;
     const url = location.href.split(/[?#]/)[0] + "?p=" + encodeState(currentState());
     track(eventName(pack.id, "share"));
     copyText(url, () => {
