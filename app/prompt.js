@@ -26,6 +26,7 @@ function joinWithAnd(words) {
 
 export function buildPrompt(pack, sel) {
   const role = sel.rolePrompt;
+  // Mirrors legacy team/index.html:1095 — all-empty selection yields no prompt.
   if (!role && !sel.task && !sel.format) return "";
 
   let s1 = "Act as " + (role || "[role]");

@@ -73,3 +73,21 @@ test("paste block appears for taskInput", () => {
   assert.match(out, /Here is the negative review to work from/);
   assert.match(out, /\[ paste the negative review here \]/);
 });
+
+test("empty selection guard returns empty string", () => {
+  const out = buildPrompt(pack, {
+    rolePrompt: "", roleValue: "__x__", context: "", task: "", taskDetail: "",
+    taskInput: "", detailSentences: [], tones: [], format: null, ask: false
+  });
+  assert.equal(out, "");
+});
+
+test("null format branch renders Format placeholder", () => {
+  const out = buildPrompt(pack, {
+    rolePrompt: "a dental hygienist", roleValue: "frontdesk",
+    context: "", task: "X", taskDetail: "", taskInput: "",
+    detailSentences: [], tones: [], format: null, ask: false
+  });
+  assert.match(out, /Format: \[format\]\./);
+  assert.doesNotMatch(out, new RegExp(PLACEHOLDER));
+});
