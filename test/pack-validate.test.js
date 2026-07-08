@@ -37,3 +37,24 @@ test("loadPack returns pack on valid", async () => {
   const p = await loadPack("u", fakeFetch);
   assert.equal(p.id, "x");
 });
+
+test("roles: [null] returns error without throwing", () => {
+  const bad = { ...good, roles: [null] };
+  const r = validatePack(bad);
+  assert.equal(r.ok, false);
+  assert.ok(r.errors.some((e) => e.includes("role[0] is not an object")));
+});
+
+test("formats: [null] returns error without throwing", () => {
+  const bad = { ...good, formats: [null] };
+  const r = validatePack(bad);
+  assert.equal(r.ok, false);
+  assert.ok(r.errors.some((e) => e.includes("format[0] is not an object")));
+});
+
+test("theme: [] returns error", () => {
+  const bad = { ...good, theme: [] };
+  const r = validatePack(bad);
+  assert.equal(r.ok, false);
+  assert.ok(r.errors.some((e) => e.includes("theme")));
+});

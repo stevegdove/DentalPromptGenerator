@@ -4,7 +4,7 @@ export function validatePack(obj) {
   if (!obj || typeof obj !== "object") return { ok: false, errors: ["pack is not an object"] };
   ["id", "name"].forEach((k) => { if (!str(obj[k])) errors.push(`missing/invalid ${k}`); });
   ["theme", "vocabulary", "safety"].forEach((k) => {
-    if (!obj[k] || typeof obj[k] !== "object") errors.push(`missing/invalid ${k}`);
+    if (!obj[k] || typeof obj[k] !== "object" || Array.isArray(obj[k])) errors.push(`missing/invalid ${k}`);
   });
   const safetyKeys = obj.safety && typeof obj.safety === "object" ? Object.keys(obj.safety) : [];
   if (!safetyKeys.length) errors.push("safety has no rules");
@@ -15,6 +15,10 @@ export function validatePack(obj) {
   }
   if (!Array.isArray(obj.roles) || !obj.roles.length) errors.push("roles must be a non-empty array");
   else obj.roles.forEach((r, i) => {
+    if (r === null || Array.isArray(r) || typeof r !== "object") {
+      errors.push(`role[${i}] is not an object`);
+      return;
+    }
     ["value", "label", "prompt"].forEach((k) => { if (!str(r[k])) errors.push(`role[${i}] missing/invalid ${k}`); });
     if (!Array.isArray(r.safetyKeys)) errors.push(`role[${i}] safetyKeys must be an array`);
     else r.safetyKeys.forEach((k) => { if (!safetyKeys.includes(k)) errors.push(`role[${i}] references unknown safety rule "${k}"`); });
@@ -22,6 +26,10 @@ export function validatePack(obj) {
   });
   if (!Array.isArray(obj.formats) || !obj.formats.length) errors.push("formats must be a non-empty array");
   else obj.formats.forEach((f, i) => {
+    if (f === null || Array.isArray(f) || typeof f !== "object") {
+      errors.push(`format[${i}] is not an object`);
+      return;
+    }
     if (!str(f.text)) errors.push(`format[${i}] missing text`);
     if (typeof f.ph !== "boolean") errors.push(`format[${i}] ph must be boolean`);
   });
