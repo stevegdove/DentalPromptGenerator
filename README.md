@@ -41,6 +41,15 @@ fields, share links, follow-up suggestions after copying, and saved favorites (l
 Task and Format dropdowns open with a **"★ Most popular"** group above the full list —
 the curated sets live in `POPULAR_TASKS` / `POPULAR_FORMATS` in each app's `index.html`;
 update them from GoatCounter task data once real usage accumulates.
+
+The assembled **prompt is an editable text box** — users can tweak it before copying or
+sending. Hand edits stick until a pick changes (or Generate is hit), which rebuilds it.
+The safety rule (and the owner builder's verify rule for money roles) is silently
+re-appended on copy/send if an edit removed it. Document tasks (reviews, shorthand, P&L…)
+show a **paste panel under Task** that weaves the pasted text straight into the prompt —
+important because ChatGPT/Gemini/Grok run a prefilled prompt immediately on open. If a
+prompt still contains an empty `[ paste/attach … ]` slot, the provider buttons warn on the
+first click and open on the second. Pasted document text is never saved to localStorage.
 A non-removable safety rule is appended to every prompt — PHI-focused in `team/`,
 confidential-data-focused in `owner/` (money & deal experts also get a CPA/attorney
 verify rule). Task content is curated from the practice's own prompt vaults —

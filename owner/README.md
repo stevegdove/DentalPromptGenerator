@@ -56,12 +56,12 @@ Gemini / Grok** buttons copy the prompt and open that tool with it pre-filled wh
 
 Most owner tasks start from a document (statements, P&L, invoice, A/R report). Those tasks add a
 clearly marked block telling you to **attach the file in your AI tool, or paste it between the
-lines**, after redacting anything confidential:
+lines**. Real amounts stay in — they're the analysis; only identifiers come out:
 
 ```
 Attach the profit & loss statement (P&L) in your AI tool, or paste it between the lines below.
-First remove anything confidential — account or card numbers, patient names, individual employee
-pay, bank details — or replace it with [brackets]:
+Real amounts stay in — they're the analysis. First remove identifiers — account or card
+numbers, bank details, patient names — or swap them for blanks like [account #]:
 ---
 [ attach or paste the profit & loss statement (P&L) here ]
 ---
@@ -91,11 +91,18 @@ action list. Extra per-task instructions like this live in the `TASK_DETAIL` map
 - Money and deal experts (CFO, Expansion, Acquisition) also get an automatic **verify rule**:
   AI figures are a starting point — confirm against primary sources, and with your CPA and
   attorney, before any offer, purchase, or filing.
-- Each "Other…" box reminds you to redact account/card numbers, patient names, and pay, or use
-  `[brackets]`.
+- **Real amounts and percentages belong in the prompt — they're the analysis.** What stays out
+  is identifiers: account/card numbers, bank details, SSNs/EINs, passwords, and patient names
+  (swap them for blanks like `[account #]`). For employee pay, use roles instead of names.
 - A lightweight, **client-side warning** fires (non-blocking) if an "Other…" box looks like it
   contains a real identifier — a long number (account/card), a card/SSN/EIN pattern, an email, a
-  phone number, or a date. It warns; it never blocks. Text inside `[brackets]` is ignored.
+  phone number, or a date. The document paste panel uses a looser check (`looksLikeIdentifier`)
+  so routine statement content — dates, phone numbers, amounts — doesn't trigger it; only
+  account/card/SSN/EIN-like numbers do. It warns; it never blocks. Text inside square-bracket
+  blanks like `[account #]` is ignored.
+- Practical tip for extra comfort: business financials pasted into an AI tool are shared with
+  that provider — use a business/team AI account, or turn off model training in the tool's
+  settings.
 - **Everything stays in the browser.** The only persistence is `localStorage` (it remembers your
   last picks). The prompt leaves only when you click one of the "Open in…" buttons — and by design
   it carries placeholders, not sensitive data.

@@ -9,11 +9,11 @@
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://stevegdove.github.io/DentalPromptGenerator/team/" />
 <meta property="og:title" content="Bridge Dental Team Prompt Builder" />
-<meta property="og:description" content="Build a strong, PHI-safe AI prompt in four picks — patient messages, scripts, notes, and SOPs with the safety rule baked in." />
+<meta property="og:description" content="The right words for every patient, ready in a minute — texts, scripts, notes, and SOPs drafted by AI with privacy protected automatically." />
 <meta property="og:image" content="https://stevegdove.github.io/DentalPromptGenerator/assets/og-card.png" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="Bridge Dental Team Prompt Builder" />
-<meta name="twitter:description" content="Build a strong, PHI-safe AI prompt in four picks — patient messages, scripts, notes, and SOPs with the safety rule baked in." />
+<meta name="twitter:description" content="The right words for every patient, ready in a minute — texts, scripts, notes, and SOPs drafted by AI with privacy protected automatically." />
 <meta name="twitter:image" content="https://stevegdove.github.io/DentalPromptGenerator/assets/og-card.png" />
 <script data-goatcounter="https://bridgedental.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -93,6 +93,20 @@
     stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; }
   .hero h1 { color: #fff; font-weight: 800; font-size: clamp(1.8rem, 5vw, 2.6rem); margin-bottom: .35rem; }
   .hero p { color: rgba(255,255,255,.86); font-size: 1.05rem; max-width: 36rem; margin: 0; }
+  .hero-points { list-style: none; display: flex; flex-wrap: wrap; gap: .55rem; padding: 0; margin: 1.15rem 0 0; }
+  .hero-points li {
+    display: inline-flex; align-items: center; gap: .5rem;
+    background: rgba(255,255,255,.12); border-radius: var(--radius-pill);
+    padding: .4rem .95rem .4rem .45rem;
+    font-family: var(--font-head); font-weight: 600; font-size: .88rem; color: #fff;
+  }
+  .hp-ico {
+    width: 26px; height: 26px; border-radius: 50%; flex: 0 0 auto;
+    background: rgba(255,255,255,.92); color: var(--indigo);
+    display: inline-flex; align-items: center; justify-content: center;
+  }
+  .hp-ico svg { width: 14px; height: 14px; fill: none; stroke: currentColor;
+    stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 
   /* ---------- Layout ---------- */
   main { max-width: 920px; margin: 0 auto; padding: 1.5rem 1.25rem 4rem; }
@@ -184,8 +198,25 @@
     white-space: pre-wrap; word-break: break-word; margin: 0;
     background: var(--cloud); border-radius: var(--radius);
     padding: 1.1rem 1.15rem; line-height: 1.65;
+    width: 100%; border: 1px solid var(--line); display: block;
+    min-height: 14rem; resize: vertical;
+    transition: border-color .15s, box-shadow .15s;
   }
-  .prompt-out.placeholder { color: var(--muted); }
+  .prompt-out:focus { outline: none; border-color: var(--rose);
+    box-shadow: 0 0 0 3px rgba(239,58,102,.25); }
+  .prompt-out::placeholder { color: var(--muted); }
+  .edit-note { font-size: .85rem; color: var(--muted); margin: .5rem 0 0; }
+  .edit-note[hidden] { display: none; }
+  .doc-text {
+    font-family: var(--font-body); font-size: 1rem; width: 100%;
+    padding: .8rem .9rem; border: 1px solid var(--line);
+    border-radius: var(--radius-sm); color: var(--ink); background: #fff;
+    min-height: 7rem; resize: vertical; display: block;
+    transition: border-color .15s, box-shadow .15s;
+  }
+  .doc-text::placeholder { color: var(--muted); }
+  .doc-text:focus { outline: none; border-color: var(--rose);
+    box-shadow: 0 0 0 3px rgba(239,58,102,.25); }
 
   /* ---------- Buttons ---------- */
   .actions { display: flex; gap: .7rem; flex-wrap: wrap; margin-top: 1.5rem; }
@@ -304,8 +335,13 @@
           PHI-safe by design
         </span>
       </div>
-      <h1>Build a strong, PHI-safe prompt in four picks.</h1>
-      <p>Pick a role, who you're talking to, the job, and the shape of the answer. We write the prompt — you paste it into your own AI tool. No patient details, ever.</p>
+      <h1>The right words for every patient — ready in a minute.</h1>
+      <p>Overdue-patient texts, chairside scripts, post-op instructions, tough phone calls — drafted by your own AI, with patient privacy protected automatically. Four picks. No writing. No guesswork.</p>
+      <ul class="hero-points">
+        <li><span class="hp-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span>Texts, scripts &amp; notes written for you</li>
+        <li><span class="hp-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span>About a minute, start to finish</li>
+        <li><span class="hp-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></span>Hard conversations, handled kindly</li>
+      </ul>
     </div>
   </header>
 
@@ -329,10 +365,10 @@
       </select>
       <div class="other-wrap" id="role-other-wrap" hidden>
         <input type="text" class="bd-text" id="role-other" placeholder="Type the role…" aria-label="Other role" />
-        <p class="helper">Use [brackets] for any patient-specific detail — never real names, DOB, or chart numbers.</p>
+        <p class="helper">Leave a fill-in-the-blank like [first name] for any patient detail — never real names, DOB, or chart numbers.</p>
         <div class="phi-warn" id="role-warn" hidden role="status">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-          <span>This looks like it might contain patient detail — swap it for a [bracket].</span>
+          <span>This looks like it might contain patient detail — swap it for a fill-in-the-blank like [first name].</span>
         </div>
       </div>
     </section>
@@ -348,10 +384,10 @@
       </select>
       <div class="other-wrap" id="context-other-wrap" hidden>
         <input type="text" class="bd-text" id="context-other" placeholder="Describe the situation…" aria-label="Other context" />
-        <p class="helper">Use [brackets] for any patient-specific detail — never real names, DOB, or chart numbers.</p>
+        <p class="helper">Leave a fill-in-the-blank like [first name] for any patient detail — never real names, DOB, or chart numbers.</p>
         <div class="phi-warn" id="context-warn" hidden role="status">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-          <span>This looks like it might contain patient detail — swap it for a [bracket].</span>
+          <span>This looks like it might contain patient detail — swap it for a fill-in-the-blank like [first name].</span>
         </div>
       </div>
     </section>
@@ -367,10 +403,10 @@
       </select>
       <div class="other-wrap" id="task-other-wrap" hidden>
         <input type="text" class="bd-text" id="task-other" placeholder="Describe the task…" aria-label="Other task" />
-        <p class="helper">Use [brackets] for any patient-specific detail — never real names, DOB, or chart numbers.</p>
+        <p class="helper">Leave a fill-in-the-blank like [first name] for any patient detail — never real names, DOB, or chart numbers.</p>
         <div class="phi-warn" id="task-warn" hidden role="status">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-          <span>This looks like it might contain patient detail — swap it for a [bracket].</span>
+          <span>This looks like it might contain patient detail — swap it for a fill-in-the-blank like [first name].</span>
         </div>
       </div>
       <div class="details-panel" id="details-panel" hidden>
@@ -379,7 +415,17 @@
         <div id="details-wrap"></div>
         <div class="phi-warn" id="details-warn" hidden role="status">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-          <span>This looks like it might contain patient detail — swap it for a [bracket].</span>
+          <span>This looks like it might contain patient detail — swap it for a fill-in-the-blank like [first name].</span>
+        </div>
+      </div>
+      <div class="details-panel" id="doc-panel" hidden>
+        <span class="details-title" id="doc-title">Paste it here (optional)</span>
+        <p class="details-sub">It gets woven straight into the prompt, so nothing needs editing after you open your AI tool. Remove patient names first — swap them for a fill-in-the-blank like [first name].</p>
+        <label for="doc-text" style="position:absolute; left:-9999px;">Document text</label>
+        <textarea class="doc-text" id="doc-text" placeholder="Paste it here…"></textarea>
+        <div class="phi-warn" id="doc-warn" hidden role="status">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          <span>This looks like it might contain patient detail — swap it for a fill-in-the-blank like [first name].</span>
         </div>
       </div>
     </section>
@@ -395,10 +441,10 @@
       </select>
       <div class="other-wrap" id="format-other-wrap" hidden>
         <input type="text" class="bd-text" id="format-other" placeholder="Describe the format…" aria-label="Other format" />
-        <p class="helper">Use [brackets] for any patient-specific detail — never real names, DOB, or chart numbers.</p>
+        <p class="helper">Leave a fill-in-the-blank like [first name] for any patient detail — never real names, DOB, or chart numbers.</p>
         <div class="phi-warn" id="format-warn" hidden role="status">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-          <span>This looks like it might contain patient detail — swap it for a [bracket].</span>
+          <span>This looks like it might contain patient detail — swap it for a fill-in-the-blank like [first name].</span>
         </div>
       </div>
     </section>
@@ -450,7 +496,10 @@
           <input type="text" class="bd-text" id="save-name" placeholder="Name this prompt — e.g. Monday recall texts" aria-label="Name for this saved prompt" />
           <button type="button" class="btn btn--secondary" id="save-confirm">Save</button>
         </div>
-        <pre class="prompt-out placeholder" id="prompt-out">Pick a Role, Task, and Format to see your prompt here. The PHI safety rule is added automatically.</pre>
+        <label for="prompt-out" style="position:absolute; left:-9999px;">Your prompt — editable</label>
+        <textarea class="prompt-out" id="prompt-out" spellcheck="false"
+          placeholder="Pick a Role, Task, and Format to see your prompt here. The PHI safety rule is added automatically. You can edit the finished prompt right in this box."></textarea>
+        <p class="edit-note" id="edit-note" hidden>Edited by hand — changing any pick (or hitting Generate) rebuilds the prompt from your selections.</p>
         <p class="copy-note">The safety rule below is added to every prompt automatically — it can't be removed. Treat the output as a first draft and review it before anyone sees it.</p>
 
         <div class="send-group">
@@ -828,7 +877,7 @@
     professional: "professional"
   };
 
-  var SAFETY = "Safety rule: Use no patient identifiers. Never include patient names, dates of birth, addresses, phone numbers, chart/account numbers, or insurance IDs — use [bracket] placeholders instead. This output is a first draft; review it before anyone (especially a patient) sees it.";
+  var SAFETY = "Safety rule: Use no patient identifiers. Never include patient names, dates of birth, addresses, phone numbers, chart/account numbers, or insurance IDs — leave fill-in-the-blanks like [first name] or [date] instead. This output is a first draft; review it before anyone (especially a patient) sees it.";
 
   var STORAGE_KEY = "bridge-rctf-prompt-v1";
 
@@ -845,6 +894,9 @@
   var askToggle = $("ask-toggle");
   var toneGroup = $("tone-group");
   var providerRow = $("provider-row"), sendNote = $("send-note");
+  var docPanel = $("doc-panel"), docTitle = $("doc-title"), docText = $("doc-text"), docWarn = $("doc-warn");
+  var editNote = $("edit-note");
+  var promptDirty = false;   // true once the user hand-edits the prompt box
 
   // Privacy-friendly usage event (GoatCounter). No-ops if the script is blocked
   // or hasn't loaded; never touches prompt content.
@@ -1129,7 +1181,7 @@
 
     // Placeholder encouragement when format implies it
     if (fmt && fmt.ph) {
-      parts.push("Where a specific detail is needed, use bracketed placeholders like [first name], [date], [time], [booking link], or [practice name].");
+      parts.push("Where a specific detail is needed, leave fill-in-the-blanks like [first name], [date], [time], [booking link], or [practice name].");
     }
 
     // Ask-questions-first
@@ -1141,13 +1193,23 @@
     var sections = [body];
 
     // Paste block — for tasks that need source material the AI must work from.
-    var pasteLabel = TASK_INPUT[task];
+    // If the user pasted the document into the panel under Task, weave it in;
+    // otherwise leave a clearly marked placeholder.
+    var pasteLabel = isMenuTask ? TASK_INPUT[task] : null;
     if (pasteLabel) {
-      sections.push(
-        "Here is the " + pasteLabel + " to work from. Paste it between the lines below, " +
-        "with any patient names or identifiers removed — use [brackets] instead:\n" +
-        "---\n[ paste the " + pasteLabel + " here ]\n---"
-      );
+      var docVal = docText.value.trim();
+      if (docVal) {
+        sections.push(
+          "Here is the " + pasteLabel + " to work from (patient names and identifiers replaced with fill-in-the-blanks like [first name]):\n" +
+          "---\n" + docVal + "\n---"
+        );
+      } else {
+        sections.push(
+          "Here is the " + pasteLabel + " to work from. Paste it between the lines below, " +
+          "with any patient names or identifiers removed — put a fill-in-the-blank like [first name] in their place:\n" +
+          "---\n[ paste the " + pasteLabel + " here ]\n---"
+        );
+      }
     }
 
     sections.push(SAFETY);
@@ -1166,15 +1228,45 @@
     providerRow.querySelectorAll(".provider-btn").forEach(function (b) { b.disabled = !ready; });
     if (!ready) { sendNote.hidden = true; }
 
-    var prompt = buildPrompt();
-    if (!prompt) {
-      promptOut.textContent = "Pick a Role, Task, and Format to see your prompt here. The PHI safety rule is added automatically.";
-      promptOut.classList.add("placeholder");
+    // Document paste panel — shown when the selected menu task needs source material.
+    var curTask = (taskSel.value && taskSel.value !== OTHER) ? getTaskText() : "";
+    var docLabel = curTask ? TASK_INPUT[curTask] : null;
+    if (docLabel) {
+      if (docPanel.dataset.task !== curTask) {
+        docPanel.dataset.task = curTask;
+        docText.value = "";
+        hide(docWarn);
+      }
+      docTitle.textContent = "Paste the " + docLabel + " (optional)";
+      docText.placeholder = "Paste the " + docLabel + " here…";
+      show(docPanel);
     } else {
-      promptOut.textContent = prompt;
-      promptOut.classList.remove("placeholder");
+      hide(docPanel);
+      docPanel.dataset.task = "";
+      docText.value = "";
+      hide(docWarn);
     }
+
+    // Rebuild the editable prompt box from the picks. Any pick change (or
+    // Generate) overwrites hand edits — predictable and easy to redo.
+    promptDirty = false;
+    hide(editNote);
+    disarmProviders();
+    promptOut.value = buildPrompt();
     save();
+  }
+
+  // The prompt box is the final say: what's in it is what gets copied/sent.
+  // The safety rule is re-appended if an edit removed it — it's the product's promise.
+  function getFinalPrompt() {
+    var t = promptOut.value.trim();
+    if (!t) return "";
+    if (t.indexOf("Safety rule:") === -1) t += "\n\n" + SAFETY;
+    return t;
+  }
+
+  function disarmProviders() {
+    providerRow.querySelectorAll(".provider-btn").forEach(function (b) { delete b.dataset.armed; });
   }
 
   // ---------- Clipboard ----------
@@ -1350,8 +1442,22 @@
     promptOut.scrollIntoView({ behavior: "smooth", block: "nearest" });
   });
 
+  // The user can edit the prompt box before copying/sending; edits stick until
+  // a pick changes. Provider buttons warn once if a [ paste … ] slot is empty,
+  // because ChatGPT/Gemini/Grok run the prompt the moment they open.
+  promptOut.addEventListener("input", function () {
+    promptDirty = true;
+    editNote.hidden = false;
+    disarmProviders();
+  });
+
+  docText.addEventListener("input", function () {
+    if (looksLikePHI(docText.value)) { show(docWarn); } else { hide(docWarn); }
+    updatePreview();
+  });
+
   copyBtn.addEventListener("click", function () {
-    var text = buildPrompt();
+    var text = getFinalPrompt();
     if (!text) return;
     bdTrack("team-copy-prompt");
     copyText(text, function () {
@@ -1372,8 +1478,22 @@
     if (!btn || btn.disabled) return;
     var p = PROVIDERS_BY_ID[btn.getAttribute("data-provider")];
     if (!p) return;
-    var text = buildPrompt();
+    var text = getFinalPrompt();
     if (!text) return;
+
+    // Guard: an unfilled [ paste … ] slot means the AI tool would run a
+    // half-finished prompt (most tools submit immediately). Warn once;
+    // a second click on the same button proceeds anyway.
+    if (/\[\s*(?:paste|attach)[^\]]*\]/i.test(text) && btn.dataset.armed !== "1") {
+      disarmProviders();
+      btn.dataset.armed = "1";
+      sendNote.hidden = false;
+      sendNote.textContent = "Heads up — your prompt still has an empty [ paste… ] section, and " +
+        p.name + " runs the prompt as soon as it opens. Paste the document into the box under Task " +
+        "(or edit the prompt above), then try again — or click " + p.name + " once more to open anyway.";
+      return;
+    }
+    disarmProviders();
 
     bdTrack("team-open-" + p.id);
     copyText(text);

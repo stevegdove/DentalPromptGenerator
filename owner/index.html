@@ -193,8 +193,25 @@
     white-space: pre-wrap; word-break: break-word; margin: 0;
     background: var(--cloud); border-radius: var(--radius);
     padding: 1.1rem 1.15rem; line-height: 1.65;
+    width: 100%; border: 1px solid var(--line); display: block;
+    min-height: 14rem; resize: vertical;
+    transition: border-color .15s, box-shadow .15s;
   }
-  .prompt-out.placeholder { color: var(--muted); }
+  .prompt-out:focus { outline: none; border-color: var(--rose);
+    box-shadow: 0 0 0 3px rgba(239,58,102,.25); }
+  .prompt-out::placeholder { color: var(--muted); }
+  .edit-note { font-size: .85rem; color: var(--muted); margin: .5rem 0 0; }
+  .edit-note[hidden] { display: none; }
+  .doc-text {
+    font-family: var(--font-body); font-size: 1rem; width: 100%;
+    padding: .8rem .9rem; border: 1px solid var(--line);
+    border-radius: var(--radius-sm); color: var(--ink); background: #fff;
+    min-height: 7rem; resize: vertical; display: block;
+    transition: border-color .15s, box-shadow .15s;
+  }
+  .doc-text::placeholder { color: var(--muted); }
+  .doc-text:focus { outline: none; border-color: var(--rose);
+    box-shadow: 0 0 0 3px rgba(239,58,102,.25); }
 
   /* ---------- Buttons ---------- */
   .actions { display: flex; gap: .7rem; flex-wrap: wrap; margin-top: 1.5rem; }
@@ -276,6 +293,38 @@
     cursor: pointer; padding: .2rem .55rem; line-height: 1;
   }
   .fav-del:hover { color: var(--rose-dark); }
+  .hero-points { list-style: none; display: flex; flex-wrap: wrap; gap: .55rem; padding: 0; margin: 1.15rem 0 0; }
+  .hero-points li {
+    display: inline-flex; align-items: center; gap: .5rem;
+    background: rgba(255,255,255,.12); border-radius: var(--radius-pill);
+    padding: .4rem .95rem .4rem .45rem;
+    font-family: var(--font-head); font-weight: 600; font-size: .88rem; color: #fff;
+  }
+  .hp-ico {
+    width: 26px; height: 26px; border-radius: 50%; flex: 0 0 auto;
+    background: rgba(255,255,255,.92); color: var(--indigo);
+    display: inline-flex; align-items: center; justify-content: center;
+  }
+  .hp-ico svg { width: 14px; height: 14px; fill: none; stroke: currentColor;
+    stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+
+  /* Quick start — deliberately NOT a step card: lavender tray, indigo accents */
+  .quickstart {
+    background: var(--lavender); border-radius: var(--radius-lg);
+    padding: 1.15rem 1.4rem 1.25rem; margin-bottom: 1rem;
+  }
+  .quickstart-head { display: flex; align-items: center; gap: .65rem; }
+  .quickstart-icon {
+    width: 34px; height: 34px; border-radius: var(--radius-sm); flex: 0 0 auto;
+    background: #fff; color: var(--indigo);
+    display: inline-flex; align-items: center; justify-content: center;
+  }
+  .quickstart-icon svg { width: 18px; height: 18px; fill: none; stroke: currentColor;
+    stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+  .quickstart-title { font-family: var(--font-head); font-weight: 600; color: var(--indigo); font-size: .98rem; display: block; }
+  .quickstart-sub { font-size: .85rem; color: var(--ink-soft); margin: 0; }
+  .quickstart .chip-group { margin-top: .8rem; }
+
   .hub-crumb { margin: 0 0 .9rem; font-size: .85rem; }
   .hub-crumb a {
     color: rgba(255,255,255,.75); text-decoration: none;
@@ -355,17 +404,26 @@
           Confidential-safe by design
         </span>
       </div>
-      <h1>Build a sharp, confidential-safe prompt for running your practice.</h1>
-      <p>Pick your expert, the situation, the job, and the shape of the answer. We write the prompt — you run it in your own AI tool. Keep confidential numbers out; use [brackets].</p>
+      <h1>Run your practice like you've got a CFO on call.</h1>
+      <p>Statement audits, lease red flags, deal math, growth plans — the thinking consultants bill thousands for, drafted by your own AI in about a minute. Bring your real numbers — just leave out identifiers like account numbers and patient names.</p>
+      <ul class="hero-points">
+        <li><span class="hp-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><line x1="12" y1="2" x2="12" y2="22"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></span>Find hidden spend</li>
+        <li><span class="hp-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 10c0 7-9 12-9 12s-9-5-9-12a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></span>Pressure-test locations &amp; deals</li>
+        <li><span class="hp-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></span>Plan profitable growth</li>
+      </ul>
     </div>
   </header>
 
   <main class="bd-scope">
-    <!-- Quick start -->
-    <section class="card">
-      <span class="eyebrow">Quick start</span>
-      <h2>New here? Try an example</h2>
-      <p class="sub">One click fills in all four picks — then tweak anything you like.</p>
+    <!-- Quick start — a helper tray, visually distinct from the numbered steps -->
+    <section class="quickstart" aria-label="Quick start examples">
+      <div class="quickstart-head">
+        <span class="quickstart-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></span>
+        <div>
+          <span class="quickstart-title">New here? Try one.</span>
+          <p class="quickstart-sub">One click fills in all four picks below — tweak anything after.</p>
+        </div>
+      </div>
       <div class="chip-group" id="example-row"></div>
     </section>
 
@@ -380,10 +438,10 @@
       </select>
       <div class="other-wrap" id="role-other-wrap" hidden>
         <input type="text" class="bd-text" id="role-other" placeholder="Type the expert / role…" aria-label="Other expert" />
-        <p class="helper">Keep confidential details out — redact account or card numbers, patient names, and pay, or use [brackets].</p>
+        <p class="helper">Real amounts are fine — that's the analysis. Leave out identifiers (account or card numbers, patient names) or swap them for a blank like [account #].</p>
         <div class="phi-warn" id="role-warn" hidden role="status">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-          <span>This looks like it might be confidential — redact it or use a [bracket].</span>
+          <span>This looks like an identifier (account #, SSN, card…) — swap it for a blank like [account #].</span>
         </div>
       </div>
     </section>
@@ -399,10 +457,10 @@
       </select>
       <div class="other-wrap" id="context-other-wrap" hidden>
         <input type="text" class="bd-text" id="context-other" placeholder="Describe the situation…" aria-label="Other situation" />
-        <p class="helper">Keep confidential details out — redact account or card numbers, patient names, and pay, or use [brackets].</p>
+        <p class="helper">Real amounts are fine — that's the analysis. Leave out identifiers (account or card numbers, patient names) or swap them for a blank like [account #].</p>
         <div class="phi-warn" id="context-warn" hidden role="status">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-          <span>This looks like it might be confidential — redact it or use a [bracket].</span>
+          <span>This looks like an identifier (account #, SSN, card…) — swap it for a blank like [account #].</span>
         </div>
       </div>
     </section>
@@ -418,10 +476,10 @@
       </select>
       <div class="other-wrap" id="task-other-wrap" hidden>
         <input type="text" class="bd-text" id="task-other" placeholder="Describe the task…" aria-label="Other task" />
-        <p class="helper">Keep confidential details out — redact account or card numbers, patient names, and pay, or use [brackets].</p>
+        <p class="helper">Real amounts are fine — that's the analysis. Leave out identifiers (account or card numbers, patient names) or swap them for a blank like [account #].</p>
         <div class="phi-warn" id="task-warn" hidden role="status">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-          <span>This looks like it might be confidential — redact it or use a [bracket].</span>
+          <span>This looks like an identifier (account #, SSN, card…) — swap it for a blank like [account #].</span>
         </div>
       </div>
       <div class="details-panel" id="details-panel" hidden>
@@ -430,7 +488,17 @@
         <div id="details-wrap"></div>
         <div class="phi-warn" id="details-warn" hidden role="status">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-          <span>This looks like it might be confidential — redact it or use a [bracket].</span>
+          <span>This looks like an identifier (account #, SSN, card…) — swap it for a blank like [account #].</span>
+        </div>
+      </div>
+      <div class="details-panel" id="doc-panel" hidden>
+        <span class="details-title" id="doc-title">Paste it here (optional)</span>
+        <p class="details-sub">It gets woven straight into the prompt, so nothing needs editing after you open your AI tool. Real amounts are fine — just remove identifiers like account numbers and patient names first (or attach the file in your AI tool instead).</p>
+        <label for="doc-text" style="position:absolute; left:-9999px;">Document text</label>
+        <textarea class="doc-text" id="doc-text" placeholder="Paste it here…"></textarea>
+        <div class="phi-warn" id="doc-warn" hidden role="status">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          <span>This looks like an identifier (account #, SSN, card…) — swap it for a blank like [account #].</span>
         </div>
       </div>
     </section>
@@ -446,10 +514,10 @@
       </select>
       <div class="other-wrap" id="format-other-wrap" hidden>
         <input type="text" class="bd-text" id="format-other" placeholder="Describe the format…" aria-label="Other format" />
-        <p class="helper">Keep confidential details out — redact account or card numbers, patient names, and pay, or use [brackets].</p>
+        <p class="helper">Real amounts are fine — that's the analysis. Leave out identifiers (account or card numbers, patient names) or swap them for a blank like [account #].</p>
         <div class="phi-warn" id="format-warn" hidden role="status">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-          <span>This looks like it might be confidential — redact it or use a [bracket].</span>
+          <span>This looks like an identifier (account #, SSN, card…) — swap it for a blank like [account #].</span>
         </div>
       </div>
     </section>
@@ -501,7 +569,10 @@
           <input type="text" class="bd-text" id="save-name" placeholder="Name this prompt — e.g. Monday P&L review" aria-label="Name for this saved prompt" />
           <button type="button" class="btn btn--secondary" id="save-confirm">Save</button>
         </div>
-        <pre class="prompt-out placeholder" id="prompt-out">Pick an Expert, a Task, and a Format to see your prompt here. The confidential-data safety rule is added automatically.</pre>
+        <label for="prompt-out" style="position:absolute; left:-9999px;">Your prompt — editable</label>
+        <textarea class="prompt-out" id="prompt-out" spellcheck="false"
+          placeholder="Pick an Expert, a Task, and a Format to see your prompt here. The confidential-data safety rule is added automatically. You can edit the finished prompt right in this box."></textarea>
+        <p class="edit-note" id="edit-note" hidden>Edited by hand — changing any pick (or hitting Generate) rebuilds the prompt from your selections.</p>
         <p class="copy-note">The safety rule below is added to every prompt automatically — it can't be removed. Treat the output as a first draft and sanity-check the numbers before acting.</p>
 
         <div class="send-group">
@@ -970,7 +1041,7 @@
 
   var VERIFY_RULE = "Verify rule: AI-found figures and estimates are a starting point — confirm against primary sources, and with your CPA and attorney, before any offer, purchase, or filing.";
 
-  var SAFETY = "Safety rule: Keep confidential data out of this prompt. Don't include account or card numbers, bank details, patient names, individual employee pay, EINs, or other sensitive specifics — redact them or use [bracket] placeholders. Treat the output as a first draft and sanity-check the numbers before acting on them.";
+  var SAFETY = "Safety rule: Real amounts and percentages belong in this prompt — they're the analysis. Keep identifiers out: account or card numbers, bank details, SSNs or EINs, passwords, and patient names — swap those for blanks like [account #] or [patient name]. If employee pay comes up, use roles instead of names. Treat the output as a first draft and sanity-check the numbers before acting on them.";
 
   var STORAGE_KEY = "bridge-owner-prompt-v1";
 
@@ -987,6 +1058,9 @@
   var askToggle = $("ask-toggle");
   var toneGroup = $("tone-group");
   var providerRow = $("provider-row"), sendNote = $("send-note");
+  var docPanel = $("doc-panel"), docTitle = $("doc-title"), docText = $("doc-text"), docWarn = $("doc-warn");
+  var editNote = $("edit-note");
+  var promptDirty = false;   // true once the user hand-edits the prompt box
 
   // Privacy-friendly usage event (GoatCounter). No-ops if the script is blocked
   // or hasn't loaded; never touches prompt content.
@@ -1108,6 +1182,14 @@
     var s = text.replace(/\[[^\]]*\]/g, ""); // ignore content inside [brackets]
     return reDate.test(s) || reEmail.test(s) || rePhone.test(s) ||
            reLongNum.test(s) || reCard.test(s) || reSSN.test(s) || reEIN.test(s);
+  }
+
+  // Pasted documents legitimately contain dates, phone numbers, and dollar
+  // amounts — those are the analysis. Only warn on true identifiers.
+  function looksLikeIdentifier(text) {
+    if (!text) return false;
+    var s = text.replace(/\[[^\]]*\]/g, "");
+    return reLongNum.test(s) || reCard.test(s) || reSSN.test(s) || reEIN.test(s);
   }
 
   function warnElFor(input) {
@@ -1277,15 +1359,24 @@
 
     var sections = [parts.join(" ")];
 
-    // Document block — attach or paste, with a confidential reminder.
+    // Document block — attach or paste, with a confidential reminder. If the
+    // user pasted the document into the panel under Task, weave it in.
     var docLabel = isMenuTask ? TASK_INPUT[task] : null;
     if (docLabel) {
-      sections.push(
-        "Attach the " + docLabel + " in your AI tool, or paste it between the lines below. " +
-        "First remove anything confidential — account or card numbers, patient names, individual " +
-        "employee pay, bank details — or replace it with [brackets]:\n" +
-        "---\n[ attach or paste the " + docLabel + " here ]\n---"
-      );
+      var docVal = docText.value.trim();
+      if (docVal) {
+        sections.push(
+          "Here is the " + docLabel + " to work from (identifiers removed; real amounts kept for the analysis):\n" +
+          "---\n" + docVal + "\n---"
+        );
+      } else {
+        sections.push(
+          "Attach the " + docLabel + " in your AI tool, or paste it between the lines below. " +
+          "Real amounts stay in — they're the analysis. First remove identifiers — account or card " +
+          "numbers, bank details, patient names — or swap them for blanks like [account #]:\n" +
+          "---\n[ attach or paste the " + docLabel + " here ]\n---"
+        );
+      }
     }
 
     sections.push(SAFETY);
@@ -1310,15 +1401,48 @@
     providerRow.querySelectorAll(".provider-btn").forEach(function (b) { b.disabled = !ready; });
     if (!ready) { sendNote.hidden = true; }
 
-    var prompt = buildPrompt();
-    if (!prompt) {
-      promptOut.textContent = "Pick an Expert, a Task, and a Format to see your prompt here. The confidential-data safety rule is added automatically.";
-      promptOut.classList.add("placeholder");
+    // Document paste panel — shown when the selected menu task needs source material.
+    var curTask = (taskSel.value && taskSel.value !== OTHER) ? getTaskText() : "";
+    var curDocLabel = curTask ? TASK_INPUT[curTask] : null;
+    if (curDocLabel) {
+      if (docPanel.dataset.task !== curTask) {
+        docPanel.dataset.task = curTask;
+        docText.value = "";
+        hide(docWarn);
+      }
+      docTitle.textContent = "Paste the " + curDocLabel + " (optional)";
+      docText.placeholder = "Paste the " + curDocLabel + " here…";
+      show(docPanel);
     } else {
-      promptOut.textContent = prompt;
-      promptOut.classList.remove("placeholder");
+      hide(docPanel);
+      docPanel.dataset.task = "";
+      docText.value = "";
+      hide(docWarn);
     }
+
+    // Rebuild the editable prompt box from the picks. Any pick change (or
+    // Generate) overwrites hand edits — predictable and easy to redo.
+    promptDirty = false;
+    hide(editNote);
+    disarmProviders();
+    promptOut.value = buildPrompt();
     save();
+  }
+
+  // The prompt box is the final say: what's in it is what gets copied/sent.
+  // The safety rule (and, for money roles, the verify rule) is re-appended if
+  // an edit removed it — it's the product's promise.
+  function getFinalPrompt() {
+    var t = promptOut.value.trim();
+    if (!t) return "";
+    if (t.indexOf("Safety rule:") === -1) t += "\n\n" + SAFETY;
+    var moneyRole = roleSel.value === "cfo" || roleSel.value === "expansion" || roleSel.value === "deals";
+    if (moneyRole && t.indexOf("Verify rule:") === -1) t += "\n\n" + VERIFY_RULE;
+    return t;
+  }
+
+  function disarmProviders() {
+    providerRow.querySelectorAll(".provider-btn").forEach(function (b) { delete b.dataset.armed; });
   }
 
   // ---------- Clipboard ----------
@@ -1494,8 +1618,22 @@
     promptOut.scrollIntoView({ behavior: "smooth", block: "nearest" });
   });
 
+  // The user can edit the prompt box before copying/sending; edits stick until
+  // a pick changes. Provider buttons warn once if a [ paste/attach … ] slot is
+  // empty, because ChatGPT/Gemini/Grok run the prompt the moment they open.
+  promptOut.addEventListener("input", function () {
+    promptDirty = true;
+    editNote.hidden = false;
+    disarmProviders();
+  });
+
+  docText.addEventListener("input", function () {
+    if (looksLikeIdentifier(docText.value)) { show(docWarn); } else { hide(docWarn); }
+    updatePreview();
+  });
+
   copyBtn.addEventListener("click", function () {
-    var text = buildPrompt();
+    var text = getFinalPrompt();
     if (!text) return;
     bdTrack("owner-copy-prompt");
     copyText(text, function () {
@@ -1516,8 +1654,22 @@
     if (!btn || btn.disabled) return;
     var p = PROVIDERS_BY_ID[btn.getAttribute("data-provider")];
     if (!p) return;
-    var text = buildPrompt();
+    var text = getFinalPrompt();
     if (!text) return;
+
+    // Guard: an unfilled [ paste/attach … ] slot means the AI tool would run a
+    // half-finished prompt (most tools submit immediately). Warn once;
+    // a second click on the same button proceeds anyway.
+    if (/\[\s*(?:paste|attach)[^\]]*\]/i.test(text) && btn.dataset.armed !== "1") {
+      disarmProviders();
+      btn.dataset.armed = "1";
+      sendNote.hidden = false;
+      sendNote.textContent = "Heads up — your prompt still has an empty [ attach or paste… ] section, and " +
+        p.name + " runs the prompt as soon as it opens. Paste the document into the box under Task " +
+        "(or plan to attach the file in your AI tool), then try again — or click " + p.name + " once more to open anyway.";
+      return;
+    }
+    disarmProviders();
 
     bdTrack("owner-open-" + p.id);
     copyText(text);

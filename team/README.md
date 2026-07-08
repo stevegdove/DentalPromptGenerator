@@ -39,12 +39,12 @@ appends the safety rule:
 ```
 Act as a front desk coordinator speaking to a busy adult overdue 12+ months. Re-engage
 overdue patients. Use a caring tone. Format: 3 short text messages (under 35 words each).
-Where a specific detail is needed, use bracketed placeholders like [first name], [date],
+Where a specific detail is needed, leave fill-in-the-blanks like [first name], [date],
 [time], [booking link], or [practice name].
 
 Safety rule: Use no patient identifiers. Never include patient names, dates of birth,
-addresses, phone numbers, chart/account numbers, or insurance IDs — use [bracket]
-placeholders instead. This output is a first draft; review it before anyone (especially a
+addresses, phone numbers, chart/account numbers, or insurance IDs — leave
+fill-in-the-blanks like [first name] or [date] instead. This output is a first draft; review it before anyone (especially a
 patient) sees it.
 ```
 
@@ -57,7 +57,7 @@ reminder, so the user pastes the de-identified source in before sending it to th
 
 ```
 Here is the negative review to work from. Paste it between the lines below, with any patient
-names or identifiers removed — use [brackets] instead:
+names or identifiers removed — use fill-in-the-blanks like [first name] instead:
 ---
 [ paste the negative review here ]
 ---
@@ -110,11 +110,11 @@ array in `index.html`, so it's easy to add or change tools/URLs as their prefill
 - The app **never asks for, displays, or stores PHI**. There are no patient-data fields.
 - A persistent **"PHI-safe by design"** badge sits in the header.
 - The **safety-rule block is appended to every prompt automatically and cannot be removed.**
-- Each "Other…" box carries a reminder to use `[brackets]` for patient-specific detail.
+- Each "Other…" box carries a reminder to swap patient detail for a fill-in-the-blank like `[first name]`.
 - A lightweight, **client-side PHI warning** fires (non-blocking) if an "Other…" box looks
   like it contains a real identifier — a date (`MM/DD/YYYY`), a 7+ digit number, an email, or
-  a phone-number pattern. It warns; it never blocks. Text already inside `[brackets]` is
-  ignored so placeholders don't trigger it.
+  a phone-number pattern. It warns; it never blocks. Text already inside a fill-in-the-blank like `[first name]` is
+  ignored so blanks don't trigger it.
 - **Everything stays in the browser.** The only persistence is `localStorage` (it remembers
   your last selections); nothing is sent anywhere.
 
@@ -137,7 +137,7 @@ hero band with the reversed white logo.
   *speaking to* a busy adult overdue 12+ months").
 - **Shared contexts** ("a general patient", "a nervous adult", "a new patient") are appended to
   every role's context list, alongside the role-specific ones.
-- **Placeholder hint:** the bracketed-placeholder encouragement line is added only for formats
+- **Placeholder hint:** the fill-in-the-blank encouragement line is added only for formats
   that imply names/dates/links (messages, emails, scripts, handouts, review replies, social,
   content tables) — not for SOPs, checklists, or plain bullets.
 - **Multiple tones** can be selected; they're combined into one natural clause

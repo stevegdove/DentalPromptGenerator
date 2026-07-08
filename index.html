@@ -9,11 +9,11 @@
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://stevegdove.github.io/DentalPromptGenerator/" />
 <meta property="og:title" content="Bridge Dental Prompt Builders" />
-<meta property="og:description" content="Free tools that write strong, safe AI prompts for dental teams and practice owners & operators — four picks, safety rules baked in." />
+<meta property="og:description" content="The easiest way to put AI to work in your practice — patient texts, scripts, statement audits, and growth plans from four picks. Free, safety rules baked in." />
 <meta property="og:image" content="https://stevegdove.github.io/DentalPromptGenerator/assets/og-card.png" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="Bridge Dental Prompt Builders" />
-<meta name="twitter:description" content="Free tools that write strong, safe AI prompts for dental teams and practice owners & operators — four picks, safety rules baked in." />
+<meta name="twitter:description" content="The easiest way to put AI to work in your practice — patient texts, scripts, statement audits, and growth plans from four picks. Free, safety rules baked in." />
 <meta name="twitter:image" content="https://stevegdove.github.io/DentalPromptGenerator/assets/og-card.png" />
 <script data-goatcounter="https://bridgedental.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -81,6 +81,20 @@
     stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; }
   .hero h1 { color: #fff; font-weight: 800; font-size: clamp(1.8rem, 5vw, 2.6rem); margin-bottom: .35rem; }
   .hero p { color: rgba(255,255,255,.86); font-size: 1.05rem; max-width: 40rem; margin: 0; }
+  .hero-points { list-style: none; display: flex; flex-wrap: wrap; gap: .55rem; padding: 0; margin: 1.15rem 0 0; }
+  .hero-points li {
+    display: inline-flex; align-items: center; gap: .5rem;
+    background: rgba(255,255,255,.12); border-radius: var(--radius-pill);
+    padding: .4rem .95rem .4rem .45rem;
+    font-family: var(--font-head); font-weight: 600; font-size: .88rem; color: #fff;
+  }
+  .hp-ico {
+    width: 26px; height: 26px; border-radius: 50%; flex: 0 0 auto;
+    background: rgba(255,255,255,.92); color: var(--indigo);
+    display: inline-flex; align-items: center; justify-content: center;
+  }
+  .hp-ico svg { width: 14px; height: 14px; fill: none; stroke: currentColor;
+    stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 
   main { max-width: 920px; margin: -1.4rem auto 0; padding: 0 1.25rem 4rem; }
 
@@ -186,8 +200,13 @@
           Safe by design
         </span>
       </div>
-      <h1>Prompt builders for dental practices.</h1>
-      <p>Two small tools that write strong, safe AI prompts in four picks. Choose the one that fits what you're doing today — the safety rules are baked in either way.</p>
+      <h1>The easiest way to put AI to work in your practice.</h1>
+      <p>Patient texts and scripts for your team. Statement audits and growth plans for owners. Four picks turn into an expert-grade prompt — safety rules baked in, nothing to learn.</p>
+      <ul class="hero-points">
+        <li><span class="hp-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></span>No AI experience needed</li>
+        <li><span class="hp-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span>About a minute per prompt</li>
+        <li><span class="hp-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg></span>Free for dental teams</li>
+      </ul>
     </div>
   </header>
 
