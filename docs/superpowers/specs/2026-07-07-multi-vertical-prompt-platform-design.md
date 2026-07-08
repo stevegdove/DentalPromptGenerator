@@ -288,3 +288,25 @@ are built to lift into it later — none of Phase 4 is implemented in this proje
 
 - None outstanding at the design level. Remaining choices (e.g. exact stub-generation
   approach, `og:image` card production per vertical) are implementation-plan details.
+
+## Phase 2 punch-list — validated 2026-07-08
+
+A throwaway **Accounting Firm** vertical was authored, browser-tested (hub showed 2
+cards; the app generated correct accounting prompts via advisor phrasing + a
+confidential/advice safety stack), then reverted. It confirmed the Phase 1 data engine is
+generic (a new vertical = pack JSON + stub + manifest line, zero engine changes) and
+surfaced these concrete Phase 2 items:
+
+1. **Vocabulary not applied to the DOM.** The pack's `vocabulary.*` labels are loaded but
+   not wired to the visible form labels (still show the static dental copy). Phase 2 should
+   apply them alongside the theme skin.
+2. **`PLACEHOLDER_LINE` is a dental-flavored constant** in `app/prompt.js` (mentions
+   `[booking link]`, `[practice name]`). Move it into the phrasing profile so it is
+   pack-driven; until then a vertical must use `placeholderLine: false` to avoid leakage.
+3. **Tone chips are hardcoded per stub.** Each vertical stub duplicates its tone-chip
+   markup. Render chips dynamically from `pack.tones` so stubs stay vertical-agnostic.
+4. **Courtesy-gate password is global.** The djb2 hash is hardcoded in `app/app.js`, so
+   every vertical's sensitive roles share one password. Move it to the pack (e.g.
+   `pack.gateHash`) for per-vertical gating.
+5. **Static shell chrome is dental-branded.** The stub's hero/founders/how copy is
+   dental-specific; Phase 2 theming should drive it from the pack (or neutralize it).
