@@ -1,0 +1,8 @@
+{
+  "name": "bridge-prompt-platform",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test"
+  }
+}
