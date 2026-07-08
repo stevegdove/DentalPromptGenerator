@@ -320,6 +320,28 @@
   select optgroup { font-family: var(--font-head); font-weight: 600; color: var(--muted); }
   select option { color: var(--ink); font-weight: 400; }
 
+  /* Quick start — a prominent one-tap tray, deliberately NOT a numbered step card */
+  .quickstart {
+    background: var(--lavender); border-radius: var(--radius-lg);
+    padding: 1.15rem 1.4rem 1.3rem; margin-bottom: 1rem;
+  }
+  .quickstart-head { display: flex; align-items: center; gap: .65rem; }
+  .quickstart-icon {
+    width: 34px; height: 34px; border-radius: var(--radius-sm); flex: 0 0 auto;
+    background: #fff; color: var(--indigo);
+    display: inline-flex; align-items: center; justify-content: center;
+  }
+  .quickstart-icon svg { width: 18px; height: 18px; fill: none; stroke: currentColor;
+    stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+  .quickstart-title { font-family: var(--font-head); font-weight: 700; color: var(--indigo); font-size: 1rem; display: block; }
+  .quickstart-sub { font-size: .85rem; color: var(--ink-soft); margin: 0; }
+  .quickstart .chip-group { margin-top: .9rem; gap: .55rem; }
+  .quickstart .chip {
+    font-size: .95rem; padding: .6rem 1rem; background: #fff;
+    border-color: transparent; box-shadow: var(--shadow);
+  }
+  .quickstart .chip:hover { border-color: var(--rose); color: var(--rose); }
+
   /* ---------- Guided tour ---------- */
   .tour-launch {
     display: inline-flex; align-items: center; gap: .5rem;
@@ -380,7 +402,7 @@
   @media (max-width: 560px) {
     body { font-size: 16px; }
     .actions .btn { flex: 1 1 100%; }
-    .tour-card { left: 1rem !important; right: 1rem; width: auto; }
+    .tour-card { left: 1rem !important; right: 1rem; width: auto; max-height: 62vh; overflow-y: auto; }
   }
 
   /* Respect reduced motion */
@@ -418,11 +440,15 @@
   </header>
 
   <main class="bd-scope">
-    <!-- Quick start -->
-    <section class="card">
-      <span class="eyebrow">Quick start</span>
-      <h2>New here? Try an example</h2>
-      <p class="sub">One click fills in all four picks — then tweak anything you like.</p>
+    <!-- Quick start — one-tap everyday tasks (the 80% case) -->
+    <section class="quickstart" aria-label="Everyday tasks">
+      <div class="quickstart-head">
+        <span class="quickstart-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></span>
+        <div>
+          <span class="quickstart-title">Everyday tasks — one tap</span>
+          <p class="quickstart-sub">Tap what you need. It fills all four picks, ready to copy — tweak anything after.</p>
+        </div>
+      </div>
       <div class="chip-group" id="example-row"></div>
     </section>
 
@@ -670,6 +696,7 @@
           b: "Copy the prompt, or open it in ChatGPT, Claude, Gemini, or Grok in one click. That's the whole flow — about a minute, start to finish." }
       ];
       var idx = 0, spot = null, card = null, active = false;
+      function isMobile() { return window.matchMedia("(max-width: 560px)").matches; }
       function cleanup() {
         if (spot) spot.remove(); if (card) card.remove();
         spot = card = null; active = false;
@@ -728,17 +755,25 @@
         if (back) back.addEventListener("click", function () { next(-1); });
         card.querySelector(".tour-skip").addEventListener("click", function () { end(false); });
         var el = step.el ? step.el() : null;
-        if (el) el.scrollIntoView({ block: "center" });
+        if (el) {
+          el.scrollIntoView({ block: isMobile() ? "start" : "center" });
+          if (isMobile()) window.scrollBy(0, -76);   // clear the top margin
+        }
         position();
-        card.querySelector(".tour-next").focus();
+        card.querySelector(".tour-next").focus({ preventScroll: true });
       }
       function position() {
         var step = STEPS[idx];
         var el = step.el ? step.el() : null;
+        var mobile = isMobile();
         if (!el) {
           if (spot) { spot.remove(); spot = null; }
-          card.style.top = "50%"; card.style.left = "50%";
-          card.style.transform = "translate(-50%, -50%)";
+          if (mobile) {
+            card.style.transform = ""; card.style.top = ""; card.style.bottom = "1rem";
+          } else {
+            card.style.bottom = ""; card.style.top = "50%"; card.style.left = "50%";
+            card.style.transform = "translate(-50%, -50%)";
+          }
           return;
         }
         card.style.transform = "";
@@ -752,6 +787,13 @@
         spot.style.left = (r.left - 8) + "px";
         spot.style.width = (r.width + 16) + "px";
         spot.style.height = (r.height + 16) + "px";
+        if (mobile) {
+          // Card docks to the bottom as a sheet; the target is scrolled toward the
+          // top (in render) so it stays visible above the card.
+          card.style.top = ""; card.style.bottom = "1rem";
+          return;
+        }
+        card.style.bottom = "";
         var ch = card.offsetHeight, cw = card.offsetWidth, vh = window.innerHeight, vw = window.innerWidth;
         var top = (r.bottom + 14 + ch < vh) ? r.bottom + 14 : Math.max(12, r.top - ch - 14);
         var left = Math.min(Math.max(12, r.left), vw - cw - 12);
@@ -1017,20 +1059,42 @@
     ]
   };
 
-  // One-click starter examples — each fills all four picks.
+  // One-tap everyday tasks — each fills all four picks. These are the highest-
+  // frequency front-desk & chairside jobs (the 80% case); the full builder below
+  // covers the custom 20%.
   var EXAMPLES = [
+    { label: "Fill a cancellation",
+      state: { role: "frontdesk", context: "the whole patient list (general)",
+               task: "Fill a same-day cancellation",
+               format: "3 short text messages (under 35 words each)", tones: ["caring", "upbeat"] } },
+    { label: "Confirm tomorrow's visits",
+      state: { role: "frontdesk", context: "a general patient",
+               task: "Write an appointment-confirmation sequence",
+               format: "3 short text messages (under 35 words each)", tones: ["clear"] } },
     { label: "Re-engage overdue patients",
       state: { role: "frontdesk", context: "a busy adult overdue 12+ months",
                task: "Re-engage overdue patients",
                format: "3 short text messages (under 35 words each)", tones: ["caring"] } },
-    { label: "Handle sticker shock",
-      state: { role: "treatment", context: "a patient with sticker shock",
-               task: "Handle sticker shock",
-               format: "A phone script (under 150 words)", tones: ["calm", "clear"] } },
-    { label: "Reply to a negative review",
-      state: { role: "marketing", context: "a negative reviewer",
-               task: "Respond to a negative review (safe)",
-               format: "A public review reply (under 70 words)", tones: ["professional"] } }
+    { label: "Answer an insurance question",
+      state: { role: "frontdesk", context: "a first-time caller comparing offices",
+               task: "Answer “do you take my insurance?”",
+               format: "One text message (under 45 words)", tones: ["clear"] } },
+    { label: "Ask for a review",
+      state: { role: "frontdesk", context: "a general patient",
+               task: "Ask a happy patient for a review",
+               format: "One text message (under 45 words)", tones: ["upbeat", "caring"] } },
+    { label: "Send a balance reminder",
+      state: { role: "frontdesk", context: "a general patient",
+               task: "Send a gentle balance reminder",
+               format: "One text message (under 45 words)", tones: ["caring", "professional"] } },
+    { label: "Calm an upset caller",
+      state: { role: "frontdesk", context: "a frustrated patient on the phone",
+               task: "Calm a frustrated reschedule call",
+               format: "A phone script (under 150 words)", tones: ["calm"] } },
+    { label: "Explain a deep cleaning",
+      state: { role: "hygienist", context: "an adult hearing a recommendation for the first time",
+               task: "Explain why a deep cleaning is needed",
+               format: "A chairside script (under 130 words)", tones: ["clear", "caring"] } }
   ];
 
   // Follow-up suggestions shown after copying — the first AI answer is rarely

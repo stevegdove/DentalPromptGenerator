@@ -438,7 +438,7 @@
   @media (max-width: 560px) {
     body { font-size: 16px; }
     .actions .btn { flex: 1 1 100%; }
-    .tour-card { left: 1rem !important; right: 1rem; width: auto; }
+    .tour-card { left: 1rem !important; right: 1rem; width: auto; max-height: 62vh; overflow-y: auto; }
   }
 
   /* Respect reduced motion */
@@ -742,6 +742,7 @@
           b: "Copy it, or open it in ChatGPT, Claude, Gemini, or Grok in one click. That's the whole flow." }
       ];
       var idx = 0, spot = null, card = null, active = false;
+      function isMobile() { return window.matchMedia("(max-width: 560px)").matches; }
       function cleanup() {
         if (spot) spot.remove(); if (card) card.remove();
         spot = card = null; active = false;
@@ -800,17 +801,25 @@
         if (back) back.addEventListener("click", function () { next(-1); });
         card.querySelector(".tour-skip").addEventListener("click", function () { end(false); });
         var el = step.el ? step.el() : null;
-        if (el) el.scrollIntoView({ block: "center" });
+        if (el) {
+          el.scrollIntoView({ block: isMobile() ? "start" : "center" });
+          if (isMobile()) window.scrollBy(0, -76);   // clear the top margin
+        }
         position();
-        card.querySelector(".tour-next").focus();
+        card.querySelector(".tour-next").focus({ preventScroll: true });
       }
       function position() {
         var step = STEPS[idx];
         var el = step.el ? step.el() : null;
+        var mobile = isMobile();
         if (!el) {
           if (spot) { spot.remove(); spot = null; }
-          card.style.top = "50%"; card.style.left = "50%";
-          card.style.transform = "translate(-50%, -50%)";
+          if (mobile) {
+            card.style.transform = ""; card.style.top = ""; card.style.bottom = "1rem";
+          } else {
+            card.style.bottom = ""; card.style.top = "50%"; card.style.left = "50%";
+            card.style.transform = "translate(-50%, -50%)";
+          }
           return;
         }
         card.style.transform = "";
@@ -824,6 +833,13 @@
         spot.style.left = (r.left - 8) + "px";
         spot.style.width = (r.width + 16) + "px";
         spot.style.height = (r.height + 16) + "px";
+        if (mobile) {
+          // Card docks to the bottom as a sheet; the target is scrolled toward the
+          // top (in render) so it stays visible above the card.
+          card.style.top = ""; card.style.bottom = "1rem";
+          return;
+        }
+        card.style.bottom = "";
         var ch = card.offsetHeight, cw = card.offsetWidth, vh = window.innerHeight, vw = window.innerWidth;
         var top = (r.bottom + 14 + ch < vh) ? r.bottom + 14 : Math.max(12, r.top - ch - 14);
         var left = Math.min(Math.max(12, r.left), vw - cw - 12);

@@ -42,6 +42,12 @@ Task and Format dropdowns open with a **"★ Most popular"** group above the ful
 the curated sets live in `POPULAR_TASKS` / `POPULAR_FORMATS` in each app's `index.html`;
 update them from GoatCounter task data once real usage accumulates.
 
+The team builder opens with a **one-tap "Everyday tasks" tray** — the 6–8 highest-frequency
+front-desk/chairside jobs (fill a cancellation, confirm tomorrow, re-engage overdue, insurance
+question, ask for a review, balance reminder, calm an upset caller, explain a deep cleaning).
+One tap fills all four picks, ready to copy; the full builder below covers the custom cases.
+The set lives in the `EXAMPLES` array in `team/index.html`.
+
 Both builders have a **guided tour** — a spotlight walkthrough of every step with a
 recommendation per stop (hand-rolled, no libraries). It launches from the "Take the
 60-second tour" button in the hero, and first-time visitors get a one-time dismissible
