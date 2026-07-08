@@ -67,6 +67,28 @@ This block only appears for tasks that need it; purely generative tasks (e.g. "R
 overdue patients") don't get one. The set of tasks that trigger it lives in the `TASK_INPUT`
 map in `index.html`.
 
+### Practice profile — personalize once, reused everywhere
+
+At the top of the page a **"Make prompts sound like your office"** card lets a practice fill
+in its own details **once**. Nine optional fields — practice/office name, doctor(s), phone,
+website, online booking link, address, office hours, Google review link, and a sign-off — are
+saved on-device (`localStorage` key `bd-practice-v1`, shared with the owner builder so it's
+entered only once). When set, two things happen to every prompt:
+
+1. **The office's own fill-in-the-blanks are filled for real.** `[practice name]`,
+   `[phone]`, `[website]`, `[booking link]`, `[address]`, `[office hours]`, and
+   `[review link]` (and common variants) are swapped for the saved values — `[booking link]`
+   falls back to the website if no separate booking link is given. **Patient blanks are never
+   touched:** `[first name]`, `[date]`, and `[time]` always stay blank for privacy.
+2. **A short "Practice details you can use directly" reference block** is appended (above the
+   safety rule) listing the filled fields, so the AI uses the real name, phone, website, and
+   sign-off wherever a message calls for them — even where there was no explicit placeholder.
+
+The card collapses to a row of summary chips once saved, with **Edit** and **Clear all**
+buttons. These are the office's *own public* details, not patient data, so they're safe to
+include — the PHI safety rule (which is patient-scoped) is unchanged. The field list and the
+placeholder-matching live in `PROFILE_FIELDS` / `fillPracticePlaceholders()` in `index.html`.
+
 ### Quick-start examples, detail fields, and share links
 
 - **Try an example** — three one-click starters at the top ("Re-engage overdue patients",
