@@ -1,0 +1,2006 @@
+{
+  "id": "dental",
+  "name": "Bridge Dental",
+  "tagline": "Prompts for your whole dental practice",
+  "theme": {
+    "primary": "#0e7490",
+    "accent": "#f59e0b",
+    "logo": "assets/dental/logo.png"
+  },
+  "vocabulary": {
+    "roleLabel": "Your role",
+    "contextLabel": "Who you're talking to",
+    "taskLabel": "What you need",
+    "customerNoun": "patient"
+  },
+  "safety": {
+    "phi": "Safety rule: Use no patient identifiers. Never include patient names, dates of birth, addresses, phone numbers, chart/account numbers, or insurance IDs — use [bracket] placeholders instead. This output is a first draft; review it before anyone (especially a patient) sees it.",
+    "confidential": "Safety rule: Keep confidential data out of this prompt. Don't include account or card numbers, bank details, patient names, individual employee pay, EINs, or other sensitive specifics — redact them or use [bracket] placeholders. Treat the output as a first draft and sanity-check the numbers before acting on them.",
+    "verify": "Verify rule: AI-found figures and estimates are a starting point — confirm against primary sources, and with your CPA and attorney, before any offer, purchase, or filing."
+  },
+  "defaultSafety": [
+    "phi"
+  ],
+  "sensitiveRoles": [
+    "cfo",
+    "expansion",
+    "deals",
+    "ops",
+    "growth",
+    "coach"
+  ],
+  "roles": [
+    {
+      "value": "frontdesk",
+      "label": "Front desk coordinator",
+      "prompt": "a front desk coordinator",
+      "safetyKeys": [
+        "phi"
+      ],
+      "contexts": [
+        "a busy adult overdue 12+ months",
+        "a first-time caller comparing offices",
+        "a price-shopper",
+        "a patient who no-showed",
+        "a frustrated patient on the phone",
+        "a new-to-the-area family",
+        "the whole patient list (general)"
+      ],
+      "tasks": [
+        {
+          "text": "Re-engage overdue patients",
+          "detail": "",
+          "input": "",
+          "fields": [],
+          "followups": [
+            "Make a version B with a different hook so I can test both.",
+            "Write the reply for a patient who says they can't afford it right now.",
+            "Turn the best message into an email version."
+          ],
+          "popular": true
+        },
+        {
+          "text": "Fill a same-day cancellation",
+          "detail": "",
+          "input": "",
+          "fields": [
+            {
+              "key": "slot",
+              "label": "The open slot ([time] is fine)",
+              "placeholder": "e.g. [today at 2pm]",
+              "sentence": "The open slot is {v}"
+            }
+          ],
+          "followups": [
+            "Write a shorter, more urgent version.",
+            "Draft the follow-up if nobody responds in an hour.",
+            "Make a version for our ASAP-list regulars."
+          ],
+          "popular": true
+        },
+        {
+          "text": "Convert a new-patient phone inquiry",
+          "detail": "",
+          "input": "",
+          "fields": [],
+          "followups": [
+            "Make it shorter and warmer.",
+            "Give me two more versions to choose from.",
+            "What did I forget to consider?"
+          ],
+          "popular": false
+        },
+        {
+          "text": "Write an appointment-confirmation sequence",
+          "detail": "",
+          "input": "",
+          "fields": [],
+          "followups": [
+            "Make it shorter and warmer.",
+            "Give me two more versions to choose from.",
+            "What did I forget to consider?"
+          ],
+          "popular": false
+        },
+        {
+          "text": "Ask a happy patient for a review",
+          "detail": "",
+          "input": "",
+          "fields": [],
+          "followups": [
+            "Make it shorter and warmer.",
+            "Give me two more versions to choose from.",
+            "What did I forget to consider?"
+          ],
+          "popular": false
+        },
+        {
+          "text": "Answer “do you take my insurance?”",
+          "detail": "",
+          "input": "",
+          "fields": [],
+          "followups": [
+            "Make it shorter and warmer.",
+            "Give me two more versions to choose from.",
+            "What did I forget to consider?"
+          ],
+          "popular": true
+        },
+        {
+          "text": "Send a gentle balance reminder",
+          "detail": "",
+          "input": "",
+          "fields": [],
+          "followups": [
+            "Make it shorter and warmer.",
+            "Give me two more versions to choose from.",
+            "What did I forget to consider?"
+          ],
+          "popular": false
+        },
+        {
+          "text": "Calm a frustrated reschedule call",
+          "detail": "",
+          "input": "",
+          "fields": [],
+          "followups": [
+            "Make it shorter and warmer.",
+            "Give me two more versions to choose from.",
+            "What did I forget to consider?"
+          ],
+          "popular": false
+        },
+        {
+          "text": "Make it right after a service failure",
+          "detail": "Own the mistake plainly, apologize without excuses, and offer one concrete next step to make it right — under 80 words with a [first name] placeholder.",
+          "input": "",
+          "fields": [
+            {
+              "key": "issue",
+              "label": "What went wrong",
+              "placeholder": "e.g. a 50-minute wait",
+              "sentence": "What happened: {v}"
+            }
+          ],
+          "followups": [
+            "Make it shorter and warmer.",
+            "Give me two more versions to choose from.",
+            "What did I forget to consider?"
+          ],
+          "popular": false
+        }
+      ]
+    },
+    {
+      "value": "hygienist",
+      "label": "Dental hygienist",
+      "prompt": "a dental hygienist",
+      "safetyKeys": [
+        "phi"
+      ],
+      "contexts": [
+        "an adult hearing a recommendation for the first time",
+        "a patient worried about cost",
+        "a patient with dental anxiety",
+        "a confused patient",
+        "a curious adult",
+        "a parent or young patient"
+      ],
+      "tasks": [
+        {
+          "text": "Explain why a deep cleaning is needed",
+          "detail": "",
+          "input": "",
+          "fields": [],
+          "followups": [
+            "Simplify it for a patient with no dental background.",
+            "Add a version for a patient who's worried about cost.",
+            "What questions will the patient most likely ask next?"
+          ],
+          "popular": true
+        },
+        {
+          "text": "Write a recare reactivation message",
+          "detail": "",
+          "input": "",
+          "fields": [],
+          "followups": [
+            "Make it shorter and warmer.",
+            "Give me two more versions to choose from.",
+            "What did I forget to consider?"
+          ],
+          "popular": true
+        },
+        {
+          "text": "Explain a night-guard recommendation",
+          "detail": "",
+          "input": "",
+          "fields": [],
+          "followups": [
+            "Make it shorter and warmer.",
+            "Give me two more versions to choose from.",
+            "What did I forget to consider?"
+          ],
+          "popular": false
+        },
+        {
+          "text": "Explain prophy vs SRP vs maintenance",
+          "detail": "",
+          "input": "",
+          "fields": [],
+          "followups": [
+            "Make it shorter and warmer.",
+            "Give me two more versions to choose from.",
+            "What did I forget to consider?"
+          ],
+          "popular": false
+        },
+        {
+          "text": "Motivate better home care",
+          "detail": "",
+          "input": "",
+          "fields": [],
+          "followups": [
+            "Make it shorter and warmer.",
+            "Give me two more versions to choose from.",
+            "What did I forget to consider?"
+          ],
+          "popular": false
+        },
+        {
+          "text": "Explain why X-rays are needed today",
+          "detail": "",
+          "input": "",
+          "fields": [],
+          "followups": [
+            "Make it shorter and warmer.",
+            "Give me two more versions to choose from.",
+            "What did I forget to consider?"
+          ],
+          "popular": false
+        },
+        {
+          "text": "Write a post-deep-cleaning home-care handout",
+          "detail": "",
+          "input": "",
+          "fields": [],
+          "followups": [
+            "Make it shorter and warmer.",
+            "Give me two more versions to choose from.",
+            "What did I forget to consider?"
+          ],
+          "popular": false
+        }
+      ]
+    },
+    {
+      "value": "assistant",
+      "label": "Dental assistant",
+      "prompt": "a dental assistant",
+      "safetyKeys": [
+        "phi"
+      ],
+      "contexts": [
+        "the patient who just had a procedure",
+        "an anxious patient",
+        "a nervous child and watching parent",
+        "a newer team member (training)",
+        "our dental lab",
+        "the front desk"
+      ],
+      "tasks": [
+        {
+          "text": "Write post-op instructions for a procedure",
+          "detail": "",
+          "input": "",
+          "fields": [
+            {
+              "key": "procedure",
+              "label": "Procedure",
+              "placeholder": "e.g. an extraction",
+              "sentence": "The procedure is {v}"
+            },
+            {
+              "key": "specifics",
+              "label": "Any specifics (optional)",
+              "placeholder": "e.g. upper molar, sutures placed",
+              "sentence": "Specifics: {v}"
+            }
+          ],
+          "followups": [
+            "Make it shorter and warmer.",
+            "Give me two more versions to choose from.",
+            "What did I forget to consider?"
+          ],
+          "popular": true
+        },
+        {
+          "text": "Turn the doctor's shorthand into a clinical note",
+          "detail": "",
+          "input": "doctor's shorthand",
+          "fields": [],
+          "followups": [
+            "Make it shorter and warmer.",
+            "Give me two more versions to choose from.",
+            "What did I forget to consider?"
+          ],
+          "popular": false
+        },
+        {
+          "text": "Build a tray / instrument setup checklist",
+          "detail": "",
+          "input": "",
+          "fields": [],
+          "followups": [
+            "Make it shorter and warmer.",
+            "Give me two more versions to choose from.",
+            "What did I forget to consider?"
+          ],
+          "popular": false
+        },
+        {
+          "text": "Write a pre-appointment prep text",
+          "detail": "",
+          "input": "",
+          "fields": [],
+          "followups": [
+            "Make it shorter and warmer.",
+            "Give me two more versions to choose from.",
+            "What did I forget to consider?"
+          ],
+          "popular": false
+        },
+        {
+          "text": "Reassure an anxious patient chairside",
+          "detail": "",
+          "input": "",
+          "fields": [],
+          "followups": [
+            "Make it shorter and warmer.",
+            "Give me two more versions to choose from.",
+            "What did I forget to consider?"
+          ],
+          "popular": true
+        },
+        {
+          "text": "Write a sterilization / processing SOP",
+          "detail": "",
+          "input": "",
+          "fields": [],
+          "followups": [
+            "Make it shorter and warmer.",
+            "Give me two more versions to choose from.",
+            "What did I forget to consider?"
+          ],
+          "popular": false
+        },
+        {
+          "text": "Write an emergency call triage script",
+          "detail": "",
+          "input": "",
+          "fields": [],
+          "followups": [
+            "Make it shorter and warmer.",
+            "Give me two more versions to choose from.",
+            "What did I forget to consider?"
+          ],
+          "popular": false
+        }
+      ]
+    },
+    {
+      "value": "treatment",
+      "label": "Treatment coordinator",
+      "prompt": "a treatment coordinator",
+      "safetyKeys": [
+        "phi"
+      ],
+      "contexts": [
+        "a nervous adult worried about cost",
+        "a patient with sticker shock",
+        "a patient who said “let me think about it”",
+        "a patient who went cold ~60 days ago",
+        "a self-pay / uninsured patient",
+        "a value-focused patient comparing quotes"
+      ],
+      "tasks": [
+        {
+          "text": "Present a crown to a hesitant patient",
+          "detail": "",
+          "input": "",
+          "fields": [],
+          "followups": [
+            "Make it shorter and warmer.",
+            "Give me two more versions to choose from.",
+            "What did I forget to consider?"
+          ],
+          "popular": false
+        },
+        {
+          "text": "Follow up on unscheduled treatment",
+          "detail": "",
+          "input": "",
+          "fields": [],
+          "followups": [
+            "Make it shorter and warmer.",
+            "Give me two more versions to choose from.",
+            "What did I forget to consider?"
+          ],
+          "popular": true
+        },
+        {
+          "text": "Handle “let me think about it”",
+          "detail": "",
+          "input": "",
+          "fields": [],
+          "followups": [
+            "Make it shorter and warmer.",
+            "Give me two more versions to choose from.",
+            "What did I forget to consider?"
+          ],
+          "popular": false
+        },
+        {
+          "text": "Explain financing options",
+          "detail": "",
+          "input": "",
+          "fields": [],
+          "followups": [
+            "Make it shorter and warmer.",
+            "Give me two more versions to choose from.",
+            "What did I forget to consider?"
+          ],
+          "popular": false
+        },
+        {
+          "text": "Phase a large treatment plan",
+          "detail": "",
+          "input": "treatment plan",
+          "fields": [],
+          "followups": [
+            "Make it shorter and warmer.",
+            "Give me two more versions to choose from.",
+            "What did I forget to consider?"
+          ],
+          "popular": false
+        },
+        {
+          "text": "Handle sticker shock",
+          "detail": "",
+          "input": "",
+          "fields": [],
+          "followups": [
+            "Give me the two most likely objections after this, with responses.",
+            "Make a version that leads with financing options.",
+            "Role-play the patient so I can practice the conversation."
+          ],
+          "popular": true
+        },
+        {
+          "text": "Write a treatment-plan email summary",
+          "detail": "",
+          "input": "treatment plan",
+          "fields": [],
+          "followups": [
+            "Make it shorter and warmer.",
+            "Give me two more versions to choose from.",
+            "What did I forget to consider?"
+          ],
+          "popular": false
+        },
+        {
+          "text": "Explain “watch” vs “treat now”",
+          "detail": "",
+          "input": "",
+          "fields": [],
+          "followups": [
+            "Make it shorter and warmer.",
+            "Give me two more versions to choose from.",
+            "What did I forget to consider?"
+          ],
+          "popular": false
+        }
+      ]
+    },
+    {
+      "value": "manager",
+      "label": "Office manager",
+      "prompt": "an office manager",
+      "safetyKeys": [
+        "phi"
+      ],
+      "contexts": [
+        "the whole team",
+        "a team member missing the mark",
+        "two team members in conflict",
+        "strong local job candidates",
+        "a vendor or insurer",
+        "a new hire"
+      ],
+      "tasks": [
+        {
+          "text": "Turn a messy process into an SOP",
+          "detail": "",
+          "input": "current process (the rough steps as they happen today)",
+          "fields": [],
+          "followups": [
+            "Which steps are most likely to be skipped, and how do we prevent that?",
+            "Turn this into a one-page checklist for the wall.",
+            "Write a 5-minute training huddle script to roll this out."
+          ],
+          "popular": true
+        },
+        {
+          "text": "Build a team-meeting agenda",
+          "detail": "",
+          "input": "",
+          "fields": [],
+          "followups": [
+            "Make it shorter and warmer.",
+            "Give me two more versions to choose from.",
+            "What did I forget to consider?"
+          ],
+          "popular": false
+        },
+        {
+          "text": "Write a job posting",
+          "detail": "",
+          "input": "",
+          "fields": [
+            {
+              "key": "position",
+              "label": "Position",
+              "placeholder": "e.g. dental hygienist",
+              "sentence": "The position is {v}"
+            },
+            {
+              "key": "perks",
+              "label": "A few highlights (optional)",
+              "placeholder": "e.g. 4-day week, great team",
+              "sentence": "Highlights worth mentioning: {v}"
+            }
+          ],
+          "followups": [
+            "Make it shorter and warmer.",
+            "Give me two more versions to choose from.",
+            "What did I forget to consider?"
+          ],
+          "popular": true
+        },
+        {
+          "text": "Write a first-week onboarding checklist",
+          "detail": "",
+          "input": "",
+          "fields": [],
+          "followups": [
+            "Make it shorter and warmer.",
+            "Give me two more versions to choose from.",
+            "What did I forget to consider?"
+          ],
+          "popular": false
+        },
+        {
+          "text": "Write interview questions",
+          "detail": "",
+          "input": "",
+          "fields": [],
+          "followups": [
+            "Make it shorter and warmer.",
+            "Give me two more versions to choose from.",
+            "What did I forget to consider?"
+          ],
+          "popular": false
+        },
+        {
+          "text": "Draft an employee-handbook section",
+          "detail": "",
+          "input": "topic or rough notes for this section",
+          "fields": [],
+          "followups": [
+            "Make it shorter and warmer.",
+            "Give me two more versions to choose from.",
+            "What did I forget to consider?"
+          ],
+          "popular": false
+        },
+        {
+          "text": "Write a firm email for a vendor / insurer dispute",
+          "detail": "",
+          "input": "details of the dispute",
+          "fields": [],
+          "followups": [
+            "Make it shorter and warmer.",
+            "Give me two more versions to choose from.",
+            "What did I forget to consider?"
+          ],
+          "popular": false
+        },
+        {
+          "text": "Write a do-say / don't-say brief for a sensitive situation",
+          "detail": "One page: a do-say / don't-say list, the single point of contact for questions, and a reminder that no one discusses patient details publicly.",
+          "input": "",
+          "fields": [],
+          "followups": [
+            "Make it shorter and warmer.",
+            "Give me two more versions to choose from.",
+            "What did I forget to consider?"
+          ],
+          "popular": false
+        },
+        {
+          "text": "Write a year-end team appreciation message",
+          "detail": "",
+          "input": "",
+          "fields": [],
+          "followups": [
+            "Make it shorter and warmer.",
+            "Give me two more versions to choose from.",
+            "What did I forget to consider?"
+          ],
+          "popular": false
+        }
+      ]
+    },
+    {
+      "value": "marketing",
+      "label": "Marketing / reputation manager",
+      "prompt": "a marketing and reputation manager",
+      "safetyKeys": [
+        "phi"
+      ],
+      "contexts": [
+        "local prospective patients",
+        "a happy reviewer",
+        "a negative reviewer",
+        "loyal patients",
+        "dormant / lapsed patients",
+        "everyday patients (education)"
+      ],
+      "tasks": [
+        {
+          "text": "Respond to a negative review (safe)",
+          "detail": "Never confirm whether the reviewer is a patient, share no treatment or billing details, and invite a private conversation.",
+          "input": "negative review",
+          "fields": [],
+          "followups": [
+            "Make it warmer without admitting fault.",
+            "Draft the private follow-up message to the patient.",
+            "What should we change so this complaint doesn't happen again?"
+          ],
+          "popular": true
+        },
+        {
+          "text": "Respond to a one-star review that mentions clinical details",
+          "detail": "Acknowledge their feelings and stay gracious. Never confirm the person is a patient, share no treatment or billing specifics, avoid anything defensive, and invite a private conversation.",
+          "input": "one-star review",
+          "fields": [],
+          "followups": [
+            "Make it warmer without admitting fault.",
+            "Draft the private message to send them directly.",
+            "Give me a reusable template for reviews like this."
+          ],
+          "popular": false
+        },
+        {
+          "text": "Calm a complaint that's going viral",
+          "detail": "Write one calm, non-defensive public reply under 60 words, then give three internal next-step bullets including private outreach. No arguing in the thread, and no patient details.",
+          "input": "complaint thread (remove any names)",
+          "fields": [],
+          "followups": [
+            "Draft the internal do-say / don't-say brief for the team.",
+            "Write the private outreach message to the original poster.",
+            "What should we watch over the next 48 hours?"
+          ],
+          "popular": false
+        },
+        {
+          "text": "Respond to a 5-star review",
+          "detail": "",
+          "input": "5-star review",
+          "fields": [],
+          "followups": [
+            "Make it shorter and warmer.",
+            "Give me two more versions to choose from.",
+            "What did I forget to consider?"
+          ],
+          "popular": false
+        },
+        {
+          "text": "Write a reactivation email to dormant patients",
+          "detail": "",
+          "input": "",
+          "fields": [],
+          "followups": [
+            "Make it shorter and warmer.",
+            "Give me two more versions to choose from.",
+            "What did I forget to consider?"
+          ],
+          "popular": false
+        },
+        {
+          "text": "Build a monthly social content calendar",
+          "detail": "",
+          "input": "",
+          "fields": [
+            {
+              "key": "month",
+              "label": "Month or theme",
+              "placeholder": "e.g. August — back to school",
+              "sentence": "The month or theme is {v}"
+            }
+          ],
+          "followups": [
+            "Make it shorter and warmer.",
+            "Give me two more versions to choose from.",
+            "What did I forget to consider?"
+          ],
+          "popular": false
+        },
+        {
+          "text": "Write a new-patient special announcement",
+          "detail": "",
+          "input": "",
+          "fields": [],
+          "followups": [
+            "Make it shorter and warmer.",
+            "Give me two more versions to choose from.",
+            "What did I forget to consider?"
+          ],
+          "popular": false
+        },
+        {
+          "text": "Ask happy patients for referrals",
+          "detail": "",
+          "input": "",
+          "fields": [],
+          "followups": [
+            "Make it shorter and warmer.",
+            "Give me two more versions to choose from.",
+            "What did I forget to consider?"
+          ],
+          "popular": true
+        },
+        {
+          "text": "Write an educational post",
+          "detail": "",
+          "input": "",
+          "fields": [],
+          "followups": [
+            "Make it shorter and warmer.",
+            "Give me two more versions to choose from.",
+            "What did I forget to consider?"
+          ],
+          "popular": false
+        },
+        {
+          "text": "Announce the launch of a new service",
+          "detail": "",
+          "input": "",
+          "fields": [
+            {
+              "key": "service",
+              "label": "The new service",
+              "placeholder": "e.g. same-day crowns",
+              "sentence": "The new service is {v}"
+            }
+          ],
+          "followups": [
+            "Make it shorter and warmer.",
+            "Give me two more versions to choose from.",
+            "What did I forget to consider?"
+          ],
+          "popular": false
+        }
+      ]
+    },
+    {
+      "value": "doctor",
+      "label": "Dentist (doctor)",
+      "prompt": "a dentist",
+      "safetyKeys": [
+        "phi"
+      ],
+      "contexts": [
+        "a patient with no clinical background",
+        "a patient who could feel overwhelmed",
+        "a patient who hoped to keep a tooth",
+        "a patient weighing options",
+        "myself (notes / documentation)"
+      ],
+      "tasks": [
+        {
+          "text": "Explain a treatment in plain language",
+          "detail": "",
+          "input": "",
+          "fields": [
+            {
+              "key": "treatment",
+              "label": "Treatment",
+              "placeholder": "e.g. a root canal",
+              "sentence": "The treatment is {v}"
+            }
+          ],
+          "followups": [
+            "Make it shorter and warmer.",
+            "Give me two more versions to choose from.",
+            "What did I forget to consider?"
+          ],
+          "popular": true
+        },
+        {
+          "text": "Draft a clinical note from shorthand",
+          "detail": "",
+          "input": "doctor's shorthand",
+          "fields": [],
+          "followups": [
+            "Make it shorter and warmer.",
+            "Give me two more versions to choose from.",
+            "What did I forget to consider?"
+          ],
+          "popular": false
+        },
+        {
+          "text": "Present a comprehensive plan ethically",
+          "detail": "",
+          "input": "",
+          "fields": [],
+          "followups": [
+            "Make it shorter and warmer.",
+            "Give me two more versions to choose from.",
+            "What did I forget to consider?"
+          ],
+          "popular": false
+        },
+        {
+          "text": "Deliver difficult news kindly",
+          "detail": "",
+          "input": "",
+          "fields": [],
+          "followups": [
+            "Make it shorter and warmer.",
+            "Give me two more versions to choose from.",
+            "What did I forget to consider?"
+          ],
+          "popular": true
+        },
+        {
+          "text": "Explain informed consent",
+          "detail": "",
+          "input": "",
+          "fields": [],
+          "followups": [
+            "Make it shorter and warmer.",
+            "Give me two more versions to choose from.",
+            "What did I forget to consider?"
+          ],
+          "popular": false
+        }
+      ]
+    },
+    {
+      "value": "cfo",
+      "label": "Fractional CFO (money & costs)",
+      "prompt": "a fractional CFO for a dental practice",
+      "safetyKeys": [
+        "confidential",
+        "verify"
+      ],
+      "contexts": [
+        "overhead feels too high",
+        "profitable but cash is tight",
+        "collections are lagging production",
+        "supply and lab costs keep creeping up",
+        "getting ready for tax season",
+        "a typical month at the practice",
+        "planning for the year ahead",
+        "just want a second opinion"
+      ],
+      "tasks": [
+        {
+          "text": "Audit credit-card and bank statements for savings",
+          "detail": "",
+          "input": "recent card & bank statements",
+          "fields": [],
+          "followups": [
+            "Rank the savings by annual dollar impact.",
+            "Draft cancellation emails for the top three.",
+            "What should I watch for on next month's statement?"
+          ],
+          "popular": true
+        },
+        {
+          "text": "Review the P&L and flag categories that need attention",
+          "detail": "",
+          "input": "profit & loss statement (P&L)",
+          "fields": [],
+          "followups": [
+            "Which single category should I attack first?",
+            "What would each fix be worth annually?",
+            "Draft the email or script to act on your top recommendation."
+          ],
+          "popular": true
+        },
+        {
+          "text": "Compare a dental-supply invoice against other vendors",
+          "detail": "Normalize every line to a true unit cost (price divided by units per pack) so the comparison is apples to apples, name the best vendor per item, and total the potential annual savings.",
+          "input": "recent supply invoice",
+          "fields": [],
+          "followups": [
+            "What's the single highest-impact item here, and why?",
+            "What would you need from me to make this more precise?",
+            "Turn your top recommendation into concrete next steps for this week."
+          ],
+          "popular": false
+        },
+        {
+          "text": "Find recurring subscriptions and charges to cancel",
+          "detail": "",
+          "input": "recent card & bank statements",
+          "fields": [],
+          "followups": [
+            "What's the single highest-impact item here, and why?",
+            "What would you need from me to make this more precise?",
+            "Turn your top recommendation into concrete next steps for this week."
+          ],
+          "popular": false
+        },
+        {
+          "text": "Cut accounts-receivable over 90 days",
+          "detail": "",
+          "input": "accounts-receivable (A/R) aging report",
+          "fields": [],
+          "followups": [
+            "Script the first call for the biggest balance.",
+            "Which claims should we resubmit versus write off?",
+            "Build a weekly A/R routine so this doesn't pile up again."
+          ],
+          "popular": false
+        },
+        {
+          "text": "Analyze which PPO plans to keep or drop and model a fee increase",
+          "detail": "",
+          "input": "fee schedule and insurance write-off report",
+          "fields": [],
+          "followups": [
+            "Model dropping the single worst plan — what's the patient-loss break-even?",
+            "Draft the patient letter announcing the change.",
+            "What's the safest timeline and order of operations?"
+          ],
+          "popular": false
+        },
+        {
+          "text": "Audit lab bills for overcharges",
+          "detail": "",
+          "input": "recent lab statement",
+          "fields": [],
+          "followups": [
+            "What's the single highest-impact item here, and why?",
+            "What would you need from me to make this more precise?",
+            "Turn your top recommendation into concrete next steps for this week."
+          ],
+          "popular": false
+        },
+        {
+          "text": "Check production vs. collections for leakage",
+          "detail": "",
+          "input": "production and collections report",
+          "fields": [],
+          "followups": [
+            "What's the single highest-impact item here, and why?",
+            "What would you need from me to make this more precise?",
+            "Turn your top recommendation into concrete next steps for this week."
+          ],
+          "popular": false
+        },
+        {
+          "text": "Benchmark overhead against typical practices",
+          "detail": "",
+          "input": "",
+          "fields": [
+            {
+              "key": "collections",
+              "label": "Annual collections (rough)",
+              "placeholder": "e.g. about $1.4M",
+              "sentence": "Annual collections are roughly {v}"
+            },
+            {
+              "key": "overhead",
+              "label": "Current overhead % (if known)",
+              "placeholder": "e.g. about 68%",
+              "sentence": "Current overhead is about {v}"
+            }
+          ],
+          "followups": [
+            "What's the single highest-impact item here, and why?",
+            "What would you need from me to make this more precise?",
+            "Turn your top recommendation into concrete next steps for this week."
+          ],
+          "popular": false
+        },
+        {
+          "text": "Model the ROI on new equipment",
+          "detail": "Calculate net revenue per case, monthly profit contribution, break-even cases per month, and the payback period in months, and finish with a one-line verdict.",
+          "input": "",
+          "fields": [
+            {
+              "key": "equipment",
+              "label": "Equipment you're considering",
+              "placeholder": "e.g. a CBCT unit",
+              "sentence": "The equipment is {v}"
+            },
+            {
+              "key": "cost",
+              "label": "Approximate cost",
+              "placeholder": "e.g. $85,000",
+              "sentence": "The approximate cost is {v}"
+            },
+            {
+              "key": "cases",
+              "label": "Expected monthly use",
+              "placeholder": "e.g. 20 scans a month",
+              "sentence": "Expected monthly use: {v}"
+            }
+          ],
+          "followups": [
+            "How many cases a month is break-even?",
+            "Compare buying vs. leasing vs. waiting a year.",
+            "Which of my utilization assumptions is most likely wrong?"
+          ],
+          "popular": false
+        },
+        {
+          "text": "Compare buying, leasing, and financing equipment",
+          "detail": "Show monthly cost, total cost, cash impact, and flexibility side by side, with a recommendation — and note that I'll confirm the tax treatment with my CPA.",
+          "input": "",
+          "fields": [
+            {
+              "key": "equipment",
+              "label": "The equipment",
+              "placeholder": "e.g. a CBCT unit",
+              "sentence": "The equipment is {v}"
+            },
+            {
+              "key": "price",
+              "label": "Approximate price",
+              "placeholder": "e.g. $85,000",
+              "sentence": "The price is about {v}"
+            }
+          ],
+          "followups": [
+            "What's the single highest-impact item here, and why?",
+            "What would you need from me to make this more precise?",
+            "Turn your top recommendation into concrete next steps for this week."
+          ],
+          "popular": false
+        },
+        {
+          "text": "Decide whether to repair or replace equipment",
+          "detail": "Weigh age, reliability, downtime, and remaining useful life; show the cost-over-time comparison and the tipping point that would change the answer.",
+          "input": "",
+          "fields": [
+            {
+              "key": "equipment",
+              "label": "The equipment",
+              "placeholder": "e.g. our panoramic X-ray",
+              "sentence": "The equipment is {v}"
+            },
+            {
+              "key": "repair",
+              "label": "Repair quote",
+              "placeholder": "e.g. $6,500",
+              "sentence": "The repair quote is {v}"
+            },
+            {
+              "key": "replace",
+              "label": "Replacement cost",
+              "placeholder": "e.g. $42,000",
+              "sentence": "A replacement costs {v}"
+            }
+          ],
+          "followups": [
+            "What's the single highest-impact item here, and why?",
+            "What would you need from me to make this more precise?",
+            "Turn your top recommendation into concrete next steps for this week."
+          ],
+          "popular": false
+        },
+        {
+          "text": "Spot price creep in my supply spend",
+          "detail": "Identify items whose unit cost rose, quantify the annual dollar impact of each, and rank them — with a suggested action for each one: renegotiate, substitute, or switch.",
+          "input": "ordering data for this period and last period",
+          "fields": [],
+          "followups": [
+            "What's the single highest-impact item here, and why?",
+            "What would you need from me to make this more precise?",
+            "Turn your top recommendation into concrete next steps for this week."
+          ],
+          "popular": false
+        },
+        {
+          "text": "Design and price an in-house membership plan",
+          "detail": "",
+          "input": "",
+          "fields": [
+            {
+              "key": "patients",
+              "label": "Active patients (rough)",
+              "placeholder": "e.g. 2,400",
+              "sentence": "We have roughly {v} active patients"
+            },
+            {
+              "key": "fee",
+              "label": "Your current cleaning fee",
+              "placeholder": "e.g. $120",
+              "sentence": "Our current cleaning fee is {v}"
+            }
+          ],
+          "followups": [
+            "What's the single highest-impact item here, and why?",
+            "What would you need from me to make this more precise?",
+            "Turn your top recommendation into concrete next steps for this week."
+          ],
+          "popular": false
+        }
+      ]
+    },
+    {
+      "value": "expansion",
+      "label": "Expansion analyst (locations & startups)",
+      "prompt": "a dental-practice expansion and site-selection analyst",
+      "safetyKeys": [
+        "confidential",
+        "verify"
+      ],
+      "contexts": [
+        "thinking about a second location",
+        "the current office is at capacity",
+        "scouting commercial real estate",
+        "weighing a startup against buying",
+        "reviewing a lease or letter of intent",
+        "a typical month at the practice",
+        "planning for the year ahead",
+        "just want a second opinion"
+      ],
+      "tasks": [
+        {
+          "text": "Evaluate a potential second location",
+          "detail": "Look at demographics, daytime and traffic patterns, the dentist-to-patient ratio, and nearby competitors — including how established they are (e.g. estimate the owners' career stage from their dental-school graduation year).",
+          "input": "",
+          "fields": [
+            {
+              "key": "area",
+              "label": "City / area you're considering",
+              "placeholder": "e.g. Frisco, TX",
+              "sentence": "The area under consideration is {v}"
+            },
+            {
+              "key": "current",
+              "label": "Where your current practice is",
+              "placeholder": "e.g. Plano, TX",
+              "sentence": "My current practice is in {v}"
+            },
+            {
+              "key": "budget",
+              "label": "Rough budget (optional)",
+              "placeholder": "e.g. $600k all-in",
+              "sentence": "My rough budget is {v}"
+            }
+          ],
+          "followups": [
+            "What data would change this from no-go to go?",
+            "Estimate first-year cash flow for this location.",
+            "What are the three biggest risks, and how would I de-risk each?"
+          ],
+          "popular": true
+        },
+        {
+          "text": "Screen available properties on Crexi or LoopNet",
+          "detail": "Search sources like Crexi and LoopNet for available or for-lease properties that would suit a dental office, and summarize the best options with size, price, and location notes. Screen each for dental fit — plumbing capacity, electrical, ADA access, parking — and flag every listing 'confirm directly; verify dental suitability in person'.",
+          "input": "",
+          "fields": [
+            {
+              "key": "area",
+              "label": "City / area to search",
+              "placeholder": "e.g. Frisco, TX",
+              "sentence": "Search in and around {v}"
+            },
+            {
+              "key": "size",
+              "label": "Space needed",
+              "placeholder": "e.g. 2,500–3,500 sq ft",
+              "sentence": "I need roughly {v} of space"
+            },
+            {
+              "key": "budget",
+              "label": "Budget (lease or buy)",
+              "placeholder": "e.g. up to $38/sq ft NNN",
+              "sentence": "Budget: {v}"
+            }
+          ],
+          "followups": [
+            "What's the single highest-impact item here, and why?",
+            "What would you need from me to make this more precise?",
+            "Turn your top recommendation into concrete next steps for this week."
+          ],
+          "popular": false
+        },
+        {
+          "text": "Analyze lease terms and flag risky clauses",
+          "detail": "Translate the terms into plain English, estimate the effective rent over the full term, and flag risky clauses — escalations, CAM charges, personal guarantees, exclusivity, demolition or relocation rights. My attorney reviews before anything is signed.",
+          "input": "proposed lease or LOI terms",
+          "fields": [],
+          "followups": [
+            "What's the single highest-impact item here, and why?",
+            "What would you need from me to make this more precise?",
+            "Turn your top recommendation into concrete next steps for this week."
+          ],
+          "popular": false
+        },
+        {
+          "text": "Build defensible pro-forma assumptions for a startup",
+          "detail": "Cover chairs, days open, new patients per month, ramp curve, fee schedule, payer mix, staffing, and overhead ratios — with reasonable starting ranges and a note on which numbers to localize.",
+          "input": "",
+          "fields": [],
+          "followups": [
+            "What's the single highest-impact item here, and why?",
+            "What would you need from me to make this more precise?",
+            "Turn your top recommendation into concrete next steps for this week."
+          ],
+          "popular": false
+        },
+        {
+          "text": "Estimate startup cost and break-even for a new location",
+          "detail": "",
+          "input": "",
+          "fields": [
+            {
+              "key": "area",
+              "label": "City / area",
+              "placeholder": "e.g. Frisco, TX",
+              "sentence": "The location would be in {v}"
+            },
+            {
+              "key": "ops",
+              "label": "Operatories planned",
+              "placeholder": "e.g. 5 ops",
+              "sentence": "Planning for {v}"
+            }
+          ],
+          "followups": [
+            "What's the single highest-impact item here, and why?",
+            "What would you need from me to make this more precise?",
+            "Turn your top recommendation into concrete next steps for this week."
+          ],
+          "popular": true
+        },
+        {
+          "text": "Decide between starting fresh and acquiring",
+          "detail": "Give an honest pros-and-cons for each path in my situation, the break-even-time and risk differences, and a recommended path with the conditions that would change it.",
+          "input": "",
+          "fields": [
+            {
+              "key": "capital",
+              "label": "Capital available",
+              "placeholder": "e.g. $250k plus financing",
+              "sentence": "I have {v} available"
+            },
+            {
+              "key": "timeline",
+              "label": "Your timeline",
+              "placeholder": "e.g. open within 18 months",
+              "sentence": "My timeline is {v}"
+            }
+          ],
+          "followups": [
+            "What's the single highest-impact item here, and why?",
+            "What would you need from me to make this more precise?",
+            "Turn your top recommendation into concrete next steps for this week."
+          ],
+          "popular": false
+        }
+      ]
+    },
+    {
+      "value": "deals",
+      "label": "Acquisition & deal advisor (buying & financing)",
+      "prompt": "a dental-practice acquisition and deal advisor",
+      "safetyKeys": [
+        "confidential",
+        "verify"
+      ],
+      "contexts": [
+        "eyeing a specific practice to buy",
+        "building a list of acquisition targets",
+        "deep in due diligence",
+        "negotiating price and structure",
+        "lining up financing",
+        "planning the transition after closing",
+        "a typical month at the practice",
+        "planning for the year ahead",
+        "just want a second opinion"
+      ],
+      "tasks": [
+        {
+          "text": "Estimate what a practice is worth",
+          "detail": "Use multiple methods — percent of collections, an EBITDA multiple, and an SDE multiple — show the range each gives and what drives it, then give a blended view and the factors that would push value up or down. Treat this as a starting estimate to confirm with a qualified valuator.",
+          "input": "practice's financials (collections, EBITDA/SDE, add-backs, trends)",
+          "fields": [
+            {
+              "key": "price",
+              "label": "Asking price (if there is one)",
+              "placeholder": "e.g. $950,000",
+              "sentence": "The asking price is {v} — sanity-check it against your estimate"
+            }
+          ],
+          "followups": [
+            "Which factors here would move the value most?",
+            "What documents should I request to tighten this estimate?",
+            "Model the value if collections grow 10% under my ownership."
+          ],
+          "popular": true
+        },
+        {
+          "text": "Model whether a deal's cash flow covers the debt",
+          "detail": "Model projected cash flow, annual debt service, DSCR, and owner take-home in a base and a conservative case. End with a clear 'can I afford this' verdict and the single assumption the answer is most sensitive to.",
+          "input": "deal numbers (price, financing terms, and the practice's cash flow)",
+          "fields": [],
+          "followups": [
+            "Rerun it with a 15% production dip in year one.",
+            "What loan terms would make this deal comfortable?",
+            "What's my realistic monthly take-home in year one?"
+          ],
+          "popular": false
+        },
+        {
+          "text": "Scan a listing or prospectus for red flags",
+          "detail": "Look for declining production, heavy owner-dependency, concentrated payers, deferred maintenance, lease risk, and vague add-backs. Rank the red flags and give the question each one raises before any letter of intent.",
+          "input": "listing or broker prospectus",
+          "fields": [],
+          "followups": [
+            "Draft the questions to send the broker about each red flag.",
+            "Which single red flag would you walk away over?",
+            "What would a clean version of this deal look like?"
+          ],
+          "popular": true
+        },
+        {
+          "text": "Scrutinize the seller's add-backs (quality of earnings)",
+          "detail": "Normalize the earnings, flag any add-back that looks aggressive or unsupported, and list the documents to request to verify each one.",
+          "input": "financials and the seller's add-back list",
+          "fields": [],
+          "followups": [
+            "What's the single highest-impact item here, and why?",
+            "What would you need from me to make this more precise?",
+            "Turn your top recommendation into concrete next steps for this week."
+          ],
+          "popular": false
+        },
+        {
+          "text": "Draft a respectful outreach letter to an owner-dentist",
+          "detail": "No pressure, no lowball — a warm, confidential opening from one dentist to another about whether they'd ever consider a transition. Under 150 words, with [name], [your name], and [contact] placeholders.",
+          "input": "",
+          "fields": [],
+          "followups": [
+            "What's the single highest-impact item here, and why?",
+            "What would you need from me to make this more precise?",
+            "Turn your top recommendation into concrete next steps for this week."
+          ],
+          "popular": false
+        },
+        {
+          "text": "Build a first-call question list for a selling dentist",
+          "detail": "Give me 12 to 15 questions grouped by theme — motivation, financials, team, patients, real estate, timeline — with a note on what a good versus a concerning answer sounds like.",
+          "input": "",
+          "fields": [],
+          "followups": [
+            "What's the single highest-impact item here, and why?",
+            "What would you need from me to make this more precise?",
+            "Turn your top recommendation into concrete next steps for this week."
+          ],
+          "popular": false
+        },
+        {
+          "text": "Draft a non-binding letter-of-intent framework",
+          "detail": "Cover price and structure, assets included, contingencies, transition terms, exclusivity, and timeline with [placeholders] throughout — clearly labeled as a starting template for my attorney and CPA to finalize.",
+          "input": "",
+          "fields": [],
+          "followups": [
+            "List the negotiation levers beyond price.",
+            "What should my opening position be?",
+            "What do sellers most often push back on?"
+          ],
+          "popular": false
+        },
+        {
+          "text": "Build a due-diligence master checklist",
+          "detail": "Cover financial, clinical, legal, operational, staff, real-estate, and IT areas — with the documents to request and the deal-breakers to watch for in each.",
+          "input": "",
+          "fields": [],
+          "followups": [
+            "What's the single highest-impact item here, and why?",
+            "What would you need from me to make this more precise?",
+            "Turn your top recommendation into concrete next steps for this week."
+          ],
+          "popular": false
+        },
+        {
+          "text": "Estimate the all-in cash needed beyond the purchase price",
+          "detail": "Include working capital, transition costs, deferred maintenance, marketing, and a reserve — and call out the items buyers most often underestimate.",
+          "input": "practice details (size, condition, payer mix, current marketing)",
+          "fields": [],
+          "followups": [
+            "What's the single highest-impact item here, and why?",
+            "What would you need from me to make this more precise?",
+            "Turn your top recommendation into concrete next steps for this week."
+          ],
+          "popular": false
+        },
+        {
+          "text": "Compare two acquisition targets side by side",
+          "detail": "Compare price, production, payer mix, location, growth potential, and risk, then give a reasoned 'which and why' — noting any data gaps that could change the call.",
+          "input": "data for both practices",
+          "fields": [],
+          "followups": [
+            "What's the single highest-impact item here, and why?",
+            "What would you need from me to make this more precise?",
+            "Turn your top recommendation into concrete next steps for this week."
+          ],
+          "popular": false
+        },
+        {
+          "text": "Plan the first 100 days after buying a practice",
+          "detail": "Phase it days 1–7, 8–30, and 31–100 across systems, team, patients, billing, and branding — and highlight the items most likely to disrupt patients if missed.",
+          "input": "",
+          "fields": [],
+          "followups": [
+            "What's the single highest-impact item here, and why?",
+            "What would you need from me to make this more precise?",
+            "Turn your top recommendation into concrete next steps for this week."
+          ],
+          "popular": false
+        }
+      ]
+    },
+    {
+      "value": "ops",
+      "label": "Operations & HR consultant",
+      "prompt": "a dental-practice operations and HR consultant",
+      "safetyKeys": [
+        "confidential"
+      ],
+      "contexts": [
+        "the schedule has too many gaps",
+        "no-shows are hurting the day",
+        "onboarding a new hire",
+        "a process only lives in one person's head",
+        "the team feels stretched thin",
+        "a typical month at the practice",
+        "planning for the year ahead",
+        "just want a second opinion"
+      ],
+      "tasks": [
+        {
+          "text": "Turn a messy process into a written SOP",
+          "detail": "",
+          "input": "current process (the rough steps as they happen today)",
+          "fields": [],
+          "followups": [
+            "What's the single highest-impact item here, and why?",
+            "What would you need from me to make this more precise?",
+            "Turn your top recommendation into concrete next steps for this week."
+          ],
+          "popular": true
+        },
+        {
+          "text": "Redesign the schedule to cut gaps and no-shows",
+          "detail": "",
+          "input": "",
+          "fields": [
+            {
+              "key": "ops",
+              "label": "Operatories / chairs",
+              "placeholder": "e.g. 6 ops",
+              "sentence": "We run {v}"
+            },
+            {
+              "key": "hours",
+              "label": "Office days & hours",
+              "placeholder": "e.g. Mon–Thu 8–5",
+              "sentence": "Our hours are {v}"
+            }
+          ],
+          "followups": [
+            "What's the single highest-impact item here, and why?",
+            "What would you need from me to make this more precise?",
+            "Turn your top recommendation into concrete next steps for this week."
+          ],
+          "popular": false
+        },
+        {
+          "text": "Build a new-hire onboarding plan",
+          "detail": "",
+          "input": "",
+          "fields": [],
+          "followups": [
+            "What's the single highest-impact item here, and why?",
+            "What would you need from me to make this more precise?",
+            "Turn your top recommendation into concrete next steps for this week."
+          ],
+          "popular": false
+        },
+        {
+          "text": "Design an associate or hygienist compensation model",
+          "detail": "",
+          "input": "",
+          "fields": [],
+          "followups": [
+            "What's the single highest-impact item here, and why?",
+            "What would you need from me to make this more precise?",
+            "Turn your top recommendation into concrete next steps for this week."
+          ],
+          "popular": false
+        },
+        {
+          "text": "Create a morning-huddle KPI scorecard",
+          "detail": "",
+          "input": "",
+          "fields": [],
+          "followups": [
+            "What's the single highest-impact item here, and why?",
+            "What would you need from me to make this more precise?",
+            "Turn your top recommendation into concrete next steps for this week."
+          ],
+          "popular": true
+        },
+        {
+          "text": "Set up an inventory par-level system",
+          "detail": "Show how to set pars by usage, a simple reorder process, who owns it, and a lightweight tracker with minimum, maximum, and reorder point per item — simple enough that the team actually uses it.",
+          "input": "",
+          "fields": [],
+          "followups": [
+            "What's the single highest-impact item here, and why?",
+            "What would you need from me to make this more precise?",
+            "Turn your top recommendation into concrete next steps for this week."
+          ],
+          "popular": false
+        },
+        {
+          "text": "Script a difficult team conversation",
+          "detail": "",
+          "input": "",
+          "fields": [],
+          "followups": [
+            "What's the single highest-impact item here, and why?",
+            "What would you need from me to make this more precise?",
+            "Turn your top recommendation into concrete next steps for this week."
+          ],
+          "popular": false
+        }
+      ]
+    },
+    {
+      "value": "growth",
+      "label": "Marketing & growth strategist",
+      "prompt": "a dental-practice growth and marketing strategist",
+      "safetyKeys": [
+        "confidential"
+      ],
+      "contexts": [
+        "new-patient flow has slowed",
+        "lots of lapsed patients on the list",
+        "not enough online reviews",
+        "a new competitor opened nearby",
+        "launching a new service",
+        "a typical month at the practice",
+        "planning for the year ahead",
+        "just want a second opinion"
+      ],
+      "tasks": [
+        {
+          "text": "Build a 90-day new-patient growth plan",
+          "detail": "",
+          "input": "",
+          "fields": [
+            {
+              "key": "current",
+              "label": "New patients per month now",
+              "placeholder": "e.g. 25",
+              "sentence": "We currently get about {v} new patients a month"
+            },
+            {
+              "key": "goal",
+              "label": "Your goal",
+              "placeholder": "e.g. 40 a month",
+              "sentence": "The goal is {v}"
+            }
+          ],
+          "followups": [
+            "Which single channel should get the first dollar, and why?",
+            "Turn week one into a day-by-day checklist.",
+            "How will we measure this — which numbers, checked when?"
+          ],
+          "popular": true
+        },
+        {
+          "text": "Reactivate lapsed patients",
+          "detail": "",
+          "input": "",
+          "fields": [],
+          "followups": [
+            "What's the single highest-impact item here, and why?",
+            "What would you need from me to make this more precise?",
+            "Turn your top recommendation into concrete next steps for this week."
+          ],
+          "popular": false
+        },
+        {
+          "text": "Set up a Google-review generation system",
+          "detail": "",
+          "input": "",
+          "fields": [],
+          "followups": [
+            "What's the single highest-impact item here, and why?",
+            "What would you need from me to make this more precise?",
+            "Turn your top recommendation into concrete next steps for this week."
+          ],
+          "popular": true
+        },
+        {
+          "text": "Design a patient referral program",
+          "detail": "",
+          "input": "",
+          "fields": [],
+          "followups": [
+            "What's the single highest-impact item here, and why?",
+            "What would you need from me to make this more precise?",
+            "Turn your top recommendation into concrete next steps for this week."
+          ],
+          "popular": false
+        },
+        {
+          "text": "Improve local SEO and the Google Business Profile",
+          "detail": "",
+          "input": "",
+          "fields": [],
+          "followups": [
+            "What's the single highest-impact item here, and why?",
+            "What would you need from me to make this more precise?",
+            "Turn your top recommendation into concrete next steps for this week."
+          ],
+          "popular": false
+        }
+      ]
+    },
+    {
+      "value": "coach",
+      "label": "Business coach / advisor",
+      "prompt": "a business coach for a dental-practice owner",
+      "safetyKeys": [
+        "confidential"
+      ],
+      "contexts": [
+        "feeling stretched thin as the owner",
+        "unsure what to focus on next",
+        "working in the business, not on it",
+        "planning the next 12 months",
+        "thinking about an eventual exit",
+        "a typical month at the practice",
+        "planning for the year ahead",
+        "just want a second opinion"
+      ],
+      "tasks": [
+        {
+          "text": "Vision organizer: help me figure out what I really want",
+          "detail": "Interview me one question at a time to uncover what I actually want from the practice and my life — more time, money, freedom, or meaning — and what's getting in the way. Ask 6–8 thoughtful questions, waiting for my answer each time, then summarize what you heard and give me a short, prioritized action list to get there.",
+          "input": "",
+          "fields": [],
+          "followups": [
+            "Turn the action list into a 90-day calendar.",
+            "What should I stop doing entirely?",
+            "What's the first thing I should delegate, and to whom?"
+          ],
+          "popular": true
+        },
+        {
+          "text": "Define my weekly owner KPI dashboard",
+          "detail": "",
+          "input": "",
+          "fields": [],
+          "followups": [
+            "What's the single highest-impact item here, and why?",
+            "What would you need from me to make this more precise?",
+            "Turn your top recommendation into concrete next steps for this week."
+          ],
+          "popular": true
+        },
+        {
+          "text": "Build an annual goals and budget framework",
+          "detail": "",
+          "input": "",
+          "fields": [],
+          "followups": [
+            "What's the single highest-impact item here, and why?",
+            "What would you need from me to make this more precise?",
+            "Turn your top recommendation into concrete next steps for this week."
+          ],
+          "popular": false
+        },
+        {
+          "text": "Run a quarterly SWOT and tell me where to focus",
+          "detail": "",
+          "input": "",
+          "fields": [],
+          "followups": [
+            "What's the single highest-impact item here, and why?",
+            "What would you need from me to make this more precise?",
+            "Turn your top recommendation into concrete next steps for this week."
+          ],
+          "popular": false
+        },
+        {
+          "text": "Assess what would raise my practice's value before a sale",
+          "detail": "Score owner-independence, systems, growth, margins, and payer mix; give a prioritized action list ranked by impact on the multiple, focused on the 12-month moves that pay off most.",
+          "input": "",
+          "fields": [],
+          "followups": [
+            "What's the single highest-impact item here, and why?",
+            "What would you need from me to make this more precise?",
+            "Turn your top recommendation into concrete next steps for this week."
+          ],
+          "popular": false
+        },
+        {
+          "text": "Brainstorm ventures that fit my skills and assets",
+          "detail": "Give 10 dental-adjacent ideas with the angle, why I'm suited to each, and a rough effort-versus-return read. Be candid about which are crowded.",
+          "input": "list of your assets and skills (practices, capital, network, interests)",
+          "fields": [],
+          "followups": [
+            "What's the single highest-impact item here, and why?",
+            "What would you need from me to make this more precise?",
+            "Turn your top recommendation into concrete next steps for this week."
+          ],
+          "popular": false
+        },
+        {
+          "text": "Pressure-test a business idea",
+          "detail": "Assess the market size, the real customer, the competition, the moat, and the top risks. Give an honest pursue / shape / pass verdict, the biggest assumption to test first, and a cheap way to test it before I invest.",
+          "input": "idea (what it is, who it's for, how it makes money)",
+          "fields": [],
+          "followups": [
+            "What's the single highest-impact item here, and why?",
+            "What would you need from me to make this more precise?",
+            "Turn your top recommendation into concrete next steps for this week."
+          ],
+          "popular": false
+        }
+      ]
+    }
+  ],
+  "sharedContext": [
+    "a general patient",
+    "a nervous adult",
+    "a new patient"
+  ],
+  "formats": [
+    {
+      "text": "3 short text messages (under 35 words each)",
+      "ph": true
+    },
+    {
+      "text": "One text message (under 45 words)",
+      "ph": true
+    },
+    {
+      "text": "A phone script (under 150 words)",
+      "ph": true
+    },
+    {
+      "text": "A chairside script (under 130 words)",
+      "ph": true
+    },
+    {
+      "text": "An email (short and warm)",
+      "ph": true
+    },
+    {
+      "text": "One text + one email version",
+      "ph": true
+    },
+    {
+      "text": "A take-home handout with labeled sections",
+      "ph": true
+    },
+    {
+      "text": "A checklist in setup / step order",
+      "ph": false
+    },
+    {
+      "text": "A standard operating procedure (numbered steps)",
+      "ph": false
+    },
+    {
+      "text": "A public review reply (under 70 words)",
+      "ph": true
+    },
+    {
+      "text": "Short labeled bullet points",
+      "ph": false
+    },
+    {
+      "text": "A social post with a soft call to action",
+      "ph": true
+    },
+    {
+      "text": "A week-by-week content table",
+      "ph": true
+    },
+    {
+      "text": "A prioritized list of savings with estimated dollar impact",
+      "ph": false
+    },
+    {
+      "text": "A comparison table",
+      "ph": false
+    },
+    {
+      "text": "A red / yellow / green review by category",
+      "ph": false
+    },
+    {
+      "text": "A step-by-step action plan",
+      "ph": false
+    },
+    {
+      "text": "A go / no-go recommendation with the risks",
+      "ph": false
+    },
+    {
+      "text": "A short executive summary, then the details",
+      "ph": false
+    },
+    {
+      "text": "A checklist",
+      "ph": false
+    },
+    {
+      "text": "A one-page brief",
+      "ph": false
+    },
+    {
+      "text": "A set of questions for me to answer first",
+      "ph": false
+    }
+  ],
+  "popularFormats": [
+    "One text message (under 45 words)",
+    "A phone script (under 150 words)",
+    "An email (short and warm)"
+  ],
+  "tones": [
+    {
+      "value": "caring",
+      "clause": "caring"
+    },
+    {
+      "value": "clear",
+      "clause": "clear"
+    },
+    {
+      "value": "upbeat",
+      "clause": "upbeat"
+    },
+    {
+      "value": "calm",
+      "clause": "calm"
+    },
+    {
+      "value": "professional",
+      "clause": "professional"
+    },
+    {
+      "value": "direct",
+      "clause": "direct"
+    },
+    {
+      "value": "concise",
+      "clause": "concise"
+    },
+    {
+      "value": "detailed",
+      "clause": "detailed"
+    },
+    {
+      "value": "encouraging",
+      "clause": "encouraging"
+    }
+  ],
+  "examples": [
+    {
+      "label": "Re-engage overdue patients",
+      "state": {
+        "role": "frontdesk",
+        "context": "a busy adult overdue 12+ months",
+        "task": "Re-engage overdue patients",
+        "format": "3 short text messages (under 35 words each)",
+        "tones": [
+          "caring"
+        ]
+      }
+    },
+    {
+      "label": "Handle sticker shock",
+      "state": {
+        "role": "treatment",
+        "context": "a patient with sticker shock",
+        "task": "Handle sticker shock",
+        "format": "A phone script (under 150 words)",
+        "tones": [
+          "calm",
+          "clear"
+        ]
+      }
+    },
+    {
+      "label": "Reply to a negative review",
+      "state": {
+        "role": "marketing",
+        "context": "a negative reviewer",
+        "task": "Respond to a negative review (safe)",
+        "format": "A public review reply (under 70 words)",
+        "tones": [
+          "professional"
+        ]
+      }
+    },
+    {
+      "label": "Audit my card statements",
+      "state": {
+        "role": "cfo",
+        "context": "overhead feels too high",
+        "task": "Audit credit-card and bank statements for savings",
+        "format": "A prioritized list of savings with estimated dollar impact",
+        "tones": []
+      }
+    },
+    {
+      "label": "Vet a second location",
+      "state": {
+        "role": "expansion",
+        "context": "thinking about a second location",
+        "task": "Evaluate a potential second location",
+        "format": "A go / no-go recommendation with the risks",
+        "tones": []
+      }
+    },
+    {
+      "label": "Vision organizer",
+      "state": {
+        "role": "coach",
+        "context": "unsure what to focus on next",
+        "task": "Vision organizer: help me figure out what I really want",
+        "format": "A short executive summary, then the details",
+        "tones": []
+      }
+    },
+    {
+      "label": "Morning huddle scorecard",
+      "state": {
+        "role": "ops",
+        "context": "the team feels stretched thin",
+        "task": "Create a morning-huddle KPI scorecard",
+        "format": "A one-page brief",
+        "tones": []
+      }
+    },
+    {
+      "label": "Standardize supply ordering",
+      "state": {
+        "role": "ops",
+        "context": "a process only lives in one person's head",
+        "task": "Set up an inventory par-level system",
+        "format": "A standard operating procedure (numbered steps)",
+        "tones": []
+      }
+    }
+  ]
+}
