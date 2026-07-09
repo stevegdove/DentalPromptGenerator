@@ -985,6 +985,7 @@
     { value: "hygienist",  label: "Dental hygienist",              prompt: "a dental hygienist" },
     { value: "assistant",  label: "Dental assistant",              prompt: "a dental assistant" },
     { value: "treatment",  label: "Treatment coordinator",         prompt: "a treatment coordinator" },
+    { value: "insurance",  label: "Insurance coordinator",         prompt: "an insurance coordinator" },
     { value: "manager",    label: "Office manager",                prompt: "an office manager" },
     { value: "marketing",  label: "Marketing / reputation manager",prompt: "a marketing and reputation manager" },
     { value: "doctor",     label: "Dentist (doctor)",              prompt: "a dentist" }
@@ -1030,6 +1031,14 @@
       "a patient who went cold ~60 days ago",
       "a self-pay / uninsured patient",
       "a value-focused patient comparing quotes"
+    ],
+    insurance: [
+      "a claim denied for a downgrade / alternate benefit",
+      "a procedure that often needs a narrative",
+      "a frequently-denied procedure",
+      "a predetermination before treatment",
+      "a patient confused about their EOB",
+      "the insurer / claims reviewer"
     ],
     manager: [
       "the whole team",
@@ -1096,6 +1105,14 @@
       "Write a treatment-plan email summary",
       "Explain “watch” vs “treat now”"
     ],
+    insurance: [
+      "Write an insurance narrative for a procedure",
+      "Appeal a denied claim",
+      "Write a predetermination request",
+      "Explain a claim denial to a patient",
+      "Explain remaining benefits and out-of-pocket",
+      "Summarize a patient's benefits in plain language"
+    ],
     manager: [
       "Turn a messy process into an SOP",
       "Build a team-meeting agenda",
@@ -1139,6 +1156,8 @@
     { text: "A take-home handout with labeled sections",   ph: true },
     { text: "A checklist in setup / step order",           ph: false },
     { text: "A standard operating procedure (numbered steps)", ph: false },
+    { text: "A formal narrative for the insurer (one tight paragraph)", ph: true },
+    { text: "A formal appeal letter",                       ph: true },
     { text: "A public review reply (under 70 words)",       ph: true },
     { text: "Short labeled bullet points",                 ph: false },
     { text: "A social post with a soft call to action",    ph: true },
@@ -1156,6 +1175,9 @@
     "Write a treatment-plan email summary": "treatment plan",
     "Phase a large treatment plan": "treatment plan",
     "Write a firm email for a vendor / insurer dispute": "details of the dispute",
+    "Write an insurance narrative for a procedure": "clinical findings and reason for treatment (no patient identifiers)",
+    "Appeal a denied claim": "denial reason and claim details from the EOB (remove patient identifiers)",
+    "Explain a claim denial to a patient": "denial reason from the EOB (remove patient identifiers)",
     "Draft an employee-handbook section": "topic or rough notes for this section",
     "Respond to a one-star review that mentions clinical details": "one-star review",
     "Calm a complaint that's going viral": "complaint thread (remove any names)"
@@ -1173,7 +1195,13 @@
     "Make it right after a service failure":
       "Own the mistake plainly, apologize without excuses, and offer one concrete next step to make it right — under 80 words with a [first name] placeholder.",
     "Write a do-say / don't-say brief for a sensitive situation":
-      "One page: a do-say / don't-say list, the single point of contact for questions, and a reminder that no one discusses patient details publicly."
+      "One page: a do-say / don't-say list, the single point of contact for questions, and a reminder that no one discusses patient details publicly.",
+    "Write an insurance narrative for a procedure":
+      "Write in the clinical, factual language a claims reviewer expects. State the diagnosis, the clinical justification, and why the treatment is medically necessary. Reference tooth numbers and findings generically ([tooth #], [finding], [date]) and keep patient identifiers out.",
+    "Appeal a denied claim":
+      "Cite the specific denial reason first, then respond point by point with the clinical justification and any applicable plan language or documentation. Stay professional and factual, request a specific reconsideration, and keep patient identifiers out.",
+    "Write a predetermination request":
+      "State the proposed treatment, the diagnosis, and the supporting clinical findings a reviewer needs to approve it. Reference tooth numbers and findings generically ([tooth #], [finding]) and keep patient identifiers out."
   };
 
   // Optional per-task detail fields. Filled values are woven into the prompt as
@@ -1286,6 +1314,16 @@
       "Draft the follow-up if nobody responds in an hour.",
       "Make a version for our ASAP-list regulars."
     ],
+    "Write an insurance narrative for a procedure": [
+      "Make it tighter and more clinical.",
+      "Add the CDT code and supporting documentation I should attach.",
+      "Give me a reusable template for this procedure."
+    ],
+    "Appeal a denied claim": [
+      "Make the argument firmer without sounding combative.",
+      "List the documentation I should attach to strengthen this appeal.",
+      "Draft a short cover note to send with the appeal."
+    ],
     "Turn a messy process into an SOP": [
       "Which steps are most likely to be skipped, and how do we prevent that?",
       "Turn this into a one-page checklist for the wall.",
@@ -1395,6 +1433,7 @@
     hygienist: ["Explain why a deep cleaning is needed", "Write a recare reactivation message"],
     assistant: ["Write post-op instructions for a procedure", "Reassure an anxious patient chairside"],
     treatment: ["Handle sticker shock", "Follow up on unscheduled treatment"],
+    insurance: ["Write an insurance narrative for a procedure", "Appeal a denied claim"],
     manager: ["Turn a messy process into an SOP", "Write a job posting"],
     marketing: ["Respond to a negative review (safe)", "Ask happy patients for referrals"],
     doctor: ["Explain a treatment in plain language", "Deliver difficult news kindly"]
